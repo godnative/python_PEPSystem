@@ -1,0 +1,14 @@
+# database/classes_db.py文件中
+# 从数据库模块中导入基础数据库管理类 DatabaseManage
+from DataBase.base_db import DataBaseManage
+
+# 定义一个类 ClassDB，继承自 DatabaseManage
+class ClassDB(DataBaseManage):
+    # 定义一个方法 fetch_classes，用于从数据库中获取班级信息
+    def fetch_classes(self):
+        # 定义 SQL 查询语句，用于选择 CLASSES 表中的所有数据
+        query = """
+        SELECT * FROM CLASSES
+        """
+        # 使用父类的 fetch_query 方法执行查询，并返回查询结果
+        return self.fetch_query(query)
