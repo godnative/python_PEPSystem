@@ -1,19 +1,18 @@
 import sys
 
-from PyQt6.QtCore import Qt, QTranslator, QLocale, QRect
-from PyQt6.QtGui import QIcon, QPixmap, QColor
+from PyQt6.QtCore import Qt, QRect
+from PyQt6.QtGui import QIcon, QPixmap
 from PyQt6.QtWidgets import QApplication, QMessageBox
-from qfluentwidgets import setThemeColor, FluentTranslator, setTheme, Theme, SplitTitleBar, isDarkTheme
+from qfluentwidgets import setThemeColor, SplitTitleBar, isDarkTheme
+from qframelesswindow import AcrylicWindow as Window
 
 from DataBase.school_db import SchoolDb
+from DataBase.user_db import UserDB
 from LoginWindow import Ui_Form
 from main_window import MainWindow
-from DataBase.user_db import UserDB
-from qframelesswindow import AcrylicWindow as Window
 
 
 class LoginWindow(Window, Ui_Form):
-
     def __init__(self):
         super().__init__()
         self.setupUi(self)

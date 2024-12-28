@@ -70,7 +70,7 @@ class MainWindow(MSFluentWindow):
         self.navigationInterface.setCurrentItem(self.schoolInterface.objectName())
 
     def initWindow(self):
-        self.resize(900, 700)
+        self.resize(1500, 1000)
         self.setWindowIcon(QIcon('./login/resource/images/logo.png'))
 
         desktop = QApplication.screens()[0].availableGeometry()
