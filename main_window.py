@@ -4,13 +4,13 @@ import sys
 from PyQt6.QtCore import Qt, QUrl
 from PyQt6.QtGui import QIcon, QDesktopServices
 from PyQt6.QtWidgets import QApplication, QFrame, QHBoxLayout
-from qfluentwidgets import (NavigationItemPosition, MessageBox, setTheme, Theme, MSFluentWindow,
-                            NavigationAvatarWidget, qrouter, SubtitleLabel, setFont)
 from qfluentwidgets import FluentIcon as FIF
+from qfluentwidgets import (NavigationItemPosition, MessageBox, MSFluentWindow,
+                            SubtitleLabel, setFont)
 
 from DataBase.school_db import SchoolDb
-from student.student_interface import StudentInterface
 from school.school_interface import ShowSchoolInterface
+from student.student_interface import StudentInterface
 
 
 class Widget(QFrame):
@@ -67,7 +67,7 @@ class MainWindow(MSFluentWindow):
             position=NavigationItemPosition.BOTTOM,
         )
 
-        self.navigationInterface.setCurrentItem(self.studentInterface.objectName())
+        self.navigationInterface.setCurrentItem(self.schoolInterface.objectName())
 
     def initWindow(self):
         self.resize(900, 700)
