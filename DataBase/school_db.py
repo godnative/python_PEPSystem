@@ -40,10 +40,17 @@ class SchoolDb(DataBaseManage):
         # 使用父类的 fetch_query 方法执行查询，并返回查询结果
         return self.fetch_query(query, params=params)
 
+    def modify_school(self, school_info):
+        query = """
+            UPDATE school SET school_date = ?, school_address = ?, school_info = ?
+            WHERE school_name = ?
+        """
+        params = (school_info['school_date'], school_info['school_address'], school_info['school_info'],
+                  school_info['school_name'])
+        return self.execute_query(query, params)
+
 
 if __name__ == '__main__':
     with SchoolDb() as db:
-        if db.check_school_name("柳州") is []:
-            print("无")
-        else:
-            print("有")
+        a = db.check_school_name("柳州小学")
+        print(a)

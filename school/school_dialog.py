@@ -1,11 +1,10 @@
 from PyQt6 import QtWidgets
-from PyQt6 import QtWidgets
 from PyQt6.QtCore import QSize, QDate
 from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import QVBoxLayout, QHBoxLayout, QLabel, QSizePolicy, QLineEdit
 from qfluentwidgets import CalendarPicker, TextEdit
 
-from utils.utils_tool import ImageLabel
+from utils.utils_tool import ImageLabel, qdate_to_timestamp, timestamp_to_date
 
 
 class BaseSchoolInterface_Temp:
@@ -31,6 +30,7 @@ class BaseSchoolInterface_Temp:
         self.textEdit = TextEdit()
 
         self.setup_ui()
+        # TODO:学校图像修改
 
     def setup_ui(self):
         self.label.setMinimumSize(QSize(400, 400))
@@ -80,3 +80,22 @@ class BaseSchoolInterface_Temp:
         self.BaseSchoolInterface_layout.addWidget(self.label_title)
         self.BaseSchoolInterface_layout.addLayout(self.horizontalLayout)
         self.BaseSchoolInterface_layout.addWidget(self.textEdit)
+
+    def get_InputSchoolDialoginfo(self):
+        # 获取输入框中的数据并返回
+        school_info = {
+            'school_name': self.lineEdit_2.text(),
+            'school_address': self.lineEdit_4.text(),
+            'school_info': self.textEdit.toPlainText(),
+            'school_date': qdate_to_timestamp(self.calendarPicker.date)
+        }
+        return school_info
+
+    def set_school_info(self, school_info):
+        # 设置学生信息
+        self.lineEdit_2.setText(school_info['school_name'])
+        self.lineEdit_4.setText(school_info['school_address'])
+        self.textEdit.setText(school_info['school_info'])
+        qDate = timestamp_to_date(school_info["school_date"])
+        # 设置文本框的文本为格式化后的日期时间
+        self.calendarPicker.setDate(qDate)

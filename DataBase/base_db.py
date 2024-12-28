@@ -14,7 +14,7 @@ class DataBaseManage:
 
     def create_connection(self):
         if self.connection is None:
-            self.connection = sqlite3.connect('./DataBase/data.db')
+            self.connection = sqlite3.connect('../DataBase/data.db')
         return self.connection
 
     def fetch_query(self, query, single=False, params=None):
