@@ -2,26 +2,28 @@
 from PyQt6.QtCore import Qt  # 导入 PyQt6 模块中的 Qt 类，用于对齐方式等常量
 from PyQt6.QtWidgets import QGridLayout  # 导入 PyQt6 模块中的 QGridLayout，用于栅格布局
 from qfluentwidgets import MessageBoxBase, ComboBox, LineEdit, StrongBodyLabel, \
-    SubtitleLabel, InfoBar  # 导入 qfluentwidgets 模块中的组件
+    SubtitleLabel, InfoBar, PushButton  # 导入 qfluentwidgets 模块中的组件
 
 from DataBase.family_db import FamilyDB
+from student.family_dialog import AddFamilyDialog
 
 
 class BaseStudentDialog(MessageBoxBase):  # 定义一个学生信息弹窗的基类，继承自 MessageBoxBase
     def __init__(self, title, parent=None):  # 初始化方法，接收弹窗标题和父窗口作为参数
         super().__init__(parent)  # 调用父类的初始化方法，设置父窗口
         self.title = title  # 保存弹窗标题，用于区分弹窗用途（如添加或修改学生信息）
-        self.parent = parent  # 保存父窗口，用于传递给父类的初始化方法
+        self.cur_school_id = 1
         self.setup_ui()  # 调用界面设置方法，初始化弹窗界面
-        self.load_classes()  # 调用加载班级方法，为弹窗提供班级选择功能
+        self.load_family()  # 调用加载班级方法，为弹窗提供班级选择功能
+
 
     def setup_ui(self):  # 定义设置用户界面的方法
         self.titleLabel = SubtitleLabel(self.title, self)  # 创建一个 SubtitleLabel 实例，传入标题文本和父窗口
         self.viewLayout.addWidget(self.titleLabel)  # 将标题控件添加到布局中
         self.viewLayout.setAlignment(self.titleLabel, Qt.AlignmentFlag.AlignCenter)  # 设置标题控件在布局中的对齐方式为居中
 
-        grid_layout = QGridLayout()  # 创建一个栅格布局对象，用于对控件进行行列排布
-        self.viewLayout.addLayout(grid_layout)  # 将栅格布局添加到主视图布局中
+        self.grid_layout = QGridLayout()  # 创建一个栅格布局对象，用于对控件进行行列排布
+        self.viewLayout.addLayout(self.grid_layout)  # 将栅格布局添加到主视图布局中
 
         # 创建输入控件
         self.nameInput = LineEdit(self)  # 创建一个单行文本输入框用于输入姓名
@@ -35,22 +37,22 @@ class BaseStudentDialog(MessageBoxBase):  # 定义一个学生信息弹窗的基
         fields = [
             ("姓名：", self.nameInput),  # 姓名字段与对应的输入框
             ("性别：", self.genderCombo),  # 性别字段与对应的下拉框
-            ("家庭：", self.familyCombo),  # 班级字段与对应的下拉框
             ("手机：", self.phoneInput),  # 语文字段与对应的输入框
-            ("名字：", self.holyNameInput)  # 数学字段与对应的输入框
+            ("名字：", self.holyNameInput),  # 数学字段与对应的输入框
+            ("家庭：", self.familyCombo),  # 班级字段与对应的下拉框
         ]
 
         # 遍历字段，添加到栅格布局中
         for row, (label_text, widget) in enumerate(fields):  # 使用 enumerate 获取字段的行号
             label = StrongBodyLabel(label_text, self)  # 创建加粗的标签
-            grid_layout.addWidget(label, row, 0)  # 将标签添加到栅格布局的第一列
-            grid_layout.addWidget(widget, row, 1)  # 将控件添加到栅格布局的第二列
+            self.grid_layout.addWidget(label, row, 0)  # 将标签添加到栅格布局的第一列
+            self.grid_layout.addWidget(widget, row, 1)  # 将控件添加到栅格布局的第二列
 
         # 设置列拉伸
-        grid_layout.setColumnStretch(1, 1)  # 设置第二列的列拉伸系数为 1，确保控件能够自动适应窗口大小
+        self.grid_layout.setColumnStretch(1, 1)  # 设置第二列的列拉伸系数为 1，确保控件能够自动适应窗口大小
 
         # 设置标签对齐方式
-        grid_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)  # 将控件对齐到左侧
+        self.grid_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)  # 将控件对齐到左侧
 
         # 修改按钮文本
         self.yesButton.setText('确定')  # 将确认按钮文本设置为“确定”
@@ -69,7 +71,7 @@ class BaseStudentDialog(MessageBoxBase):  # 定义一个学生信息弹窗的基
         self.yesButton.setAutoDefault(False)  # 禁止“确定”按钮自动成为默认按钮
 
     # 定义一个方法 load_classes，用于加载班级信息到下拉框中
-    def load_classes(self):
+    def load_family(self):
         self.familyCombo.clear()  # 清空 classCombo 下拉框中的所有选项
         with FamilyDB() as db:  # 使用上下文管理器创建 ClassDB 的实例，并确保使用后自动关闭数据库连接
             familys = db.fetch_family()  # 如果没有可管理的班级 ID 列表，则获取所有班级信息
@@ -111,7 +113,8 @@ class BaseStudentDialog(MessageBoxBase):  # 定义一个学生信息弹窗的基
             "student_gender": self.genderCombo.currentData(),
             "student_phonenum": self.phoneInput.text(),  # 性别字段与对应的下拉框
             "student_holyname": self.holyNameInput.text(),  # 班级字段与对应的下拉框
-            "student_family_id": self.familyCombo.currentData()  # 语文字段与对应的输入框
+            "student_family_id": self.familyCombo.currentData(),  # 语文字段与对应的输入框
+            "student_school_id": self.familyCombo.currentData()  # 语文字段与对应的输入框
         }
         return StudentInfo
 
@@ -120,3 +123,14 @@ class AddStudentDialog(BaseStudentDialog):  # 定义一个用于添加学生的�
     def __init__(self, parent=None):  # 初始化方法，接收父窗口作为参数，默认为 None
         super().__init__('添加学生', parent)  # 调用父类的初始化方法，设置弹窗标题为“添加学生”，并传递父窗口
         self.yesButton.setText('添加')  # 设置确认按钮的文本为“添加”，以明确功能
+        self.add_family_pushbutton = PushButton("新增家庭", self)
+        self.grid_layout.addWidget(self.add_family_pushbutton, 5, 1)
+        self.add_family_pushbutton.clicked.connect(self.add_family)
+
+    def add_family(self):
+        w = AddFamilyDialog(self)
+        if w.exec():
+            print(w.get_InputFamilyDialoginfo())
+            with FamilyDB() as db:
+                db.add_family(w.get_InputFamilyDialoginfo())
+            self.load_family()

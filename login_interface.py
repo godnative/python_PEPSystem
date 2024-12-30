@@ -96,7 +96,7 @@ class LoginWindow(Window, Ui_Form):
 
         for school_info in schools:  # 遍历获取到的班级信息列表
             self.comboBox.addItem(school_info['school_name'],
-                                  userData=school_info['school_id'])  # 将每个班级的名称和对应的 ID 添加到下拉框中
+                                  userData=school_info)  # 将每个班级的名称和对应的 ID 添加到下拉框中
 
 
 class Widget(QFrame):
@@ -118,20 +118,19 @@ class MainWindow(MSFluentWindow):
         super().__init__()
         self.role = role
         self.curSchool = curSchool
-        print(self.curSchool)
+        self.schoolInterface = ShowSchoolInterface(self.curSchool, self)
         if self.curSchool is None:
             self.setWindowTitle('未选择当前学校')
+            self.studentInterface = Widget('请先选择学校', self)
+            self.videoInterface = Widget('请先选择学校.', self)
+            self.libraryInterface = Widget('请先选择学校..', self)
         else:
-            with SchoolDb() as db:
-                self.curSchool = db.get_school_info(self.curSchool)
-                self.setWindowTitle('当前学校:%s' % self.curSchool['school_name'])
+            self.setWindowTitle('当前学校:%s' % self.curSchool['school_name'])
 
-        # create sub interface
-        self.studentInterface = StudentInterface()
-        print(self.curSchool)
-        self.schoolInterface = ShowSchoolInterface(self.curSchool, self)
-        self.videoInterface = Widget('Video Interface', self)
-        self.libraryInterface = Widget('library Interface', self)
+            # create sub interface
+            self.studentInterface = StudentInterface(self.curSchool)
+            self.videoInterface = Widget('Video Interface', self)
+            self.libraryInterface = Widget('library Interface', self)
 
         self.initNavigation()
         self.initWindow()

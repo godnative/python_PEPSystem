@@ -7,7 +7,7 @@ from PyQt6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, \
 from qfluentwidgets import TableWidget, PushButton, CardWidget, setCustomStyleSheet, \
     SearchLineEdit, LineEdit, ComboBox, StrongBodyLabel  # 导入 qfluentwidgets 模块中的组件
 
-from utils.custom_style import ADD_BUTTON_STYLE, BATCH_DELETE_BUTTON_STYLE
+from utils.custom_style import ADD_BUTTON_STYLE, BATCH_DELETE_BUTTON_STYLE, UPDATE_BUTTON_STYLE
 
 
 class BaseStudentFuncTemp(QWidget):  # 定义一个操作学生函数的基类
@@ -28,11 +28,14 @@ class BaseStudentFuncTemp(QWidget):  # 定义一个操作学生函数的基类
         self.searchInput.setFixedWidth(500)
         self.button_2 = PushButton('Delete', self)
         setCustomStyleSheet(self.button_2, BATCH_DELETE_BUTTON_STYLE, BATCH_DELETE_BUTTON_STYLE)
+        self.button_3 = PushButton('query', self)
+        setCustomStyleSheet(self.button_3, UPDATE_BUTTON_STYLE, UPDATE_BUTTON_STYLE)
 
         self.button_layout.addWidget(self.button_1)
         self.button_layout.addWidget(self.searchInput)
         self.button_layout.addStretch(1)
         self.button_layout.addWidget(self.button_2)
+        self.button_layout.addWidget(self.button_3)
 
         self.main_verticalLayout.addWidget(card_widget)
 

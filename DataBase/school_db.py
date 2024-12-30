@@ -52,5 +52,13 @@ class SchoolDb(DataBaseManage):
 
 if __name__ == '__main__':
     with SchoolDb() as db:
-        a = db.check_school_name("柳州小学")
-        print(a)
+        for i in range(10):
+            family_name = "崇义小学第%d号家庭" % (i + 1)
+            family_address = "%d Main Street" % (random.randint(0, 1000))
+            school_info = {
+                "family_name": family_name,
+                "family_address": family_address,
+                "family_school_id": 1,
+                "family_notes": "无备注"
+            }
+            db.add_family(family_info)

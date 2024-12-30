@@ -1,4 +1,7 @@
+import random
+
 from DataBase.base_db import DataBaseManage
+from utils.name_rand import generate_chinese_name
 
 
 class StudentDB(DataBaseManage):
@@ -28,22 +31,44 @@ class StudentDB(DataBaseManage):
                   student["student_holyname"], student["student_family_id"], student["student_school_id"])
         return self.execute_query(query, params)
 
+    def fetch_students_with_school_id(self, school_id):
+        # 定义查询语句
+        query = """
+               -- 查询学生表（student）中的所有字段，并关联班级表（classes），获取学生所属班级的名称
+                SELECT s.*              -- 查询 student 表中的所有字段
+                FROM student s           -- 从 student 表中查询数据，给表取别名为 s
+                where s.student_school_id = ? -- 通过 student 表的 class_id 字段与 classes 表的 class_id 字段进行匹配
+               """
+        params = (school_id,)
+        # 调用父类的 fetch_query 方法执行查询，并返回查询结果
+        return self.fetch_query(query, params=params)
 
+    def fetch_students_with_school_id_and_family_id(self, family_id):
+        # 定义查询语句
+        query = """
+               -- 查询学生表（student）中的所有字段，并关联班级表（classes），获取学生所属班级的名称
+                SELECT s.*              -- 查询 student 表中的所有字段
+                FROM student s           -- 从 student 表中查询数据，给表取别名为 s
+                where s.student_family_id = ? -- 通过 student 表的 class_id 字段与 classes 表的 class_id 字段进行匹配
+               """
+        params = (family_id,)
+        # 调用父类的 fetch_query 方法执行查询，并返回查询结果
+        return self.fetch_query(query, params=params)
 if __name__ == '__main__':
-    with StudentDB("./data.db") as db:
-        # for i in range(10):
-        #     for j in range(10):
-        #         student_name = generate_chinese_name()
-        #         student_gender = random.randint(0, 1)
-        #         student_phonenum = "1310547" + str(random.randint(0, 99999))
-        #         student_info = {
-        #             "student_name": student_name,
-        #             "student_gender": student_gender,
-        #             "student_phonenum": student_phonenum,
-        #             "student_holyname": "",
-        #             "student_family_id": j + 1,
-        #             "student_school_id": 0,
-        #         }
-        #         db.add_student(student_info)
-        result = db.fetch_students()
+    with StudentDB() as db:
+        for i in range(10):
+            for j in range(10):
+                student_name = generate_chinese_name()
+                student_gender = random.randint(0, 1)
+                student_phonenum = "1310547" + str(random.randint(0, 99999))
+                student_info = {
+                    "student_name": student_name,
+                    "student_gender": student_gender,
+                    "student_phonenum": student_phonenum,
+                    "student_holyname": "",
+                    "student_family_id": random.randint(1, 20),
+                    "student_school_id": 1,
+                }
+                db.add_student(student_info)
+        result = db.fetch_students_with_school_id(1)
         print(result)
