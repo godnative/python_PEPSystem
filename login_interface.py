@@ -1,13 +1,13 @@
 import sys
 
 from PyQt6.QtCore import QRect
-from PyQt6.QtCore import Qt, QUrl
-from PyQt6.QtGui import QIcon, QDesktopServices
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QIcon
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import QApplication, QFrame, QHBoxLayout
 from PyQt6.QtWidgets import QMessageBox
 from qfluentwidgets import FluentIcon as FIF
-from qfluentwidgets import (NavigationItemPosition, MessageBox, MSFluentWindow,
+from qfluentwidgets import (NavigationItemPosition, MSFluentWindow,
                             SubtitleLabel, setFont)
 from qfluentwidgets import setThemeColor, SplitTitleBar, isDarkTheme
 from qframelesswindow import AcrylicWindow as Window
@@ -52,8 +52,8 @@ class LoginWindow(Window, Ui_Form):
         """)
 
         desktop = QApplication.screens()[0].availableGeometry()
-        w, h = desktop.width(), desktop.height()
-        self.move(w // 2 - self.width() // 2, h // 2 - self.height() // 2)
+        ww, hh = desktop.width(), desktop.height()
+        self.move(ww // 2 - self.width() // 2, hh // 2 - self.height() // 2)
 
         self.lineEdit_3.setText("admin")
         self.lineEdit_5.setText("password")
@@ -74,7 +74,6 @@ class LoginWindow(Window, Ui_Form):
         self.label.setPixmap(pixmap)
         self.label_2.setPixmap(QPixmap("./login/resource/images/logo.png"))
 
-
     def login(self):
         username = self.lineEdit_3.text()
         password = self.lineEdit_5.text()
@@ -84,11 +83,10 @@ class LoginWindow(Window, Ui_Form):
 
         if user_info is not None:
             self.close()
-            mainWindow = MainWindow(user_info, self.comboBox.currentData())
-            mainWindow.show()
+            mainwindow = MainWindow(user_info, self.comboBox.currentData())
+            mainwindow.show()
         else:
             QMessageBox.warning(self, 'Login Failed', 'Invalid username or password')
-            self.reject()  # 触发 rejected 信号
 
     def load_schools(self):
         self.comboBox.clear()  # 清空 classCombo 下拉框中的所有选项
@@ -130,7 +128,7 @@ class MainWindow(MSFluentWindow):
 
         # create sub interface
         self.studentInterface = StudentInterface()
-
+        print(self.curSchool)
         self.schoolInterface = ShowSchoolInterface(self.curSchool, self)
         self.videoInterface = Widget('Video Interface', self)
         self.libraryInterface = Widget('library Interface', self)
@@ -150,7 +148,6 @@ class MainWindow(MSFluentWindow):
             routeKey='Help',
             icon=FIF.HELP,
             text='帮助',
-            onClick=self.showMessageBox,
             selectable=False,
             position=NavigationItemPosition.BOTTOM,
         )
@@ -162,26 +159,13 @@ class MainWindow(MSFluentWindow):
         self.setWindowIcon(QIcon('./login/resource/images/logo.png'))
 
         desktop = QApplication.screens()[0].availableGeometry()
-        w, h = desktop.width(), desktop.height()
-        self.move(w // 2 - self.width() // 2, h // 2 - self.height() // 2)
-
-    def showMessageBox(self):
-        w = MessageBox(
-            '支持作者🥰',
-            '个人开发不易，如果这个项目帮助到了您，可以考虑请作者喝一瓶快乐水🥤。您的支持就是作者开发和维护项目的动力🚀',
-            self
-        )
-        w.yesButton.setText('来啦老弟')
-        w.cancelButton.setText('下次一定')
-
-        if w.exec():
-            QDesktopServices.openUrl(QUrl("https://afdian.net/a/zhiyiYo"))
+        ww, hh = desktop.width(), desktop.height()
+        self.move(ww // 2 - self.width() // 2, hh // 2 - self.height() // 2)
 
     def on_back_to_login(self):
         self.close()
         login_window = LoginWindow()
         login_window.show()
-
 
 
 if __name__ == '__main__':

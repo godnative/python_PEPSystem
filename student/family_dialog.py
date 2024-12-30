@@ -5,15 +5,15 @@ from qfluentwidgets import MessageBoxBase, ComboBox, LineEdit, StrongBodyLabel, 
     SubtitleLabel, InfoBar  # 导入 qfluentwidgets 模块中的组件
 
 from DataBase.family_db import FamilyDB
+from DataBase.school_db import SchoolDb
 
 
-class BaseStudentDialog(MessageBoxBase):  # 定义一个学生信息弹窗的基类，继承自 MessageBoxBase
+class BaseFamilyDialog(MessageBoxBase):  # 定义一个学生信息弹窗的基类，继承自 MessageBoxBase
     def __init__(self, title, parent=None):  # 初始化方法，接收弹窗标题和父窗口作为参数
         super().__init__(parent)  # 调用父类的初始化方法，设置父窗口
         self.title = title  # 保存弹窗标题，用于区分弹窗用途（如添加或修改学生信息）
-        self.parent = parent  # 保存父窗口，用于传递给父类的初始化方法
         self.setup_ui()  # 调用界面设置方法，初始化弹窗界面
-        self.load_classes()  # 调用加载班级方法，为弹窗提供班级选择功能
+        self.load_school()
 
     def setup_ui(self):  # 定义设置用户界面的方法
         self.titleLabel = SubtitleLabel(self.title, self)  # 创建一个 SubtitleLabel 实例，传入标题文本和父窗口
@@ -25,19 +25,16 @@ class BaseStudentDialog(MessageBoxBase):  # 定义一个学生信息弹窗的基
 
         # 创建输入控件
         self.nameInput = LineEdit(self)  # 创建一个单行文本输入框用于输入姓名
-        self.genderCombo = ComboBox(self)  # 创建一个下拉框组件用于选择性别
-        self.genderCombo.addItems(['男', '女'])  # 为下拉框添加两个选项：男和女
-        self.familyCombo = ComboBox(self)  # 创建一个下拉框组件用于选择班级
-        self.phoneInput = LineEdit(self)  # 创建一个单行文本输入框用于输入语文成绩
-        self.holyNameInput = LineEdit(self)  # 创建一个单行文本输入框用于输入数学成绩
+        self.schoolCombo = ComboBox(self)  # 创建一个下拉框组件用于选择班级
+        self.addressInput = LineEdit(self)  # 创建一个单行文本输入框用于输入语文成绩
+        self.noteInput = LineEdit(self)  # 创建一个单行文本输入框用于输入数学成绩
 
         # 定义字段标签与控件的映射
         fields = [
             ("姓名：", self.nameInput),  # 姓名字段与对应的输入框
-            ("性别：", self.genderCombo),  # 性别字段与对应的下拉框
-            ("家庭：", self.familyCombo),  # 班级字段与对应的下拉框
-            ("手机：", self.phoneInput),  # 语文字段与对应的输入框
-            ("名字：", self.holyNameInput)  # 数学字段与对应的输入框
+            ("学校：", self.schoolCombo),  # 性别字段与对应的下拉框
+            ("地址：", self.addressInput),  # 班级字段与对应的下拉框
+            ("备注：", self.noteInput)  # 语文字段与对应的输入框
         ]
 
         # 遍历字段，添加到栅格布局中
@@ -57,8 +54,7 @@ class BaseStudentDialog(MessageBoxBase):  # 定义一个学生信息弹窗的基
         self.cancelButton.setText('取消')  # 将取消按钮文本设置为“取消”
 
         # 设置输入框的宽度
-        for widget in [self.nameInput, self.genderCombo, self.familyCombo, self.phoneInput,
-                       self.holyNameInput]:
+        for widget in [self.nameInput, self.schoolCombo, self.addressInput, self.noteInput]:
             widget.setMinimumWidth(200)  # 为每个输入框设置最小宽度为 200
 
         # 将焦点定位到姓名输入框
@@ -69,15 +65,15 @@ class BaseStudentDialog(MessageBoxBase):  # 定义一个学生信息弹窗的基
         self.yesButton.setAutoDefault(False)  # 禁止“确定”按钮自动成为默认按钮
 
     # 定义一个方法 load_classes，用于加载班级信息到下拉框中
-    def load_classes(self):
-        self.familyCombo.clear()  # 清空 classCombo 下拉框中的所有选项
-        with FamilyDB() as db:  # 使用上下文管理器创建 ClassDB 的实例，并确保使用后自动关闭数据库连接
-            familys = db.fetch_family()  # 如果没有可管理的班级 ID 列表，则获取所有班级信息
-        self.familyCombo.addItem('请选择班级', None)  # 在下拉框中添加默认选项 "请选择班级"，并将其关联的数据设为 None
+    def load_school(self):
+        self.schoolCombo.clear()  # 清空 classCombo 下拉框中的所有选项
+        with SchoolDb() as db:  # 使用上下文管理器创建 ClassDB 的实例，并确保使用后自动关闭数据库连接
+            schools = db.fetch_school()  # 如果没有可管理的班级 ID 列表，则获取所有班级信息
+        self.schoolCombo.addItem('请选择', None)  # 在下拉框中添加默认选项 "请选择班级"，并将其关联的数据设为 None
 
-        for family_info in familys:  # 遍历获取到的班级信息列表
-            self.familyCombo.addItem(family_info['family_name'],
-                                     userData=family_info['family_id'])  # 将每个班级的名称和对应的 ID 添加到下拉框中
+        for school_info in schools:  # 遍历获取到的班级信息列表
+            self.schoolCombo.addItem(school_info['school_name'],
+                                     userData=school_info['school_id'])  # 将每个班级的名称和对应的 ID 添加到下拉框中
 
     # 验证用户输入的所有字段
     def _validateInput(self):
@@ -86,10 +82,10 @@ class BaseStudentDialog(MessageBoxBase):  # 定义一个学生信息弹窗的基
         if not self.nameInput.text().strip():
             errors.append("请输入姓名")  # 验证姓名是否填写，如果未填写，添加错误信息
 
-        if not self.phoneInput.text().strip():
+        if not self.addressInput.text().strip():
             errors.append("请输入学号")  # 验证学号是否填写，如果未填写，添加错误信息
 
-        if self.familyCombo.currentData() is None:
+        if self.schoolCombo.currentData() is None:
             errors.append("请选择班级")  # 验证班级是否选择，如果未选择班级，添加错误信息
 
         return errors  # 返回所有错误信息
@@ -105,18 +101,31 @@ class BaseStudentDialog(MessageBoxBase):  # 定义一个学生信息弹窗的基
         # 如果验证通过，调用父类的 accept 方法，接收数据并关闭对话框
         super().accept()
 
-    def get_InputStudentDialoginfo(self):
-        StudentInfo = {
-            "student_name": self.nameInput.text(),
-            "student_gender": self.genderCombo.currentData(),
-            "student_phonenum": self.phoneInput.text(),  # 性别字段与对应的下拉框
-            "student_holyname": self.holyNameInput.text(),  # 班级字段与对应的下拉框
-            "student_family_id": self.familyCombo.currentData()  # 语文字段与对应的输入框
+    def get_InputFamilyDialoginfo(self):
+        FamilyInfo = {
+            "family_name": self.nameInput.text(),
+            "family_school_id": self.schoolCombo.currentData(),
+            "family_address": self.addressInput.text(),  # 性别字段与对应的下拉框
+            "family_notes": self.noteInput.text()  # 班级字段与对应的下拉框
         }
-        return StudentInfo
+        return FamilyInfo
 
 
-class AddStudentDialog(BaseStudentDialog):  # 定义一个用于添加学生的弹窗类，继承自 BaseStudentDialog
+class AddFamilyDialog(BaseFamilyDialog):  # 定义一个用于添加学生的弹窗类，继承自 BaseStudentDialog
     def __init__(self, parent=None):  # 初始化方法，接收父窗口作为参数，默认为 None
-        super().__init__('添加学生', parent)  # 调用父类的初始化方法，设置弹窗标题为“添加学生”，并传递父窗口
+        super().__init__('添加家庭', parent)  # 调用父类的初始化方法，设置弹窗标题为“添加学生”，并传递父窗口
+        self.family_cnt = 1
+        self.nameInput.setReadOnly(True)
+        with FamilyDB() as db:
+            self.family_cnt = db.get_family_cnt() + 1
         self.yesButton.setText('添加')  # 设置确认按钮的文本为“添加”，以明确功能
+        self.set_family_name()
+        self.schoolCombo.currentIndexChanged.connect(self.set_family_name)
+
+    def set_family_name(self):
+        if self.schoolCombo.currentData() is None:
+            family_name = "XX小学第%d号家庭" % self.family_cnt
+        else:
+            family_name = "%s第%d号家庭" % (self.schoolCombo.text(), self.family_cnt)
+
+        self.nameInput.setText(family_name)

@@ -1,8 +1,10 @@
 import sqlite3
 
+db_path = "C:/Users/97895/Desktop/workspace/NewCode/python_PEPSystem/DataBase/data.db"
+
 
 class DataBaseManage:
-    def __init__(self):
+    def __init__(self, ):
         self.connection = None
 
     def __enter__(self):
@@ -14,7 +16,7 @@ class DataBaseManage:
 
     def create_connection(self):
         if self.connection is None:
-            self.connection = sqlite3.connect('./DataBase/data.db')
+            self.connection = sqlite3.connect(db_path)
         return self.connection
 
     def fetch_query(self, query, single=False, params=None):
@@ -23,7 +25,7 @@ class DataBaseManage:
         if self.connection:
             try:
                 cursor = self.connection.cursor()
-                if params == None:
+                if params is None:
                     cursor.execute(query)
                 else:
                     cursor.execute(query, params)
