@@ -56,7 +56,7 @@ class LoginWindow(Window, Ui_Form):
         self.move(ww // 2 - self.width() // 2, hh // 2 - self.height() // 2)
 
         self.lineEdit_3.setText("admin")
-        self.lineEdit_5.setText("password")
+        self.lineEdit_5.setText("admin123")
         self.pushButton.clicked.connect(self.login)
         self.load_schools()
 

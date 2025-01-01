@@ -179,7 +179,7 @@
       <item>
        <widget class="LineEdit" name="lineEdit_5">
         <property name="echoMode">
-         <enum>QLineEdit::Password</enum>
+            <enum>QLineEdit::Normal</enum>
         </property>
         <property name="placeholderText">
          <string>••••••••••••</string>

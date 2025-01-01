@@ -10,6 +10,18 @@ from qfluentwidgets import TableWidget, PushButton, CardWidget, setCustomStyleSh
 from utils.custom_style import ADD_BUTTON_STYLE, BATCH_DELETE_BUTTON_STYLE, UPDATE_BUTTON_STYLE
 
 
+class Self_SerchLineEdit(SearchLineEdit):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+    def keyPressEvent(self, e):
+        if e.key() == Qt.Key.Key_Return:
+            print("按下了回车键")
+            print("搜索框内容：", self.text())
+        else:
+            super().keyPressEvent(e)
+
+
 class BaseStudentFuncTemp(QWidget):  # 定义一个操作学生函数的基类
     def __init__(self):  # 初始化方法，接收弹窗标题和父窗口作为参数
         super().__init__()  # 调用父类的初始化方法，设置父窗口
@@ -26,6 +38,7 @@ class BaseStudentFuncTemp(QWidget):  # 定义一个操作学生函数的基类
         self.searchInput = SearchLineEdit(self)
         self.searchInput.setPlaceholderText('Search')
         self.searchInput.setFixedWidth(500)
+
         self.button_2 = PushButton('Delete', self)
         setCustomStyleSheet(self.button_2, BATCH_DELETE_BUTTON_STYLE, BATCH_DELETE_BUTTON_STYLE)
         self.button_3 = PushButton('query', self)

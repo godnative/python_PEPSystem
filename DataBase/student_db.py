@@ -54,6 +54,14 @@ class StudentDB(DataBaseManage):
         params = (family_id,)
         # 调用父类的 fetch_query 方法执行查询，并返回查询结果
         return self.fetch_query(query, params=params)
+
+    def fetch_students_with_like(self, like_str):
+        query = """
+                SELECT * FROM student WHERE student_name LIKE ? or student_phonenum LIKE ?
+                """
+        params = (f"%{like_str}%", f"%{like_str}%")
+        return self.fetch_query(query, params=params)
+
 if __name__ == '__main__':
     with StudentDB() as db:
         for i in range(10):

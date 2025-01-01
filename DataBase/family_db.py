@@ -1,6 +1,5 @@
 # database/classes_db.py文件中
 # 从数据库模块中导入基础数据库管理类 DatabaseManage
-import random
 
 from DataBase.base_db import DataBaseManage
 
@@ -51,16 +50,23 @@ class FamilyDB(DataBaseManage):
         # 使用父类的 fetch_query 方法执行查询，并返回查询结果
         return self.fetch_query(query, params=params)
 
+    def fetch_family_with_like(self, like_str):
+        query = """
+                SELECT * FROM family WHERE family_name LIKE ? or family_address LIKE ?
+                """
+        params = (f"%{like_str}%", f"%{like_str}%")
+        return self.fetch_query(query, params=params)
+
 if __name__ == '__main__':
     with FamilyDB() as db:
-        for i in range(100):
-            family_name = "崇义小学第%d号家庭" % (i + 1)
-            family_address = "%d Main Street" % (random.randint(0, 1000))
-            family_info = {
-                "family_name": family_name,
-                "family_address": family_address,
-                "family_school_id": 1,
-                "family_notes": "无备注"
-            }
-            db.add_family(family_info)
-        print(db.fetch_family_with_family_id(12))
+        # for i in range(100):
+        #     family_name = "崇义小学第%d号家庭" % (i + 1)
+        #     family_address = "%d Main Street" % (random.randint(0, 1000))
+        #     family_info = {
+        #         "family_name": family_name,
+        #         "family_address": family_address,
+        #         "family_school_id": 1,
+        #         "family_notes": "无备注"
+        #     }
+        #     db.add_family(family_info)
+        print(db.fetch_family_with_like("527"))

@@ -1,2 +1,3 @@
 *.pyc
 .idea/
+/PyQt-Fluent-Widgets-PyQt6/

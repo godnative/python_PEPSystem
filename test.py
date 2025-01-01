@@ -1,72 +1,37 @@
-create
-table
-classes
-(
-    class_id   integer not null,
-class_name TEXT not null
-);
+import sys
 
-create
-table
-family
-(
-    family_id        integer not null
-constraint family_pk
-primary key autoincrement
-constraint family_pk_2
-unique,
-family_name      TEXT not null
-constraint family_pk_3
-unique,
-family_address   TEXT not null,
-family_school_id integer not null,
-family_notes     TEXT
-);
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLineEdit, QLabel
 
-create
-table
-school
-(
-    school_id      integer not null
-constraint school_pk
-primary key autoincrement
-constraint school_pk_2
-unique,
-school_name    TEXT not null
-constraint school_pk_3
-unique,
-school_date    DATE not null,
-school_address TEXT not null,
-school_info    TEXT
-);
 
-create
-table
-student
-(
-    student_id        integer not null
-constraint student_pk
-primary key autoincrement
-constraint student_pk_2
-unique,
-student_gender    integer not null,
-student_phonenum  TEXT,
-student_holyname  TEXT,
-student_family_id integer,
-student_school_id integer not null,
-student_name      TEXT not null
-);
+class MyApp(QWidget):
+    def __init__(self):
+        super().__init__()
 
-create
-table
-user
-(
-    user_id       integer not null
-constraint user_pk
-primary key autoincrement
-constraint user_pk_2
-unique,
-user_name     TEXT not null,
-user_type     integer not null,
-user_password TEXT not null
-);
+        self.initUI()
+
+    def initUI(self):
+        self.setWindowTitle('PyQt6 QLineEdit Example')
+        self.setGeometry(100, 100, 300, 200)
+
+        layout = QVBoxLayout()
+
+        self.label = QLabel('Press Enter to print text:', self)
+        layout.addWidget(self.label)
+
+        self.line_edit = QLineEdit(self)
+        self.line_edit.returnPressed.connect(self.on_return_pressed)
+        layout.addWidget(self.line_edit)
+
+        self.setLayout(layout)
+
+    def on_return_pressed(self):
+        text = self.line_edit.text()
+        print(text)
+        self.label.setText(f'You entered: {text}')
+
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    ex = MyApp()
+    ex.show()
+    sys.exit(app.exec())
