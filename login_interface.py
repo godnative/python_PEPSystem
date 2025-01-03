@@ -1,3 +1,5 @@
+import os
+import pickle
 import sys
 
 from PyQt6.QtCore import QRect
@@ -14,6 +16,7 @@ from qframelesswindow import AcrylicWindow as Window
 
 from DataBase.school_db import SchoolDb
 from DataBase.user_db import UserDB
+from HolyEvent.holyevent_interface import HolyEvenTabInterface
 from LoginWindow import Ui_Form
 from school.school_interface import ShowSchoolInterface
 from student.student_interface import StudentInterface
@@ -98,6 +101,18 @@ class LoginWindow(Window, Ui_Form):
             self.comboBox.addItem(school_info['school_name'],
                                   userData=school_info)  # 将每个班级的名称和对应的 ID 添加到下拉框中
 
+        if os.path.exists('./schoolsetting.pkl'):
+            with open('./schoolsetting.pkl', 'rb') as f:
+                data = pickle.load(f)
+                print(data)
+            for school_info in schools:
+
+                if school_info['school_id'] == data['school_id']:
+                    self.comboBox.setCurrentIndex(self.comboBox.findData(school_info))
+                    break
+
+
+
 
 class Widget(QFrame):
 
@@ -129,8 +144,8 @@ class MainWindow(MSFluentWindow):
 
             # create sub interface
             self.studentInterface = StudentInterface(self.curSchool)
-            self.videoInterface = Widget('Video Interface', self)
-            self.libraryInterface = Widget('library Interface', self)
+            self.videoInterface = HolyEvenTabInterface(self)
+            self.libraryInterface = Widget('请先选择学校..', self)
 
         self.initNavigation()
         self.initWindow()

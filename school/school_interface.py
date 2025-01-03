@@ -1,13 +1,14 @@
+import pickle
 import sys
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QApplication
-from qfluentwidgets import PushButton, setCustomStyleSheet, MessageBoxBase, InfoBar
+from qfluentwidgets import PushButton, setCustomStyleSheet, MessageBoxBase, InfoBar, Flyout, InfoBarIcon
 
 from DataBase.school_db import SchoolDb
 from school.school_dialog import BaseSchoolInterface_Temp
-from utils.custom_style import ADD_BUTTON_STYLE, DELETE_BUTTON_STYLE, UPDATE_BUTTON_STYLE
+from utils.custom_style import ADD_BUTTON_STYLE, DELETE_BUTTON_STYLE, UPDATE_BUTTON_STYLE, IMPORT_BUTTON_STYLE
 from utils.utils_tool import timestamp_to_date
 
 
@@ -102,6 +103,7 @@ class ShowSchoolInterface(QWidget):
     def __init__(self, curSchool, parent=None):
         super().__init__()
         self.parent = parent
+        self.curSchool = curSchool
         self.setObjectName("ShowSchoolInterface")
         self.schoolInterface_temp = BaseSchoolInterface_Temp()
         self.main_layout = QVBoxLayout(self)
@@ -129,20 +131,43 @@ class ShowSchoolInterface(QWidget):
             self.schoolInterface_temp.label.setPixmap(pixmap)
 
     def setupUi(self):
-        self.addButton = PushButton('Add', self)
+        self.addButton = PushButton('添加', self)
         setCustomStyleSheet(self.addButton, ADD_BUTTON_STYLE, ADD_BUTTON_STYLE)
         self.addButton.clicked.connect(self.addSchoolInfo)
 
-        self.modifyButton = PushButton('Modify', self)
+        self.modifyButton = PushButton('修改', self)
         setCustomStyleSheet(self.modifyButton, DELETE_BUTTON_STYLE, DELETE_BUTTON_STYLE)
         self.modifyButton.clicked.connect(self.modifySchoolInfo)
 
+        self.setButton = PushButton('设置默认教堂', self)
+        setCustomStyleSheet(self.modifyButton, IMPORT_BUTTON_STYLE, IMPORT_BUTTON_STYLE)
+        self.setButton.clicked.connect(self.show_setschool_Flyout1)
 
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.addWidget(self.addButton)
         self.horizontalLayout.addWidget(self.modifyButton)
+        self.horizontalLayout.addWidget(self.setButton)
         self.main_layout.addLayout(self.horizontalLayout)
 
+    def show_setschool_Flyout1(self):
+        print(self.curSchool)
+        if self.curSchool is not None:
+            content = "成功设置：%s 为默认教堂" % self.curSchool["school_name"]
+            icon = InfoBarIcon.SUCCESS
+            with open("./schoolsetting.pkl", 'wb') as f:
+                pickle.dump(self.curSchool, f)
+        else:
+            content = "设置失败"
+            icon = InfoBarIcon.ERROR
+
+        Flyout.create(
+            icon=icon,
+            title='设置默认教堂',
+            content=content,
+            target=self.setButton,
+            parent=self,
+            isClosable=True
+        )
     def disable_widgets(self):
         self.schoolInterface_temp.lineEdit_4.setReadOnly(True)
         self.schoolInterface_temp.lineEdit_2.setReadOnly(True)

@@ -1,13 +1,25 @@
 # student/student_dialog.py文件中
+import enum
 import sys
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, \
-    QHeaderView, QApplication, QAbstractItemView, QGridLayout  # 导入 PyQt6 模块中的 QGridLayout，用于栅格布局
+    QHeaderView, QApplication, QAbstractItemView, QCheckBox, \
+    QTableWidgetItem  # 导入 PyQt6 模块中的 QGridLayout，用于栅格布局
 from qfluentwidgets import TableWidget, PushButton, CardWidget, setCustomStyleSheet, \
-    SearchLineEdit, LineEdit, ComboBox, StrongBodyLabel  # 导入 qfluentwidgets 模块中的组件
+    SearchLineEdit  # 导入 qfluentwidgets 模块中的组件
 
+from DataBase.family_db import FamilyDB
+from DataBase.student_db import StudentDB
+from student.family_dialog import AddFamilyDialog
+from student.student_dialog import AddStudentDialog
 from utils.custom_style import ADD_BUTTON_STYLE, BATCH_DELETE_BUTTON_STYLE, UPDATE_BUTTON_STYLE
+
+
+class QUERY_TYPE(enum.Enum):
+    QUERY_ONE = 0
+    QUERY_ALL = 1
+    QUERY_LIKE = 2
 
 
 class Self_SerchLineEdit(SearchLineEdit):
@@ -62,55 +74,138 @@ class BaseStudentFuncTemp(QWidget):  # 定义一个操作学生函数的基类
         self.main_verticalLayout.addWidget(self.tableWidget)
         self.setStyleSheet('StudentInterface{background-color:white}')
 
+    @staticmethod
+    def set_viewWidget_data(tableWidget, header_info, datas):
+        tableWidget.clearContents()
+        tableWidget.setRowCount(len(datas))
+        for row, data in enumerate(datas):
+            checkBox = QCheckBox()
+            tableWidget.setCellWidget(row, 0, checkBox)
+            for column, key in enumerate(header_info):
+                value = data.get(key, "")
+                item = QTableWidgetItem(str(value))
+                tableWidget.setItem(row, column + 1, item)
 
-class BaseStudentInfoTemp(QWidget):
-    def __init__(self):
+
+class Student_Widget(QWidget):
+    def __init__(self, curSchool):
         super().__init__()
+        self.verticalLayout = None
+        self.curSchool = curSchool
+        self.familys = None
+        self.setObjectName("Student_Widget")
+        self.baseStudentFuncTemp_1 = BaseStudentFuncTemp()
+        self.student_viewTable_header_info = [
+            "", "姓名", "圣名", "性别", "手机", "家庭名称"
+        ]
+        self.students = []
         self.setup_ui()
+        self.load_student_data(QUERY_TYPE.QUERY_ALL, self.curSchool["school_id"])
 
     def setup_ui(self):
-        self.grid_layout = QGridLayout()  # 创建一个栅格布局对象，用于对控件进行行列排布
-
-        # 创建输入控件
-        self.nameInput = LineEdit(self)  # 创建一个单行文本输入框用于输入姓名
-        self.genderCombo = ComboBox(self)  # 创建一个下拉框组件用于选择性别
-        self.genderCombo.addItems(['男', '女'])  # 为下拉框添加两个选项：男和女
-        self.familyCombo = ComboBox(self)  # 创建一个下拉框组件用于选择班级
-        self.phoneInput = LineEdit(self)  # 创建一个单行文本输入框用于输入语文成绩
-        self.holyNameInput = LineEdit(self)  # 创建一个单行文本输入框用于输入数学成绩
-
-        # 定义字段标签与控件的映射
-        fields = [
-            ("姓名：", self.nameInput),  # 姓名字段与对应的输入框
-            ("性别：", self.genderCombo),  # 性别字段与对应的下拉框
-            ("家庭：", self.familyCombo),  # 班级字段与对应的下拉框
-            ("手机：", self.phoneInput),  # 语文字段与对应的输入框
-            ("名字：", self.holyNameInput)  # 数学字段与对应的输入框
-        ]
-
-        # 遍历字段，添加到栅格布局中
-        for row, (label_text, widget) in enumerate(fields):  # 使用 enumerate 获取字段的行号
-            label = StrongBodyLabel(label_text, self)  # 创建加粗的标签
-            self.grid_layout.addWidget(label, row, 0)  # 将标签添加到栅格布局的第一列
-            self.grid_layout.addWidget(widget, row, 1)  # 将控件添加到栅格布局的第二列
-
-        # 设置列拉伸
-        self.grid_layout.setColumnStretch(1, 1)  # 设置第二列的列拉伸系数为 1，确保控件能够自动适应窗口大小
-
-        # 设置标签对齐方式
-        self.grid_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)  # 将控件对齐到左侧
-
-
-class StudentDialog(QWidget):  # 定义一个用于添加学生的弹窗类，继承自 BaseStudentDialog
-    def __init__(self):  # 初始化方法，接收父窗口作为参数，默认为 None
-        super().__init__()  # 调用父类的初始化方法，设置弹窗标题为“添加学生”，并传递父窗口
-        self.setObjectName("StudentInterface")
-        self.baseStudentFuncTemp_1 = BaseStudentFuncTemp()
-        self.baseStudentFuncTemp_2 = BaseStudentFuncTemp()
         self.verticalLayout = QVBoxLayout(self)
-
         self.verticalLayout.addLayout(self.baseStudentFuncTemp_1.main_verticalLayout)
+
+        self.baseStudentFuncTemp_1.tableWidget.setColumnCount(len(self.student_viewTable_header_info))
+        self.baseStudentFuncTemp_1.tableWidget.setHorizontalHeaderLabels(self.student_viewTable_header_info)
+        self.baseStudentFuncTemp_1.searchInput.searchSignal.connect(self.query_student_info_with_like)
+        self.baseStudentFuncTemp_1.searchInput.returnPressed.connect(self.query_student_info_with_like)
+
+        self.baseStudentFuncTemp_1.button_1.clicked.connect(self.add_student_info)
+
+    def query_student_info_with_like(self):
+        if self.baseStudentFuncTemp_1.searchInput.text() == "":
+            self.load_student_data(QUERY_TYPE.QUERY_ALL, self.curSchool["school_id"])
+        else:
+            self.load_student_data(QUERY_TYPE.QUERY_LIKE, self.baseStudentFuncTemp_1.searchInput.text())
+
+    def load_student_data(self, type, query_param):
+        with StudentDB() as db:
+            if type == QUERY_TYPE.QUERY_ONE:
+                self.students = db.fetch_students_with_school_id_and_family_id(query_param)
+            elif type == QUERY_TYPE.QUERY_ALL:
+                self.students = db.fetch_students_with_school_id(query_param)
+            elif type == QUERY_TYPE.QUERY_LIKE:
+                self.students = db.fetch_students_with_like(query_param)
+            else:
+                return
+
+        if self.students is None:
+            return
+
+        header_info = [
+            'student_name', 'student_holyname', 'student_gender', 'student_phonenum', 'family_name'
+        ]
+        self.baseStudentFuncTemp_1.set_viewWidget_data(self.baseStudentFuncTemp_1.tableWidget, header_info,
+                                                       self.students)
+
+    def add_student_info(self):
+        w = AddStudentDialog(self)
+        if w.exec():
+            print(w.get_InputStudentDialoginfo())
+            with StudentDB() as db:
+                db.add_student(w.get_InputStudentDialoginfo())
+            self.load_student_data(QUERY_TYPE.QUERY_ALL, self.curSchool["school_id"])
+
+
+class Family_Widget(QWidget):
+    def __init__(self, curSchool):
+        super().__init__()
+        self.verticalLayout = None
+        self.curSchool = curSchool
+        self.familys = None
+        self.setObjectName("Family_Widget")
+        self.baseStudentFuncTemp_2 = BaseStudentFuncTemp()
+        self.family_viewTable_header_info = [
+            "", "家庭名称", "地址", "备注"
+        ]
+        self.setup_ui()
+        self.load_family_data(QUERY_TYPE.QUERY_ALL, self.curSchool["school_id"])
+
+    def setup_ui(self):
+        self.verticalLayout = QVBoxLayout(self)
         self.verticalLayout.addLayout(self.baseStudentFuncTemp_2.main_verticalLayout)
+
+        self.baseStudentFuncTemp_2.tableWidget.setColumnCount(len(self.family_viewTable_header_info))
+        self.baseStudentFuncTemp_2.tableWidget.setHorizontalHeaderLabels(self.family_viewTable_header_info)
+        self.baseStudentFuncTemp_2.searchInput.searchSignal.connect(self.query_family_info_with_like)
+        self.baseStudentFuncTemp_2.searchInput.returnPressed.connect(self.query_family_info_with_like)
+
+        self.baseStudentFuncTemp_2.button_1.clicked.connect(self.add_family_info)
+
+    def query_family_info_with_like(self):
+        if self.baseStudentFuncTemp_2.searchInput.text() == "":
+            self.load_family_data(QUERY_TYPE.QUERY_ALL, self.curSchool["school_id"])
+        else:
+            self.load_family_data(QUERY_TYPE.QUERY_LIKE, self.baseStudentFuncTemp_2.searchInput.text())
+
+    def load_family_data(self, type, query_param):  # 定义 load_data 方法，用于加载学生数据
+        with FamilyDB() as db:
+            if type == QUERY_TYPE.QUERY_ONE:
+                self.familys = db.fetch_family_with_family_id(query_param)
+            elif type == QUERY_TYPE.QUERY_ALL:
+                self.familys = db.fetch_family_with_school_id(query_param)
+            elif type == QUERY_TYPE.QUERY_LIKE:
+                self.familys = db.fetch_family_with_like(query_param)
+            else:
+                return
+
+        if self.familys is None:
+            return
+
+        header_info = [
+            'family_name', 'family_address', 'family_notes'
+        ]
+        self.baseStudentFuncTemp_2.set_viewWidget_data(self.baseStudentFuncTemp_2.tableWidget, header_info,
+                                                       self.familys)
+
+    def add_family_info(self):
+        w = AddFamilyDialog(self)
+        if w.exec():
+            print(w.get_InputFamilyDialoginfo())
+            with FamilyDB() as db:
+                db.add_family(w.get_InputFamilyDialoginfo())
+            self.load_family_data(QUERY_TYPE.QUERY_ALL, self.curSchool["school_id"])
 
 
 if __name__ == '__main__':
