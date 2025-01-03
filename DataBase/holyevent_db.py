@@ -9,30 +9,12 @@ class HolyEventDB(DataBaseManage):
     def __init__(self):
         super().__init__()
 
-    # 定义一个方法 fetch_classes，用于从数据库中获取班级信息
-    def fetch_all_event(self):
-        # 定义 SQL 查询语句，用于选择 CLASSES 表中的所有数据
-        query = """
-        SELECT * FROM holyevent
-        """
-        # 使用父类的 fetch_query 方法执行查询，并返回查询结果
-        return self.fetch_query(query)
-
     def fetch_all_event_by_type(self, event_type):
         # 定义 SQL 查询语句，用于选择 CLASSES 表中的所有数据
         query = """
         SELECT * FROM holyevent where holyevent_type =?
         """
         params = (event_type,)
-        # 使用父类的 fetch_query 方法执行查询，并返回查询结果
-        return self.fetch_query(query, params=params)
-
-    def fetch_even_with_school_id(self, school_id):
-        # 定义 SQL 查询语句，用于选择 CLASSES 表中的所有数据
-        query = """
-        SELECT * FROM holyevent where holyevent_school_id = ?
-        """
-        params = (school_id,)
         # 使用父类的 fetch_query 方法执行查询，并返回查询结果
         return self.fetch_query(query, params=params)
 
@@ -49,11 +31,12 @@ class HolyEventDB(DataBaseManage):
                   event_info["holyevent_school_id"])
         return self.execute_query(query, params)
 
-    def fetch_family_with_like(self, like_str):
+    def fetch_even_with_like(self, even_type, like_str):
         query = """
-                SELECT * FROM family WHERE family_name LIKE ? or family_address LIKE ?
+                SELECT * FROM holyevent WHERE holyevent_type = ? 
+                and (holyevent_p1_name LIKE ? or holyevent_witness LIKE ? or holyevent_implementer LIKE ?)
                 """
-        params = (f"%{like_str}%", f"%{like_str}%")
+        params = (even_type, f"%{like_str}%", f"%{like_str}%", f"%{like_str}%")
         return self.fetch_query(query, params=params)
 
 

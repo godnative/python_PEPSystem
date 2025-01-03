@@ -2,7 +2,6 @@
 import enum
 import sys
 
-from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, \
     QHeaderView, QApplication, QAbstractItemView, QCheckBox, \
     QTableWidgetItem  # 导入 PyQt6 模块中的 QGridLayout，用于栅格布局
@@ -20,18 +19,6 @@ class QUERY_TYPE(enum.Enum):
     QUERY_ONE = 0
     QUERY_ALL = 1
     QUERY_LIKE = 2
-
-
-class Self_SerchLineEdit(SearchLineEdit):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-
-    def keyPressEvent(self, e):
-        if e.key() == Qt.Key.Key_Return:
-            print("按下了回车键")
-            print("搜索框内容：", self.text())
-        else:
-            super().keyPressEvent(e)
 
 
 class BaseStudentFuncTemp(QWidget):  # 定义一个操作学生函数的基类

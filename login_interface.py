@@ -144,7 +144,7 @@ class MainWindow(MSFluentWindow):
 
             # create sub interface
             self.studentInterface = StudentInterface(self.curSchool)
-            self.videoInterface = HolyEvenTabInterface(self)
+            self.videoInterface = HolyEvenTabInterface(self.curSchool, self)
             self.libraryInterface = Widget('请先选择学校..', self)
 
         self.initNavigation()
