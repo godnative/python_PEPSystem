@@ -85,6 +85,12 @@ class LoginWindow(Window, Ui_Form):
             user_info = db.user_login_check(username, password)
 
         if user_info is not None:
+            if self.checkBox_2.isChecked():
+                with open("./schoolsetting.pkl", 'wb') as f:
+                    pickle.dump(self.comboBox.currentData(), f)
+            else:
+                if os.path.exists('./schoolsetting.pkl'):
+                    os.remove('./schoolsetting.pkl')
             self.close()
             mainwindow = MainWindow(user_info, self.comboBox.currentData())
             mainwindow.show()
@@ -104,14 +110,11 @@ class LoginWindow(Window, Ui_Form):
         if os.path.exists('./schoolsetting.pkl'):
             with open('./schoolsetting.pkl', 'rb') as f:
                 data = pickle.load(f)
-                print(data)
-            for school_info in schools:
-
-                if school_info['school_id'] == data['school_id']:
-                    self.comboBox.setCurrentIndex(self.comboBox.findData(school_info))
-                    break
-
-
+                if data is not None:
+                    for school_info in schools:
+                        if school_info['school_id'] == data['school_id']:
+                            self.comboBox.setCurrentIndex(self.comboBox.findData(school_info))
+                            break
 
 
 class Widget(QFrame):
@@ -129,22 +132,22 @@ class Widget(QFrame):
 
 class MainWindow(MSFluentWindow):
 
-    def __init__(self, role, curSchool):
+    def __init__(self, role, school_info):
         super().__init__()
         self.role = role
-        self.curSchool = curSchool
-        self.schoolInterface = ShowSchoolInterface(self.curSchool, self)
-        if self.curSchool is None:
+        self.school_info = school_info
+        self.schoolInterface = ShowSchoolInterface(self)
+        if self.school_info is None:
             self.setWindowTitle('未选择当前学校')
             self.studentInterface = Widget('请先选择学校', self)
             self.videoInterface = Widget('请先选择学校.', self)
             self.libraryInterface = Widget('请先选择学校..', self)
         else:
-            self.setWindowTitle('当前学校:%s' % self.curSchool['school_name'])
+            self.setWindowTitle('当前学校:%s' % self.school_info['school_name'])
 
             # create sub interface
-            self.studentInterface = StudentInterface(self.curSchool)
-            self.videoInterface = HolyEvenTabInterface(self.curSchool, self)
+            self.studentInterface = StudentInterface(self)
+            self.videoInterface = HolyEvenTabInterface(self)
             self.libraryInterface = Widget('请先选择学校..', self)
 
         self.initNavigation()

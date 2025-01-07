@@ -57,6 +57,27 @@ class FamilyDB(DataBaseManage):
         params = (f"%{like_str}%", f"%{like_str}%")
         return self.fetch_query(query, params=params)
 
+    def update_family(self, family):
+        query = """
+                UPDATE family
+                SET family_name    = ?,
+                    family_address  = ?,
+                    family_school_id  = ?,
+                    family_notes = ?
+                WHERE family_id = ?;
+        """
+        params = (family["family_name"], family["family_address"], family["family_school_id"], family["family_notes"],
+                  family["family_id"])
+        return self.execute_query(query, params)
+
+    def delete_family(self, family_id):
+        query = """
+                DELETE
+                FROM family
+                WHERE family_id = ?;
+        """
+        params = (family_id,)
+        return self.execute_query(query, params)
 if __name__ == '__main__':
     with FamilyDB() as db:
         # for i in range(100):

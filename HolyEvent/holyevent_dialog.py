@@ -108,7 +108,7 @@ class BaseEvenDialog(MessageBoxBase):  # 定义一个学生信息弹窗的基类
         super().accept()
 
     def get_InputEvenDialoginfo(self):
-        EvenInfo = {
+        eveninfo = {
             "holyevent_p1_name": self.holyevent_p1_name.text(),
             "holynameInput": self.holynameInput.text(),
             "holyevent_witness": self.holyevent_witness.text(),  # 性别字段与对应的下拉框
@@ -116,7 +116,7 @@ class BaseEvenDialog(MessageBoxBase):  # 定义一个学生信息弹窗的基类
             "holyevent_note": self.holyevent_note.text(),  # 语文字段与对应的输入框
             "holyevent_date": self.holyevent_date.text()  # 语文字段与对应的输入框
         }
-        return EvenInfo
+        return eveninfo
 
 
 class AddEventDialog(BaseEvenDialog):  # 定义一个用于添加学生的弹窗类，继承自 BaseStudentDialog
@@ -131,7 +131,7 @@ class HolyEventBaptismInterFace(QWidget):
         self.even_info = None
         self.verticalLayout = None
         self.curSchool = curSchool
-        self.evenType = HOLY_EVENT_TYPE.HOLY_EVENT_BAPTISM
+        self.evenType = 0
         # self.setObjectName("BaseHolyEventInterFace")
         self.baseStudentFuncTemp_1 = BaseStudentFuncTemp()
         self.student_widget = Student_Widget(self.curSchool)
@@ -202,6 +202,6 @@ class HolyEventBaptismInterFace(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    window = StudentInterface()
+    window = HolyEventBaptismInterFace(None)
     window.show()
     sys.exit(app.exec())

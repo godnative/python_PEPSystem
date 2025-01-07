@@ -71,6 +71,30 @@ class StudentDB(DataBaseManage):
         params = (f"%{like_str}%", f"%{like_str}%")
         return self.fetch_query(query, params=params)
 
+    def update_student(self, student):
+        query = """
+                UPDATE student
+                SET student_gender    = ?,
+                    student_phonenum  = ?,
+                    student_holyname  = ?,
+                    student_family_id = ?,
+                    student_school_id = ?,
+                    student_name      = ?
+                WHERE student_id = ?;
+        """
+        params = (student["student_gender"], student["student_phonenum"], student["student_holyname"],
+                  student["student_family_id"], student["student_school_id"], student["student_name"],
+                  student["student_id"])
+        return self.execute_query(query, params)
+
+    def delete_student(self, student_id):
+        query = """
+                DELETE
+                FROM student
+                WHERE student_id = ?;
+        """
+        params = (student_id,)
+        return self.execute_query(query, params)
 if __name__ == '__main__':
     with StudentDB() as db:
         # for i in range(10):
@@ -87,5 +111,5 @@ if __name__ == '__main__':
         #             "student_school_id": 1,
         #         }
         #         db.add_student(student_info)
-        result = db.fetch_students_with_school_id(1)
-        print(result)
+        result = db.fetch_students_with_school_id_and_family_id(10)
+        print(len(result))

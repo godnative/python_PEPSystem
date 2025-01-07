@@ -1,15 +1,11 @@
-import pickle
 import sys
 
-from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QApplication
-from qfluentwidgets import PushButton, setCustomStyleSheet, MessageBoxBase, InfoBar, Flyout, InfoBarIcon
+from qfluentwidgets import PushButton, setCustomStyleSheet, MessageBoxBase, InfoBar
 
 from DataBase.school_db import SchoolDb
 from school.school_dialog import BaseSchoolInterface_Temp
-from utils.custom_style import ADD_BUTTON_STYLE, DELETE_BUTTON_STYLE, UPDATE_BUTTON_STYLE, IMPORT_BUTTON_STYLE
-from utils.utils_tool import timestamp_to_date
+from utils.custom_style import ADD_BUTTON_STYLE, DELETE_BUTTON_STYLE, UPDATE_BUTTON_STYLE
 
 
 class AddSchoolInterface(MessageBoxBase):
@@ -65,6 +61,7 @@ class ModifySchoolInterface(MessageBoxBase):
         self.schoolInterface_temp = BaseSchoolInterface_Temp()
         self.viewLayout.addLayout(self.schoolInterface_temp.BaseSchoolInterface_layout)
         self.schoolInterface_temp.label_title.setText("修改学校")
+        self.schoolInterface_temp.label.uploaded_image = True
         self.setObjectName("ModifySchoolInterface")
         self.school_id = None  # 初始化学生 ID 属性，默认为 None，表示新建学生时不需要指定 ID
         self.yesButton.setText('修改')  # 设置确认按钮的文本为“添加”，以明确功能
@@ -100,10 +97,9 @@ class ModifySchoolInterface(MessageBoxBase):
 
 # 该布局为主界面显示布局，无法继承message类，所有与弹出后修改或添加布局分开，布局内容基本一致，该布局从UI文件加载
 class ShowSchoolInterface(QWidget):
-    def __init__(self, curSchool, parent=None):
+    def __init__(self, parent):
         super().__init__()
-        self.parent = parent
-        self.curSchool = curSchool
+        self.school_info = parent.school_info
         self.setObjectName("ShowSchoolInterface")
         self.schoolInterface_temp = BaseSchoolInterface_Temp()
         self.main_layout = QVBoxLayout(self)
@@ -111,24 +107,15 @@ class ShowSchoolInterface(QWidget):
         self.setupUi()
         self.disable_widgets()
 
-        if curSchool is None:
+        if parent.school_info is None:
             self.schoolInterface_temp.label.setText("请先选择或建立学校")
+            self.schoolInterface_temp.label.uploaded_image = False
+            self.modifyButton.setDisabled(True)
         else:
             # 将时间戳转换为日期时间格式
 
-            qDate = timestamp_to_date(curSchool["school_date"])
-            # 设置文本框的文本为格式化后的日期时间
-            self.schoolInterface_temp.calendarPicker.setDate(qDate)
+            self.schoolInterface_temp.set_school_info(parent.school_info)
 
-            self.schoolInterface_temp.lineEdit_2.setText(curSchool["school_name"])
-            self.schoolInterface_temp.lineEdit_4.setText(curSchool["school_address"])
-            self.schoolInterface_temp.textEdit.setText(curSchool["school_info"])
-            pixmap = QPixmap("./login/resource/images/background.jpg").scaled(
-                self.schoolInterface_temp.label.size(),
-                Qt.AspectRatioMode.KeepAspectRatioByExpanding,
-                Qt.TransformationMode.SmoothTransformation
-            )
-            self.schoolInterface_temp.label.setPixmap(pixmap)
 
     def setupUi(self):
         self.addButton = PushButton('添加', self)
@@ -139,35 +126,36 @@ class ShowSchoolInterface(QWidget):
         setCustomStyleSheet(self.modifyButton, DELETE_BUTTON_STYLE, DELETE_BUTTON_STYLE)
         self.modifyButton.clicked.connect(self.modifySchoolInfo)
 
-        self.setButton = PushButton('设置默认教堂', self)
-        setCustomStyleSheet(self.modifyButton, IMPORT_BUTTON_STYLE, IMPORT_BUTTON_STYLE)
-        self.setButton.clicked.connect(self.show_setschool_Flyout1)
+        # self.setButton = PushButton('设置默认教堂', self)
+        # setCustomStyleSheet(self.modifyButton, IMPORT_BUTTON_STYLE, IMPORT_BUTTON_STYLE)
+        # self.setButton.clicked.connect(self.show_setschool_Flyout1)
 
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.addWidget(self.addButton)
         self.horizontalLayout.addWidget(self.modifyButton)
-        self.horizontalLayout.addWidget(self.setButton)
+        # self.horizontalLayout.addWidget(self.setButton)
         self.main_layout.addLayout(self.horizontalLayout)
 
-    def show_setschool_Flyout1(self):
-        print(self.curSchool)
-        if self.curSchool is not None:
-            content = "成功设置：%s 为默认教堂" % self.curSchool["school_name"]
-            icon = InfoBarIcon.SUCCESS
-            with open("./schoolsetting.pkl", 'wb') as f:
-                pickle.dump(self.curSchool, f)
-        else:
-            content = "设置失败"
-            icon = InfoBarIcon.ERROR
+    # def show_setschool_Flyout1(self):
+    #     print(self.curSchool)
+    #     if self.curSchool is not None:
+    #         content = "成功设置：%s 为默认教堂" % self.curSchool["school_name"]
+    #         icon = InfoBarIcon.SUCCESS
+    #         with open("./schoolsetting.pkl", 'wb') as f:
+    #             pickle.dump(self.curSchool, f)
+    #     else:
+    #         content = "设置失败"
+    #         icon = InfoBarIcon.ERROR
+    #
+    #     Flyout.create(
+    #         icon=icon,
+    #         title='设置默认教堂',
+    #         content=content,
+    #         target=self.setButton,
+    #         parent=self,
+    #         isClosable=True
+    #     )
 
-        Flyout.create(
-            icon=icon,
-            title='设置默认教堂',
-            content=content,
-            target=self.setButton,
-            parent=self,
-            isClosable=True
-        )
     def disable_widgets(self):
         self.schoolInterface_temp.lineEdit_4.setReadOnly(True)
         self.schoolInterface_temp.lineEdit_2.setReadOnly(True)

@@ -102,13 +102,20 @@ class BaseFamilyDialog(MessageBoxBase):  # 定义一个学生信息弹窗的基�
         super().accept()
 
     def get_InputFamilyDialoginfo(self):
-        FamilyInfo = {
+        familyinfo = {
             "family_name": self.nameInput.text(),
             "family_school_id": self.schoolCombo.currentData(),
             "family_address": self.addressInput.text(),  # 性别字段与对应的下拉框
             "family_notes": self.noteInput.text()  # 班级字段与对应的下拉框
         }
-        return FamilyInfo
+        return familyinfo
+
+    def set_InputFamilyDialoginfo(self, FamilyInfo):
+        self.nameInput.setText(FamilyInfo["family_name"])
+        self.addressInput.setText(FamilyInfo["family_address"])
+        self.noteInput.setText(FamilyInfo["family_notes"])
+        school_idx = self.schoolCombo.findData(FamilyInfo["family_school_id"])
+        self.schoolCombo.setCurrentIndex(school_idx)
 
 
 class AddFamilyDialog(BaseFamilyDialog):  # 定义一个用于添加学生的弹窗类，继承自 BaseStudentDialog
@@ -129,3 +136,15 @@ class AddFamilyDialog(BaseFamilyDialog):  # 定义一个用于添加学生的弹
             family_name = "%s第%d号家庭" % (self.schoolCombo.text(), self.family_cnt)
 
         self.nameInput.setText(family_name)
+
+
+class ModifyFamilyDialog(BaseFamilyDialog):  # 定义一个用于添加学生的弹窗类，继承自 BaseStudentDialog
+    def __init__(self, parent):  # 初始化方法，接收父窗口作为参数，默认为 None
+        super().__init__('修改家庭', parent)  # 调用父类的初始化方法，设置弹窗标题为“添加学生”，并传递父窗口
+        self.yesButton.setText('确认')  # 设置确认按钮的文本为“添加”，以明确功能
+
+
+class DelFamilyDialog(BaseFamilyDialog):  # 定义一个用于添加学生的弹窗类，继承自 BaseStudentDialog
+    def __init__(self, parent):  # 初始化方法，接收父窗口作为参数，默认为 None
+        super().__init__('确认删除家庭？', parent)  # 调用父类的初始化方法，设置弹窗标题为“添加学生”，并传递父窗口
+        self.yesButton.setText('确认删除')  # 设置确认按钮的文本为“添加”，以明确功能

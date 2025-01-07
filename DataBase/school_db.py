@@ -1,5 +1,7 @@
 # database/classes_db.py文件中
 # 从数据库模块中导入基础数据库管理类 DatabaseManage
+import random
+
 from DataBase.base_db import DataBaseManage
 
 
@@ -16,10 +18,11 @@ class SchoolDb(DataBaseManage):
 
     def add_school(self, school):
         query = """
-            INSERT INTO school (school_name, school_date, school_address, school_info)
-            VALUES (?, ?, ?, ?)
+            INSERT INTO school (school_name, school_date, school_address, school_info, school_pic_path)
+            VALUES (?, ?, ?, ?, ?)
         """
-        params = (school['school_name'], school['school_date'], school['school_address'], school['school_info'])
+        params = (school['school_name'], school['school_date'], school['school_address'],
+                  school['school_info'], school['school_pic_path'])
         return self.execute_query(query, params)
 
     def get_school_info(self, school_id):
@@ -40,13 +43,13 @@ class SchoolDb(DataBaseManage):
         # 使用父类的 fetch_query 方法执行查询，并返回查询结果
         return self.fetch_query(query, params=params)
 
-    def modify_school(self, school_info):
+    def modify_school(self, school):
         query = """
-            UPDATE school SET school_date = ?, school_address = ?, school_info = ?
+            UPDATE school SET school_date = ?, school_address = ?, school_info = ?, school_pic_path = ?
             WHERE school_name = ?
         """
-        params = (school_info['school_date'], school_info['school_address'], school_info['school_info'],
-                  school_info['school_name'])
+        params = (school['school_date'], school['school_address'], school['school_info'],
+                  school['school_pic_path'], school['school_name'])
         return self.execute_query(query, params)
 
 
@@ -61,4 +64,4 @@ if __name__ == '__main__':
                 "family_school_id": 1,
                 "family_notes": "无备注"
             }
-            db.add_family(family_info)
+            db.add_family(school_info)

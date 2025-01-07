@@ -99,7 +99,18 @@ QPushButton:pressed {
 }
 """
 
-
+# 修改按钮样式
+MODIFY_BUTTON_STYLE = BUTTON_STYLE + """
+QPushButton {
+    background-color: #20c997; /* 默认背景颜色为青绿色 */
+}
+QPushButton:hover {
+    background-color: #1aa179; /* 悬停时背景颜色为深青绿色 */
+}
+QPushButton:pressed {
+    background-color: #198b6d; /* 按下时背景颜色为更深的青绿色 */
+}
+"""
 class StyleSheet(StyleSheetBase, Enum):
     """ Style sheet  """
 

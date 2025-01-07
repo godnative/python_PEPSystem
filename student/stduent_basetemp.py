@@ -10,9 +10,9 @@ from qfluentwidgets import TableWidget, PushButton, CardWidget, setCustomStyleSh
 
 from DataBase.family_db import FamilyDB
 from DataBase.student_db import StudentDB
-from student.family_dialog import AddFamilyDialog
 from student.student_dialog import AddStudentDialog
-from utils.custom_style import ADD_BUTTON_STYLE, BATCH_DELETE_BUTTON_STYLE, UPDATE_BUTTON_STYLE
+from utils.custom_style import ADD_BUTTON_STYLE, UPDATE_BUTTON_STYLE, MODIFY_BUTTON_STYLE, \
+    DELETE_BUTTON_STYLE
 
 
 class QUERY_TYPE(enum.Enum):
@@ -32,22 +32,24 @@ class BaseStudentFuncTemp(QWidget):  # 定义一个操作学生函数的基类
         card_widget = CardWidget(self)
 
         self.button_layout = QHBoxLayout(card_widget)
-        self.button_1 = PushButton('Add', self)
+        self.button_1 = PushButton('添加', self)
         setCustomStyleSheet(self.button_1, ADD_BUTTON_STYLE, ADD_BUTTON_STYLE)
         self.searchInput = SearchLineEdit(self)
         self.searchInput.setPlaceholderText('Search')
         self.searchInput.setFixedWidth(500)
 
-        self.button_2 = PushButton('Delete', self)
-        setCustomStyleSheet(self.button_2, BATCH_DELETE_BUTTON_STYLE, BATCH_DELETE_BUTTON_STYLE)
-        self.button_3 = PushButton('query', self)
+        self.button_2 = PushButton('修改', self)
+        setCustomStyleSheet(self.button_2, MODIFY_BUTTON_STYLE, MODIFY_BUTTON_STYLE)
+        self.button_3 = PushButton('删除', self)
+        setCustomStyleSheet(self.button_3, DELETE_BUTTON_STYLE, DELETE_BUTTON_STYLE)
+        self.button_4 = PushButton('更新', self)
         setCustomStyleSheet(self.button_3, UPDATE_BUTTON_STYLE, UPDATE_BUTTON_STYLE)
 
         self.button_layout.addWidget(self.button_1)
         self.button_layout.addWidget(self.searchInput)
-        self.button_layout.addStretch(1)
         self.button_layout.addWidget(self.button_2)
         self.button_layout.addWidget(self.button_3)
+        self.button_layout.addWidget(self.button_4)
 
         self.main_verticalLayout.addWidget(card_widget)
 
@@ -75,11 +77,11 @@ class BaseStudentFuncTemp(QWidget):  # 定义一个操作学生函数的基类
 
 
 class Student_Widget(QWidget):
-    def __init__(self, curSchool):
+    def __init__(self, parent):
         super().__init__()
         self.verticalLayout = None
-        self.curSchool = curSchool
-        self.familys = None
+        self.role = parent.role
+        self.school_info = parent.school_info
         self.setObjectName("Student_Widget")
         self.baseStudentFuncTemp_1 = BaseStudentFuncTemp()
         self.student_viewTable_header_info = [
@@ -87,7 +89,7 @@ class Student_Widget(QWidget):
         ]
         self.students = []
         self.setup_ui()
-        self.load_student_data(QUERY_TYPE.QUERY_ALL, self.curSchool["school_id"])
+        self.load_student_data(QUERY_TYPE.QUERY_ALL, self.school_info["school_id"])
 
     def setup_ui(self):
         self.verticalLayout = QVBoxLayout(self)
@@ -98,21 +100,20 @@ class Student_Widget(QWidget):
         self.baseStudentFuncTemp_1.searchInput.searchSignal.connect(self.query_student_info_with_like)
         self.baseStudentFuncTemp_1.searchInput.returnPressed.connect(self.query_student_info_with_like)
 
-        self.baseStudentFuncTemp_1.button_1.clicked.connect(self.add_student_info)
 
     def query_student_info_with_like(self):
         if self.baseStudentFuncTemp_1.searchInput.text() == "":
-            self.load_student_data(QUERY_TYPE.QUERY_ALL, self.curSchool["school_id"])
+            self.load_student_data(QUERY_TYPE.QUERY_ALL, self.school_info["school_id"])
         else:
             self.load_student_data(QUERY_TYPE.QUERY_LIKE, self.baseStudentFuncTemp_1.searchInput.text())
 
-    def load_student_data(self, type, query_param):
+    def load_student_data(self, query_type, query_param):
         with StudentDB() as db:
-            if type == QUERY_TYPE.QUERY_ONE:
+            if query_type == QUERY_TYPE.QUERY_ONE:
                 self.students = db.fetch_students_with_school_id_and_family_id(query_param)
-            elif type == QUERY_TYPE.QUERY_ALL:
+            elif query_type == QUERY_TYPE.QUERY_ALL:
                 self.students = db.fetch_students_with_school_id(query_param)
-            elif type == QUERY_TYPE.QUERY_LIKE:
+            elif query_type == QUERY_TYPE.QUERY_LIKE:
                 self.students = db.fetch_students_with_like(query_param)
             else:
                 return
@@ -126,20 +127,14 @@ class Student_Widget(QWidget):
         self.baseStudentFuncTemp_1.set_viewWidget_data(self.baseStudentFuncTemp_1.tableWidget, header_info,
                                                        self.students)
 
-    def add_student_info(self):
-        w = AddStudentDialog(self)
-        if w.exec():
-            print(w.get_InputStudentDialoginfo())
-            with StudentDB() as db:
-                db.add_student(w.get_InputStudentDialoginfo())
-            self.load_student_data(QUERY_TYPE.QUERY_ALL, self.curSchool["school_id"])
 
 
 class Family_Widget(QWidget):
-    def __init__(self, curSchool):
+    def __init__(self, parent):
         super().__init__()
         self.verticalLayout = None
-        self.curSchool = curSchool
+        self.role = parent.role
+        self.school_info = parent.school_info
         self.familys = None
         self.setObjectName("Family_Widget")
         self.baseStudentFuncTemp_2 = BaseStudentFuncTemp()
@@ -147,7 +142,7 @@ class Family_Widget(QWidget):
             "", "家庭名称", "地址", "备注"
         ]
         self.setup_ui()
-        self.load_family_data(QUERY_TYPE.QUERY_ALL, self.curSchool["school_id"])
+        self.load_family_data(QUERY_TYPE.QUERY_ALL, self.school_info["school_id"])
 
     def setup_ui(self):
         self.verticalLayout = QVBoxLayout(self)
@@ -158,11 +153,11 @@ class Family_Widget(QWidget):
         self.baseStudentFuncTemp_2.searchInput.searchSignal.connect(self.query_family_info_with_like)
         self.baseStudentFuncTemp_2.searchInput.returnPressed.connect(self.query_family_info_with_like)
 
-        self.baseStudentFuncTemp_2.button_1.clicked.connect(self.add_family_info)
+
 
     def query_family_info_with_like(self):
         if self.baseStudentFuncTemp_2.searchInput.text() == "":
-            self.load_family_data(QUERY_TYPE.QUERY_ALL, self.curSchool["school_id"])
+            self.load_family_data(QUERY_TYPE.QUERY_ALL, self.school_info["school_id"])
         else:
             self.load_family_data(QUERY_TYPE.QUERY_LIKE, self.baseStudentFuncTemp_2.searchInput.text())
 
@@ -185,14 +180,6 @@ class Family_Widget(QWidget):
         ]
         self.baseStudentFuncTemp_2.set_viewWidget_data(self.baseStudentFuncTemp_2.tableWidget, header_info,
                                                        self.familys)
-
-    def add_family_info(self):
-        w = AddFamilyDialog(self)
-        if w.exec():
-            print(w.get_InputFamilyDialoginfo())
-            with FamilyDB() as db:
-                db.add_family(w.get_InputFamilyDialoginfo())
-            self.load_family_data(QUERY_TYPE.QUERY_ALL, self.curSchool["school_id"])
 
 
 if __name__ == '__main__':

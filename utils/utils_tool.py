@@ -26,6 +26,7 @@ def timestamp_to_date(timestamp):
 class ImageLabel(QLabel):
     def __init__(self):
         super().__init__()
+        self.image_path = None
         self.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.setText("点击此处上传图片")
         self.setStyleSheet("QLabel { border: 2px dashed #CCCCCC; }")
@@ -33,7 +34,7 @@ class ImageLabel(QLabel):
         self.setMinimumSize(200, 200)
         self.mousePressEvent = self.open_file_dialog
 
-    def open_file_dialog(self, event):
+    def open_file_dialog(self, event=None):
         if self.uploaded_image is False:
             return
         file_dialog = QFileDialog()
@@ -44,3 +45,4 @@ class ImageLabel(QLabel):
             if file_paths:
                 image_path = file_paths[0]
                 self.setPixmap(QPixmap(image_path))
+                self.image_path = image_path
