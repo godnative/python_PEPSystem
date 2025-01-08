@@ -57,6 +57,13 @@ class FamilyDB(DataBaseManage):
         params = (f"%{like_str}%", f"%{like_str}%")
         return self.fetch_query(query, params=params)
 
+    def fetch_tempfamily_with_school_id(self, like_str, school_id):
+        query = """
+                SELECT family_id FROM family WHERE family_name LIKE ? and family_school_id = ?
+                """
+        params = (f"%{like_str}%", school_id)
+        return self.fetch_query(query, params=params)
+
     def update_family(self, family):
         query = """
                 UPDATE family
@@ -90,4 +97,4 @@ if __name__ == '__main__':
         #         "family_notes": "无备注"
         #     }
         #     db.add_family(family_info)
-        print(db.fetch_family_with_like("527"))
+        print(db.fetch_tempfamily_with_school_id("临时", 0))

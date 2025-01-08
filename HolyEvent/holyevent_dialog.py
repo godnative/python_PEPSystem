@@ -1,12 +1,16 @@
 import enum
 import sys
 
-from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QApplication, QGridLayout
-from qfluentwidgets import MessageBoxBase, SubtitleLabel, LineEdit, StrongBodyLabel, InfoBar
+from PyQt6.QtGui import QPixmap
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QApplication, QHBoxLayout, QLabel, QAbstractItemView, QHeaderView, \
+    QCheckBox, QTableWidgetItem
+from qfluentwidgets import LineEdit, InfoBar, PushButton, TableWidget, \
+    SearchLineEdit
 
+from DataBase.family_db import FamilyDB
 from DataBase.holyevent_db import HolyEventDB
-from student.stduent_basetemp import BaseStudentFuncTemp, QUERY_TYPE, Student_Widget
+from DataBase.student_db import StudentDB
+from student.stduent_basetemp import QUERY_TYPE
 
 
 class HOLY_EVENT_TYPE(enum.Enum):
@@ -15,168 +19,216 @@ class HOLY_EVENT_TYPE(enum.Enum):
     QUERY_LIKE = 2
 
 
-class BaseEvenDialog(MessageBoxBase):  # 定义一个学生信息弹窗的基类，继承自 MessageBoxBase
-    def __init__(self, title, student_info, parent=None):  # 初始化方法，接收弹窗标题和父窗口作为参数
-        super().__init__(parent)  # 调用父类的初始化方法，设置父窗口
-        self.title = title  # 保存弹窗标题，用于区分弹窗用途（如添加或修改学生信息）
-        self.cur_school_id = 1
-        self.student_info = student_info
+class BaseEvenFuncTemp(QWidget):  # 定义一个操作学生函数的基类
+    def __init__(self):  # 初始化方法，接收弹窗标题和父窗口作为参数
+        super().__init__()  # 调用父类的初始化方法，设置父窗口
         self.setup_ui()  # 调用界面设置方法，初始化弹窗界面
 
     def setup_ui(self):  # 定义设置用户界面的方法
-        self.titleLabel = SubtitleLabel(self.title, self)  # 创建一个 SubtitleLabel 实例，传入标题文本和父窗口
-        self.viewLayout.addWidget(self.titleLabel)  # 将标题控件添加到布局中
-        self.viewLayout.setAlignment(self.titleLabel, Qt.AlignmentFlag.AlignCenter)  # 设置标题控件在布局中的对齐方式为居中
+        self.main_verticalLayout = QVBoxLayout()
+        self.main_verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_7 = QHBoxLayout()
+        self.label_1 = QLabel()
 
-        self.grid_layout = QGridLayout()  # 创建一个栅格布局对象，用于对控件进行行列排布
-        self.viewLayout.addLayout(self.grid_layout)  # 将栅格布局添加到主视图布局中
+        self.horizontalLayout_7.addWidget(self.label_1)
 
-        # 创建输入控件
-        self.holyevent_p1_name = LineEdit(self)  # 创建一个单行文本输入框用于输入姓名
-        self.holynameInput = LineEdit(self)  # 创建一个单行文本输入框用于输入姓名
-        self.holyevent_witness = LineEdit(self)
-        self.holyevent_implementer = LineEdit(self)
-        self.holyevent_note = LineEdit(self)
-        self.holyevent_date = LineEdit(self)
+        self.verticalLayout_2 = QVBoxLayout()
+        self.horizontalLayout = QHBoxLayout()
+        self.label_2 = QLabel()
 
-        # 定义字段标签与控件的映射
-        fields = [
-            ("姓名：", self.holyevent_p1_name),  # 姓名字段与对应的输入框
-            ("圣名：", self.holynameInput),  # 性别字段与对应的下拉框
-            ("见证人：", self.holyevent_witness),  # 语文字段与对应的输入框
-            ("施行人：", self.holyevent_implementer),  # 数学字段与对应的输入框
-            ("备注：", self.holyevent_note),  # 班级字段与对应的下拉框
-            ("日期：", self.holyevent_date)  # 班级字段与对应的下拉框
-        ]
+        self.horizontalLayout.addWidget(self.label_2)
 
-        # 遍历字段，添加到栅格布局中
-        for row, (label_text, widget) in enumerate(fields):  # 使用 enumerate 获取字段的行号
-            label = StrongBodyLabel(label_text, self)  # 创建加粗的标签
-            self.grid_layout.addWidget(label, row, 0)  # 将标签添加到栅格布局的第一列
-            self.grid_layout.addWidget(widget, row, 1)  # 将控件添加到栅格布局的第二列
+        self.lineEdit_1 = LineEdit()
 
-        # 设置列拉伸
-        self.grid_layout.setColumnStretch(1, 1)  # 设置第二列的列拉伸系数为 1，确保控件能够自动适应窗口大小
+        self.horizontalLayout.addWidget(self.lineEdit_1)
 
-        # 设置标签对齐方式
-        self.grid_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)  # 将控件对齐到左侧
+        self.label_3 = QLabel()
 
-        # 修改按钮文本
-        self.yesButton.setText('确定')  # 将确认按钮文本设置为“确定”
-        self.cancelButton.setText('取消')  # 将取消按钮文本设置为“取消”
+        self.horizontalLayout.addWidget(self.label_3)
 
-        # 设置输入框的宽度
-        for widget in [self.holyevent_p1_name, self.holynameInput, self.holyevent_witness,
-                       self.holyevent_implementer, self.holyevent_note, self.holyevent_date]:
-            widget.setMinimumWidth(200)  # 为每个输入框设置最小宽度为 200
+        self.lineEdit_2 = LineEdit()
 
-        # 将焦点定位到姓名输入框
-        self.holyevent_p1_name.setFocus()  # 设置焦点到姓名输入框，使其在弹出时默认获取焦点
+        self.horizontalLayout.addWidget(self.lineEdit_2)
 
-        # 确保“确定”按钮不会自动对焦
-        self.yesButton.setDefault(False)  # 取消“确定”按钮的默认焦点
-        self.yesButton.setAutoDefault(False)  # 禁止“确定”按钮自动成为默认按钮
+        self.verticalLayout_2.addLayout(self.horizontalLayout)
 
-        self.holyevent_p1_name.setText(self.student_info["student_name"])
+        self.horizontalLayout_2 = QHBoxLayout()
+        self.label_4 = QLabel()
 
-    def _validateInput(self):
-        errors = []  # 初始化错误信息列表
+        self.horizontalLayout_2.addWidget(self.label_4)
 
-        if not self.holyevent_p1_name.text().strip():
-            errors.append("请输入姓名")  # 验证姓名是否填写，如果未填写，添加错误信息
+        self.lineEdit_3 = LineEdit()
 
-        if not self.holynameInput.text().strip():
-            errors.append("请输入学号")  # 验证学号是否填写，如果未填写，添加错误信息
+        self.horizontalLayout_2.addWidget(self.lineEdit_3)
 
-        if not self.holyevent_witness.text().strip():
-            errors.append("请输入姓名")  # 验证姓名是否填写，如果未填写，添加错误信息
+        self.label_5 = QLabel()
 
-        if not self.holyevent_implementer.text().strip():
-            errors.append("请输入学号")  # 验证学号是否填写，如果未填写，添加错误信息
+        self.horizontalLayout_2.addWidget(self.label_5)
 
-        return errors  # 返回所有错误信息
+        self.lineEdit_4 = LineEdit()
 
-    def accept(self):
-        # 对数据进行验证
-        errors = self._validateInput()  # 调用自定义的验证方法，返回错误信息列表
-        if errors:
-            error_message = "\n".join(errors)  # 如果存在错误信息，将错误信息列表转换为字符串，按行显示
-            InfoBar.error(title="输入有误", content=error_message, parent=self,
-                          duration=3000)  # 使用 InfoBar 显示错误提示，设置标题、内容、父窗口和持续时间
-            return  # 返回以阻止继续执行
-        # 如果验证通过，调用父类的 accept 方法，接收数据并关闭对话框
-        super().accept()
+        self.horizontalLayout_2.addWidget(self.lineEdit_4)
 
-    def get_InputEvenDialoginfo(self):
-        eveninfo = {
-            "holyevent_p1_name": self.holyevent_p1_name.text(),
-            "holynameInput": self.holynameInput.text(),
-            "holyevent_witness": self.holyevent_witness.text(),  # 性别字段与对应的下拉框
-            "holyevent_implementer": self.holyevent_implementer.text(),  # 班级字段与对应的下拉框
-            "holyevent_note": self.holyevent_note.text(),  # 语文字段与对应的输入框
-            "holyevent_date": self.holyevent_date.text()  # 语文字段与对应的输入框
-        }
-        return eveninfo
+        self.verticalLayout_2.addLayout(self.horizontalLayout_2)
 
+        self.horizontalLayout_3 = QHBoxLayout()
+        self.label_6 = QLabel()
 
-class AddEventDialog(BaseEvenDialog):  # 定义一个用于添加学生的弹窗类，继承自 BaseStudentDialog
-    def __init__(self, student_info, parent=None):  # 初始化方法，接收父窗口作为参数，默认为 None
-        super().__init__('添加圣洗圣事', student_info, parent)  # 调用父类的初始化方法，设置弹窗标题为“添加学生”，并传递父窗口
-        self.yesButton.setText('添加')  # 设置确认按钮的文本为“添加”，以明确功能
+        self.horizontalLayout_3.addWidget(self.label_6)
+
+        self.lineEdit_5 = LineEdit()
+
+        self.horizontalLayout_3.addWidget(self.lineEdit_5)
+
+        self.label_7 = QLabel()
+
+        self.horizontalLayout_3.addWidget(self.label_7)
+
+        self.lineEdit_6 = LineEdit()
+
+        self.horizontalLayout_3.addWidget(self.lineEdit_6)
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout_3)
+
+        self.horizontalLayout_4 = QHBoxLayout()
+        self.label_8 = QLabel()
+
+        self.horizontalLayout_4.addWidget(self.label_8)
+
+        self.lineEdit_7 = LineEdit()
+
+        self.horizontalLayout_4.addWidget(self.lineEdit_7)
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout_4)
+
+        self.horizontalLayout_5 = QHBoxLayout()
+        self.pushButton_1 = PushButton()
+
+        self.horizontalLayout_5.addWidget(self.pushButton_1)
+
+        self.pushButton_2 = PushButton()
+
+        self.horizontalLayout_5.addWidget(self.pushButton_2)
+
+        self.pushButton_3 = PushButton()
+
+        self.horizontalLayout_5.addWidget(self.pushButton_3)
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout_5)
+
+        self.horizontalLayout_7.addLayout(self.verticalLayout_2)
+
+        self.main_verticalLayout.addLayout(self.horizontalLayout_7)
+
+        self.verticalLayout = QVBoxLayout()
+
+        self.horizontalLayout_6 = QHBoxLayout()
+
+        self.pushButton_4 = PushButton()
+
+        self.horizontalLayout_6.addWidget(self.pushButton_4)
+
+        self.searchInput = SearchLineEdit(self)
+        self.searchInput.setPlaceholderText('Search')
+        self.searchInput.setFixedWidth(500)
+
+        self.horizontalLayout_6.addWidget(self.searchInput)
+
+        self.pushButton_5 = PushButton()
+
+        self.horizontalLayout_6.addWidget(self.pushButton_5)
+
+        self.pushButton_6 = PushButton()
+
+        self.horizontalLayout_6.addWidget(self.pushButton_6)
+
+        self.verticalLayout.addLayout(self.horizontalLayout_6)
+
+        self.tableWidget = TableWidget()
+        self.tableWidget.setBorderVisible(True)
+        self.tableWidget.setBorderRadius(8)
+        self.tableWidget.setWordWrap(False)
+        self.tableWidget.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+
+        self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
+
+        self.verticalLayout.addWidget(self.tableWidget)
+
+        self.main_verticalLayout.addLayout(self.verticalLayout)
+
+    @staticmethod
+    def set_viewWidget_data(tableWidget, header_info, datas):
+        tableWidget.clearContents()
+        tableWidget.setRowCount(len(datas))
+        for row, data in enumerate(datas):
+            checkBox = QCheckBox()
+            tableWidget.setCellWidget(row, 0, checkBox)
+            for column, key in enumerate(header_info):
+                value = data.get(key, "")
+                item = QTableWidgetItem(str(value))
+                tableWidget.setItem(row, column + 1, item)
 
 
 class HolyEventBaptismInterFace(QWidget):
-    def __init__(self, curSchool):
+    def __init__(self, parent):
         super().__init__()
         self.even_info = None
         self.verticalLayout = None
-        self.curSchool = curSchool
+        self.role = parent.role
+        self.school_info = parent.school_info
+        self.data_from_SQL = False
+        self.person_info = None
+        self.temp_family_id = 1
         self.evenType = 0
         # self.setObjectName("BaseHolyEventInterFace")
-        self.baseStudentFuncTemp_1 = BaseStudentFuncTemp()
-        self.student_widget = Student_Widget(self.curSchool)
+        self.baseStudentFuncTemp = BaseEvenFuncTemp()
         self.even_viewTable_header_info = [
-            "", "人员", "圣名", "日期", "施行人", "见证人", "堂区", "备注"
+            "", "姓名", "圣名", "施行人", "见证人", "堂区", "日期", "备注"
         ]
         self.even_database_header_info = [
-            'holyevent_p1_name', 'holyevent_p1_name', 'holyevent_date', 'holyevent_implementer',
-            'holyevent_witness', 'holyevent_school_id', 'holyevent_note'
+            'holyevent_p1_name', 'holyevent_p1_holyname', 'holyevent_implementer',
+            'holyevent_witness', 'holyevent_school_id', 'holyevent_date', 'holyevent_note'
         ]
 
         self.setup_ui()
         self.load_even_data(QUERY_TYPE.QUERY_ALL, self.evenType, None)
+        self.get_temp_family_id()
+
+    def get_temp_family_id(self):
+        with FamilyDB() as family_db:
+            self.temp_family_id = family_db.fetch_tempfamily_with_school_id("临时", self.school_info["school_id"])
+            if self.temp_family_id is None:
+                self.temp_family_id = 1
+
 
     def setup_ui(self):
         self.verticalLayout = QVBoxLayout(self)
-        self.verticalLayout.addLayout(self.baseStudentFuncTemp_1.main_verticalLayout)
-        self.verticalLayout.addWidget(self.student_widget)
+        self.verticalLayout.addLayout(self.baseStudentFuncTemp.main_verticalLayout)
 
-        self.baseStudentFuncTemp_1.tableWidget.setColumnCount(len(self.even_viewTable_header_info))
-        self.baseStudentFuncTemp_1.tableWidget.setHorizontalHeaderLabels(self.even_viewTable_header_info)
-        self.baseStudentFuncTemp_1.searchInput.searchSignal.connect(self.query_even_info_with_like)
-        self.baseStudentFuncTemp_1.searchInput.returnPressed.connect(self.query_even_info_with_like)
-        self.student_widget.baseStudentFuncTemp_1.button_1.hide()
-        self.student_widget.baseStudentFuncTemp_1.button_2.setText("从选中人员新建事件")
-        self.student_widget.baseStudentFuncTemp_1.button_2.clicked.connect(self.add_even_info_with_persion)
-        self.student_widget.baseStudentFuncTemp_1.button_3.hide()
+        ##
+        self.baseStudentFuncTemp.label_2.setText("姓名")
+        self.baseStudentFuncTemp.label_3.setText("圣名")
+        self.baseStudentFuncTemp.label_4.setText("施行人")
+        self.baseStudentFuncTemp.label_5.setText("见证人")
+        self.baseStudentFuncTemp.label_6.setText("堂区")
+        self.baseStudentFuncTemp.label_7.setText("日期")
+        self.baseStudentFuncTemp.label_8.setText("备注")
+        self.baseStudentFuncTemp.pushButton_1.setText("添加")
 
-        self.baseStudentFuncTemp_1.button_1.clicked.connect(self.add_even_info)
+        self.baseStudentFuncTemp.tableWidget.setColumnCount(len(self.even_viewTable_header_info))
+        self.baseStudentFuncTemp.tableWidget.setHorizontalHeaderLabels(self.even_viewTable_header_info)
+        self.baseStudentFuncTemp.searchInput.searchSignal.connect(self.query_even_info_with_like)
+        self.baseStudentFuncTemp.searchInput.returnPressed.connect(self.query_even_info_with_like)
 
-    def add_even_info_with_persion(self):
-        if self.student_widget.baseStudentFuncTemp_1.tableWidget.currentRow() == -1:
-            print("没有选择")
-        else:
-            student_info = self.student_widget.students[
-                self.student_widget.baseStudentFuncTemp_1.tableWidget.currentRow()]
-            w = AddEventDialog(student_info, self)
-            if w.exec():
-                print(w.get_InputEvenDialoginfo())
+        self.baseStudentFuncTemp.pushButton_1.clicked.connect(self.add_even_info)
+
+        self.baseStudentFuncTemp.label_1.setPixmap(QPixmap("./resource/pic/c1.png"))
 
     def query_even_info_with_like(self):
-        if self.baseStudentFuncTemp_1.searchInput.text() == "":
+        if self.baseStudentFuncTemp.searchInput.text() == "":
             self.load_even_data(QUERY_TYPE.QUERY_ALL, self.evenType, None)
         else:
-            self.load_even_data(QUERY_TYPE.QUERY_LIKE, self.evenType, self.baseStudentFuncTemp_1.searchInput.text())
+            self.load_even_data(QUERY_TYPE.QUERY_LIKE, self.evenType, self.baseStudentFuncTemp.searchInput.text())
 
     def load_even_data(self, query_type, even_type, query_param):
         with HolyEventDB() as db:
@@ -190,15 +242,65 @@ class HolyEventBaptismInterFace(QWidget):
         if self.even_info is None:
             return
 
-        self.baseStudentFuncTemp_1.set_viewWidget_data(self.baseStudentFuncTemp_1.tableWidget,
-                                                       self.even_database_header_info, self.even_info)
+        self.baseStudentFuncTemp.set_viewWidget_data(self.baseStudentFuncTemp.tableWidget,
+                                                     self.even_database_header_info, self.even_info)
+
+    def _validateInput(self):
+        errors = []  # 初始化错误信息列表
+
+        if not self.baseStudentFuncTemp.lineEdit_1.text().strip():
+            errors.append("请输入姓名")  # 验证姓名是否填写，如果未填写，添加错误信息
+
+        if not self.baseStudentFuncTemp.lineEdit_2.text().strip():
+            errors.append("请输入圣名")  # 验证学号是否填写，如果未填写，添加错误信息
+
+        if not self.baseStudentFuncTemp.lineEdit_3.text().strip():
+            errors.append("请输入施行人")  # 验证学号是否填写，如果未填写，添加错误信息
+
+        return errors  # 返回所有错误信息
+
+    def _get_even_info(self):
+        even_info = {
+            'holyevent_p1_name': self.baseStudentFuncTemp.lineEdit_1.text(),
+            'holyevent_p1_holyname': self.baseStudentFuncTemp.lineEdit_2.text(),
+            'holyevent_implementer': self.baseStudentFuncTemp.lineEdit_3.text(),
+            'holyevent_witness': self.baseStudentFuncTemp.lineEdit_4.text(),
+            'holyevent_school_id': self.baseStudentFuncTemp.lineEdit_5.text(),
+            'holyevent_date': self.baseStudentFuncTemp.lineEdit_6.text(),
+            'holyevent_note': self.baseStudentFuncTemp.lineEdit_7.text()
+        }
+        return even_info
 
     def add_even_info(self):
-        w = AddEventDialog(None, self)
-        if w.exec():
-            print(w.get_InputEvenDialoginfo())
-
-
+        errors = self._validateInput()  # 调用自定义的验证方法，返回错误信息列表
+        if errors:
+            error_message = "\n".join(errors)  # 如果存在错误信息，将错误信息列表转换为字符串，按行显示
+            InfoBar.error(title="输入有误", content=error_message, parent=self,
+                          duration=3000)  # 使用 InfoBar 显示错误提示，设置标题、内容、父窗口和持续时间
+            return  # 返回以阻止继续执行
+        if self.data_from_SQL:
+            # 如果是从数据库中找到的人员，就修改圣名即可
+            with StudentDB() as db:
+                even_info = self._get_even_info()
+                db.update_student_holyname(self.person_info['student_id'], even_info['holyevent_p1_holyname'])
+        else:
+            # 如果是新建的人，就添加人物数据并添加到零时家庭中
+            with StudentDB() as db:
+                even_info = self._get_even_info()
+                StudentInfo = {
+                    "student_name": even_info['holyevent_p1_name'],
+                    "student_gender": 0,
+                    "student_phonenum": "",  # 性别字段与对应的下拉框
+                    "student_holyname": even_info['holyevent_p1_holyname'],  # 班级字段与对应的下拉框
+                    "student_family_id": self.temp_family_id,  # 语文字段与对应的输入框
+                    "student_school_id": self.school_info["school_id"]  # 语文字段与对应的输入框
+                }
+                db.add_student(StudentInfo)
+        with HolyEventDB() as db:
+            even_info = self._get_even_info()
+            even_info['holyevent_p1_id'] = self.person_info['student_id']
+            even_info['holyevent_type'] = self.evenType
+            db.add_even(even_info)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

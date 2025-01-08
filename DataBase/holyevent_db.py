@@ -21,14 +21,14 @@ class HolyEventDB(DataBaseManage):
     def add_even(self, event_info):
         query = """
         INSERT INTO holyevent ( holyevent_type, holyevent_date, holyevent_witness, 
-        holyevent_implementer, holyevent_p1_id, holyevent_p1_name, 
-        holyevent_p2_id, holyevent_p2_name, holyevent_note, holyevent_school_id)
+        holyevent_implementer, holyevent_p1_id, holyevent_p1_name, holyevent_p1_holyname, 
+        holyevent_p2_id, holyevent_p2_name, holyevent_p2_holyname, holyevent_note, holyevent_school_id)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """
         params = (event_info["holyevent_type"], event_info["holyevent_date"], event_info["holyevent_witness"],
                   event_info["holyevent_implementer"], event_info["holyevent_p1_id"], event_info["holyevent_p1_name"],
-                  event_info["holyevent_p2_id"], event_info["holyevent_p2_name"], event_info["holyevent_note"],
-                  event_info["holyevent_school_id"])
+                  event_info["holyevent_p1_holyname"], event_info["holyevent_p2_id"], event_info["holyevent_p2_name"],
+                  event_info["holyevent_p2_holyname"], event_info["holyevent_note"], event_info["holyevent_school_id"])
         return self.execute_query(query, params)
 
     def fetch_even_with_like(self, even_type, like_str):

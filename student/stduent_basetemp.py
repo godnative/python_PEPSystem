@@ -32,18 +32,19 @@ class BaseStudentFuncTemp(QWidget):  # 定义一个操作学生函数的基类
         card_widget = CardWidget(self)
 
         self.button_layout = QHBoxLayout(card_widget)
-        self.button_1 = PushButton('添加', self)
-        setCustomStyleSheet(self.button_1, ADD_BUTTON_STYLE, ADD_BUTTON_STYLE)
+
         self.searchInput = SearchLineEdit(self)
         self.searchInput.setPlaceholderText('Search')
         self.searchInput.setFixedWidth(500)
 
+        self.button_1 = PushButton('添加', self)
+        setCustomStyleSheet(self.button_1, ADD_BUTTON_STYLE, ADD_BUTTON_STYLE)
         self.button_2 = PushButton('修改', self)
         setCustomStyleSheet(self.button_2, MODIFY_BUTTON_STYLE, MODIFY_BUTTON_STYLE)
         self.button_3 = PushButton('删除', self)
         setCustomStyleSheet(self.button_3, DELETE_BUTTON_STYLE, DELETE_BUTTON_STYLE)
         self.button_4 = PushButton('更新', self)
-        setCustomStyleSheet(self.button_3, UPDATE_BUTTON_STYLE, UPDATE_BUTTON_STYLE)
+        setCustomStyleSheet(self.button_4, UPDATE_BUTTON_STYLE, UPDATE_BUTTON_STYLE)
 
         self.button_layout.addWidget(self.button_1)
         self.button_layout.addWidget(self.searchInput)

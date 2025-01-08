@@ -95,6 +95,15 @@ class StudentDB(DataBaseManage):
         """
         params = (student_id,)
         return self.execute_query(query, params)
+
+    def update_student_holyname(self, student_id, student_holyname):
+        query = """
+                UPDATE student
+                SET student_holyname  = ?
+                WHERE student_id = ?;
+        """
+        params = (student_id, student_holyname)
+        return self.execute_query(query, params)
 if __name__ == '__main__':
     with StudentDB() as db:
         # for i in range(10):
