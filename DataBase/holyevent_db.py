@@ -23,7 +23,7 @@ class HolyEventDB(DataBaseManage):
         INSERT INTO holyevent ( holyevent_type, holyevent_date, holyevent_witness, 
         holyevent_implementer, holyevent_p1_id, holyevent_p1_name, holyevent_p1_holyname, holyevent_p1_gender,
         holyevent_p2_id, holyevent_p2_name, holyevent_p2_holyname, holyevent_note, holyevent_school_id)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """
         params = (event_info["holyevent_type"], event_info["holyevent_date"], event_info["holyevent_witness"],
                   event_info["holyevent_implementer"], event_info["holyevent_p1_id"], event_info["holyevent_p1_name"],

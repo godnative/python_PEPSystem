@@ -1,7 +1,8 @@
 from PyQt6.QtWidgets import QWidget, QStackedWidget, QVBoxLayout, QLabel
 from qfluentwidgets import (qrouter, TabBar, TabCloseButtonDisplayMode)
 
-from HolyEvent.holyevent_dialog import HolyEventBaptismInterFace
+from HolyEvent.holyevent_dialog import HolyEventBaptismInterFace, HolyEventConfirmationInterFace, \
+    HolyEventmarriageInterFace
 from student.stduent_basetemp import Student_Widget
 from utils.custom_style import StyleSheet
 
@@ -29,8 +30,8 @@ class HolyEvenTabInterface(QWidget):
 
         self.baptism_interface = HolyEventBaptismInterFace(self)
         self.student_widget = Student_Widget(self)
-        self.albumInterface = QLabel('Album Interface', self)
-        self.artistInterface = QLabel('Artist Interface', self)
+        self.confirmation_interface = HolyEventConfirmationInterFace(self)
+        self.marriage_interface = HolyEventmarriageInterFace(self)
 
         # add items to pivot
         self.__initWidget()
@@ -44,10 +45,10 @@ class HolyEvenTabInterface(QWidget):
 
         self.addSubInterface(self.baptism_interface,
                              'baptismInterface', self.tr('圣洗圣事'), ':/gallery/images/MusicNote.png')
-        self.addSubInterface(self.albumInterface,
-                             'tabAlbumInterface', self.tr('Album'), ':/gallery/images/Dvd.png')
-        self.addSubInterface(self.artistInterface,
-                             'tabArtistInterface', self.tr('Artist'), ':/gallery/images/Singer.png')
+        self.addSubInterface(self.confirmation_interface,
+                             'ConfirmationInterface', self.tr('坚振圣事'), ':/gallery/images/Dvd.png')
+        self.addSubInterface(self.marriage_interface,
+                             'marriageInterface', self.tr('婚姻圣事'), ':/gallery/images/Singer.png')
 
         StyleSheet.NAVIGATION_VIEW_INTERFACE.apply(self)
 
@@ -88,3 +89,6 @@ class HolyEvenTabInterface(QWidget):
         if self.stackedWidget.currentIndex() == 0:
             student_info = self.student_widget.students[idx]
             self.baptism_interface.seteveninfoFromParent(student_info)
+        elif self.stackedWidget.currentIndex() == 1:
+            student_info = self.student_widget.students[idx]
+            self.confirmation_interface.seteveninfoFromParent(student_info)
