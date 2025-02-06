@@ -24,13 +24,13 @@ QPushButton:pressed {
 # 新增按钮样式
 ADD_BUTTON_STYLE = BUTTON_STYLE + """
 QPushButton {
-    background-color: #0d6efd; /* 默认背景颜色为蓝色 */
+    background-color: #23CF66; 
 }
 QPushButton:hover {
-    background-color: #0b5ed7; /* 悬停时背景颜色为深蓝 */
+    background-color: #29C721;
 }
 QPushButton:pressed {
-    background-color: #0a58ca; /* 按下时背景颜色为更深的蓝色 */
+    background-color: #209C1A;
 }
 """
 
@@ -63,13 +63,13 @@ QPushButton:pressed {
 # 更新按钮样式
 UPDATE_BUTTON_STYLE = BUTTON_STYLE + """
 QPushButton {
-    background-color: #198754; /* 默认背景颜色为绿色 */
+    background-color: #0680F7; /* 默认背景颜色为绿色 */
 }
 QPushButton:hover {
-    background-color: #157347; /* 悬停时背景颜色为深绿 */
+    background-color: #056DD4; /* 悬停时背景颜色为深绿 */
 }
 QPushButton:pressed {
-    background-color: #146c43; /* 按下时背景颜色为更深的绿色 */
+    background-color: #045CB3; /* 按下时背景颜色为更深的绿色 */
 }
 """
 
@@ -102,13 +102,13 @@ QPushButton:pressed {
 # 修改按钮样式
 MODIFY_BUTTON_STYLE = BUTTON_STYLE + """
 QPushButton {
-    background-color: #20c997; /* 默认背景颜色为青绿色 */
+    background-color: #E6BC2F; 
 }
 QPushButton:hover {
-    background-color: #1aa179; /* 悬停时背景颜色为深青绿色 */
+    background-color: #C7A329;
 }
 QPushButton:pressed {
-    background-color: #198b6d; /* 按下时背景颜色为更深的青绿色 */
+    background-color: #A38621;
 }
 """
 class StyleSheet(StyleSheetBase, Enum):

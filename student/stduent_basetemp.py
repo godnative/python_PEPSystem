@@ -47,9 +47,9 @@ class BaseStudentFuncTemp(QWidget):  # 定义一个操作学生函数的基类
         setCustomStyleSheet(self.button_4, UPDATE_BUTTON_STYLE, UPDATE_BUTTON_STYLE)
 
         self.button_layout.addWidget(self.button_1)
+        self.button_layout.addWidget(self.button_3)
         self.button_layout.addWidget(self.searchInput)
         self.button_layout.addWidget(self.button_2)
-        self.button_layout.addWidget(self.button_3)
         self.button_layout.addWidget(self.button_4)
 
         self.main_verticalLayout.addWidget(card_widget)

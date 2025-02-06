@@ -5,12 +5,13 @@ from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QApplication, QHBoxLayout, QLabel, QAbstractItemView, QHeaderView, \
     QCheckBox, QTableWidgetItem, QDialog
 from qfluentwidgets import LineEdit, InfoBar, PushButton, TableWidget, \
-    SearchLineEdit, ComboBox, CalendarPicker
+    SearchLineEdit, ComboBox, CalendarPicker, setCustomStyleSheet
 
 from DataBase.family_db import FamilyDB
 from DataBase.holyevent_db import HolyEventDB
 from DataBase.student_db import StudentDB
 from student.stduent_basetemp import QUERY_TYPE
+from utils.custom_style import ADD_BUTTON_STYLE, DELETE_BUTTON_STYLE, MODIFY_BUTTON_STYLE, UPDATE_BUTTON_STYLE
 from utils.utils_tool import qdate_to_timestamp, timestamp_to_date, get_datestr_from_timestamp
 
 
@@ -18,7 +19,6 @@ class HOLY_EVENT_TYPE(enum.Enum):
     HOLY_EVENT_BAPTISM = 0
     QUERY_ALL = 1
     QUERY_LIKE = 2
-
 
 class BaseEvenFuncTemp(QWidget):  # 定义一个操作学生函数的基类
     def __init__(self):  # 初始化方法，接收弹窗标题和父窗口作为参数
@@ -152,10 +152,12 @@ class BaseEvenFuncTemp(QWidget):  # 定义一个操作学生函数的基类
         self.horizontalLayout_6 = QHBoxLayout()
 
         self.pushButton_1 = PushButton()
+        setCustomStyleSheet(self.pushButton_1, ADD_BUTTON_STYLE, ADD_BUTTON_STYLE)
 
         self.horizontalLayout_6.addWidget(self.pushButton_1)
 
         self.pushButton_2 = PushButton()
+        setCustomStyleSheet(self.pushButton_2, DELETE_BUTTON_STYLE, DELETE_BUTTON_STYLE)
 
         self.horizontalLayout_6.addWidget(self.pushButton_2)
 
@@ -166,10 +168,12 @@ class BaseEvenFuncTemp(QWidget):  # 定义一个操作学生函数的基类
         self.horizontalLayout_6.addWidget(self.searchInput)
 
         self.pushButton_3 = PushButton()
+        setCustomStyleSheet(self.pushButton_3, MODIFY_BUTTON_STYLE, MODIFY_BUTTON_STYLE)
 
         self.horizontalLayout_6.addWidget(self.pushButton_3)
 
         self.pushButton_4 = PushButton()
+        setCustomStyleSheet(self.pushButton_4, UPDATE_BUTTON_STYLE, UPDATE_BUTTON_STYLE)
 
         self.horizontalLayout_6.addWidget(self.pushButton_4)
 
@@ -694,7 +698,7 @@ class HolyEventmarriageInterFace(QWidget):
         self.baseStudentFuncTemp.pushButton_2.clicked.connect(self.delete_even_info)
         self.baseStudentFuncTemp.pushButton_3.clicked.connect(self.update_even_info)
 
-        self.baseStudentFuncTemp.label_1.setPixmap(QPixmap("./resource/pic/c2.png"))
+        self.baseStudentFuncTemp.label_1.setPixmap(QPixmap("./resource/pic/c3.png"))
 
     def query_even_info_with_like(self):
         if self.baseStudentFuncTemp.searchInput.text() == "":
