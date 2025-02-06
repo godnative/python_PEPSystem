@@ -59,6 +59,7 @@ class HolyEvenTabInterface(QWidget):
         self.student_widget.baseStudentFuncTemp_1.button_1.hide()
         self.student_widget.baseStudentFuncTemp_1.button_2.hide()
         self.student_widget.baseStudentFuncTemp_1.button_3.setText("将选中人员填充到上表")
+        self.student_widget.baseStudentFuncTemp_1.button_3.clicked.connect(self.setDataFromStudnetWidget)
         self.student_widget.baseStudentFuncTemp_1.button_4.setText("清除选择")
 
     def addSubInterface(self, widget, objectName, text, icon):
@@ -78,3 +79,12 @@ class HolyEvenTabInterface(QWidget):
 
         self.tabBar.setCurrentTab(widget.objectName())
         qrouter.push(self.stackedWidget, widget.objectName())
+
+    def setDataFromStudnetWidget(self):
+        idx = self.student_widget.baseStudentFuncTemp_1.tableWidget.currentRow()
+        if idx == -1:
+            return
+
+        if self.stackedWidget.currentIndex() == 0:
+            student_info = self.student_widget.students[idx]
+            self.baptism_interface.seteveninfoFromParent(student_info)

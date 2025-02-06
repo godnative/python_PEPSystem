@@ -21,16 +21,41 @@ class HolyEventDB(DataBaseManage):
     def add_even(self, event_info):
         query = """
         INSERT INTO holyevent ( holyevent_type, holyevent_date, holyevent_witness, 
-        holyevent_implementer, holyevent_p1_id, holyevent_p1_name, holyevent_p1_holyname, 
+        holyevent_implementer, holyevent_p1_id, holyevent_p1_name, holyevent_p1_holyname, holyevent_p1_gender,
         holyevent_p2_id, holyevent_p2_name, holyevent_p2_holyname, holyevent_note, holyevent_school_id)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """
         params = (event_info["holyevent_type"], event_info["holyevent_date"], event_info["holyevent_witness"],
                   event_info["holyevent_implementer"], event_info["holyevent_p1_id"], event_info["holyevent_p1_name"],
-                  event_info["holyevent_p1_holyname"], event_info["holyevent_p2_id"], event_info["holyevent_p2_name"],
+                  event_info["holyevent_p1_holyname"], event_info["holyevent_p1_gender"],
+                  event_info["holyevent_p2_id"], event_info["holyevent_p2_name"],
                   event_info["holyevent_p2_holyname"], event_info["holyevent_note"], event_info["holyevent_school_id"])
         return self.execute_query(query, params)
 
+    def update_even(self, event_info):
+        query = """
+            UPDATE  holyevent 
+            set 
+            holyevent_type = ?, 
+            holyevent_date = ?, 
+            holyevent_witness = ?,
+            holyevent_implementer =?, 
+            holyevent_p1_id =?, 
+            holyevent_p1_name =?, 
+            holyevent_p1_holyname =?,
+            holyevent_p1_gender =?,
+            holyevent_p2_id =?, 
+            holyevent_p2_name =?, 
+            holyevent_p2_holyname =?, 
+            holyevent_note =?
+            WHERE holyevent_id =?;
+            """
+        params = (event_info["holyevent_type"], event_info["holyevent_date"], event_info["holyevent_witness"],
+                  event_info["holyevent_implementer"], event_info["holyevent_p1_id"], event_info["holyevent_p1_name"],
+                  event_info["holyevent_p1_holyname"], event_info["holyevent_p1_gender"], event_info["holyevent_p2_id"],
+                  event_info["holyevent_p2_name"],
+                  event_info["holyevent_p2_holyname"], event_info["holyevent_note"], event_info["holyevent_school_id"])
+        return self.execute_query(query, params)
     def fetch_even_with_like(self, even_type, like_str):
         query = """
                 SELECT * FROM holyevent WHERE holyevent_type = ? 
@@ -39,6 +64,14 @@ class HolyEventDB(DataBaseManage):
         params = (even_type, f"%{like_str}%", f"%{like_str}%", f"%{like_str}%")
         return self.fetch_query(query, params=params)
 
+    def delete_event(self, event_id):
+        query = """
+                DELETE
+                FROM holyevent
+                WHERE holyevent_id = ?;
+        """
+        params = (event_id,)
+        return self.execute_query(query, params)
 
 if __name__ == '__main__':
     with HolyEventDB() as db:

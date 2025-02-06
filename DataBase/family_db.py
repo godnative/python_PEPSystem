@@ -62,7 +62,7 @@ class FamilyDB(DataBaseManage):
                 SELECT family_id FROM family WHERE family_name LIKE ? and family_school_id = ?
                 """
         params = (f"%{like_str}%", school_id)
-        return self.fetch_query(query, params=params)
+        return self.fetch_query(query, single=True, params=params)
 
     def update_family(self, family):
         query = """

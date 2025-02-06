@@ -58,6 +58,22 @@ class DataBaseManage:
             print('Connection failed')
         return None
 
+    def execute_query_return_id(self, query, params):
+        if self.connection:
+            try:
+                cursor = self.connection.cursor()
+                cursor.execute(query, params)
+                id = cursor.lastrowid
+                self.connection.commit()
+                return id
+            except Exception as e:
+                print(f'Error: {e}')
+                self.connection.rollback()
+                return None
+        else:
+            print('Connection failed')
+        return None
+
     def close_connection(self):
         if self.connection:
             self.connection.close()

@@ -23,6 +23,12 @@ def timestamp_to_date(timestamp):
     return date
 
 
+def get_datestr_from_timestamp(timestamp):
+    date_time = datetime.utcfromtimestamp(timestamp)
+    formatted_date = date_time.strftime("%Y-%m-%d")
+    return formatted_date
+
+
 class ImageLabel(QLabel):
     def __init__(self):
         super().__init__()

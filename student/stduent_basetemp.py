@@ -72,7 +72,10 @@ class BaseStudentFuncTemp(QWidget):  # 定义一个操作学生函数的基类
             checkBox = QCheckBox()
             tableWidget.setCellWidget(row, 0, checkBox)
             for column, key in enumerate(header_info):
-                value = data.get(key, "")
+                if key == "student_gender":
+                    value = "男" if data.get(key, "") == 0 else "女"
+                else:
+                    value = data.get(key, "")
                 item = QTableWidgetItem(str(value))
                 tableWidget.setItem(row, column + 1, item)
 

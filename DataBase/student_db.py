@@ -1,4 +1,7 @@
+import random
+
 from DataBase.base_db import DataBaseManage
+from utils.name_rand import generate_chinese_name
 
 
 class StudentDB(DataBaseManage):
@@ -26,7 +29,7 @@ class StudentDB(DataBaseManage):
         """
         params = (student["student_name"], student["student_gender"], student["student_phonenum"],
                   student["student_holyname"], student["student_family_id"], student["student_school_id"])
-        return self.execute_query(query, params)
+        return self.execute_query_return_id(query, params)
 
     def fetch_students_with_school_id(self, school_id):
         # 定义查询语句
@@ -102,23 +105,23 @@ class StudentDB(DataBaseManage):
                 SET student_holyname  = ?
                 WHERE student_id = ?;
         """
-        params = (student_id, student_holyname)
+        params = (student_holyname, student_id)
         return self.execute_query(query, params)
 if __name__ == '__main__':
     with StudentDB() as db:
         # for i in range(10):
         #     for j in range(10):
-        #         student_name = generate_chinese_name()
-        #         student_gender = random.randint(0, 1)
-        #         student_phonenum = "1310547" + str(random.randint(0, 99999))
-        #         student_info = {
-        #             "student_name": student_name,
-        #             "student_gender": student_gender,
-        #             "student_phonenum": student_phonenum,
-        #             "student_holyname": "",
-        #             "student_family_id": random.randint(1, 20),
-        #             "student_school_id": 1,
-        #         }
-        #         db.add_student(student_info)
-        result = db.fetch_students_with_school_id_and_family_id(10)
-        print(len(result))
+        student_name = generate_chinese_name()
+        student_gender = random.randint(0, 1)
+        student_phonenum = "1310547" + str(random.randint(0, 99999))
+        student_info = {
+            "student_name": student_name,
+            "student_gender": student_gender,
+            "student_phonenum": student_phonenum,
+            "student_holyname": "",
+            "student_family_id": random.randint(1, 20),
+            "student_school_id": 1,
+        }
+        idx = db.add_student(student_info)
+        print(student_info)
+        print(idx)
