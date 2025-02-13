@@ -3,7 +3,7 @@ import sys
 
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QApplication, QHBoxLayout, QLabel, QAbstractItemView, QHeaderView, \
-    QCheckBox, QTableWidgetItem, QDialog
+    QCheckBox, QTableWidgetItem
 from qfluentwidgets import LineEdit, InfoBar, PushButton, TableWidget, \
     SearchLineEdit, ComboBox, CalendarPicker, setCustomStyleSheet
 
@@ -240,6 +240,23 @@ class HolyEventBaptismInterFace(QWidget):
         self.baseStudentFuncTemp.label_10.hide()
         self.baseStudentFuncTemp.lineEdit_9.hide()
         self.baseStudentFuncTemp.lineEdit_10.hide()
+        self.tempEveninfo = {
+            "holyevent_id": 0,
+            "holyevent_type": 0,
+            "holyevent_date": 0,
+            "holyevent_witness": "",
+            "holyevent_implementer": "",
+            "holyevent_p1_id": 0,
+            "holyevent_p2_id": 0,
+            "holyevent_p1_note": "",
+            "holyevent_p1_school_id": self.school_info["school_id"],
+            "holyevent_p1_name": "",
+            "holyevent_p1_holyname": "",
+            "holyevent_p1_gender": 0,
+            "holyevent_p2_name": "",
+            "holyevent_p2_holyname": "",
+            "holyevent_p2_gender": 0
+        }
         self.even_viewTable_header_info = [
             "", "姓名", "圣名", "施行人", "见证人", "堂区", "日期", "备注"
         ]
@@ -349,7 +366,6 @@ class HolyEventBaptismInterFace(QWidget):
         self.data_from_SQL = True
         self.baseStudentFuncTemp.lineEdit_1.setText(person_info['student_name'])
         self.baseStudentFuncTemp.lineEdit_2.setText(person_info['student_holyname'])
-        print(person_info['student_gender'])
         self.baseStudentFuncTemp.genderCombo.setCurrentIndex(person_info['student_gender'])
 
     def seteveninfoFromSelf(self, even_info):
@@ -390,7 +406,7 @@ class HolyEventBaptismInterFace(QWidget):
         with HolyEventDB() as db:
             even_info['holyevent_p1_id'] = self.person_info['student_id']
             even_info['holyevent_type'] = self.evenType
-            db.add_even(even_info)
+            db.add_even_with_single(even_info)
             self.load_even_data(QUERY_TYPE.QUERY_ALL, self.evenType, None)
 
     def delete_even_info(self):

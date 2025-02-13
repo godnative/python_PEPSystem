@@ -12,56 +12,62 @@ class HolyEventDB(DataBaseManage):
     def fetch_all_event_by_type(self, event_type):
         # 定义 SQL 查询语句，用于选择 CLASSES 表中的所有数据
         query = """
-        SELECT * FROM holyevent where holyevent_type =?
+            SELECT h.*,              -- 查询 student 表中的所有字段
+                   s1.student_name AS holyevent_p1_name,
+                   s1.student_holyname AS holyevent_p1_holyname,
+                   s1.student_gender AS holyevent_p1_gender,
+                   s2.student_name AS holyevent_p2_name,
+                   s2.student_holyname AS holyevent_p2_holyname,
+                   s2.student_gender AS holyevent_p2_gender
+            -- 查询 classes 表中的 class_name 字段（班级名称）
+            FROM holyevent h           -- 从 student 表中查询数据，给表取别名为 s
+            JOIN student s1 ON h.holyevent_p1_id = s1.student_id
+            JOIN student s2 ON h.holyevent_p2_id = s2.student_id
+            where h.holyevent_type = ?;
         """
         params = (event_type,)
         # 使用父类的 fetch_query 方法执行查询，并返回查询结果
         return self.fetch_query(query, params=params)
 
-    def add_even(self, event_info):
+    def add_even_with_single(self, event_info):
         query = """
         INSERT INTO holyevent ( holyevent_type, holyevent_date, holyevent_witness, 
-        holyevent_implementer, holyevent_p1_id, holyevent_p1_name, holyevent_p1_holyname, holyevent_p1_gender,
-        holyevent_p2_id, holyevent_p2_name, holyevent_p2_holyname, holyevent_note, holyevent_school_id)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        holyevent_implementer, holyevent_p1_id, holyevent_note, holyevent_school_id)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
         """
         params = (event_info["holyevent_type"], event_info["holyevent_date"], event_info["holyevent_witness"],
-                  event_info["holyevent_implementer"], event_info["holyevent_p1_id"], event_info["holyevent_p1_name"],
-                  event_info["holyevent_p1_holyname"], event_info["holyevent_p1_gender"],
-                  event_info["holyevent_p2_id"], event_info["holyevent_p2_name"],
-                  event_info["holyevent_p2_holyname"], event_info["holyevent_note"], event_info["holyevent_school_id"])
+                  event_info["holyevent_implementer"], event_info["holyevent_p1_id"],
+                  event_info["holyevent_note"], event_info["holyevent_school_id"])
         return self.execute_query(query, params)
 
-    def update_even(self, event_info):
+    def add_even_with_double(self, event_info):
         query = """
-            UPDATE  holyevent 
-            set 
-            holyevent_type = ?, 
-            holyevent_date = ?, 
-            holyevent_witness = ?,
-            holyevent_implementer =?, 
-            holyevent_p1_id =?, 
-            holyevent_p1_name =?, 
-            holyevent_p1_holyname =?,
-            holyevent_p1_gender =?,
-            holyevent_p2_id =?, 
-            holyevent_p2_name =?, 
-            holyevent_p2_holyname =?, 
-            holyevent_note =?
-            WHERE holyevent_id =?;
-            """
+        INSERT INTO holyevent ( holyevent_type, holyevent_date, holyevent_witness, 
+        holyevent_implementer, holyevent_p1_id, holyevent_p2_id, holyevent_note, holyevent_school_id)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+        """
         params = (event_info["holyevent_type"], event_info["holyevent_date"], event_info["holyevent_witness"],
-                  event_info["holyevent_implementer"], event_info["holyevent_p1_id"], event_info["holyevent_p1_name"],
-                  event_info["holyevent_p1_holyname"], event_info["holyevent_p1_gender"], event_info["holyevent_p2_id"],
-                  event_info["holyevent_p2_name"],
-                  event_info["holyevent_p2_holyname"], event_info["holyevent_note"], event_info["holyevent_school_id"])
+                  event_info["holyevent_implementer"], event_info["holyevent_p1_id"], event_info["holyevent_p2_id"],
+                  event_info["holyevent_note"], event_info["holyevent_school_id"])
         return self.execute_query(query, params)
+
     def fetch_even_with_like(self, even_type, like_str):
         query = """
-                SELECT * FROM holyevent WHERE holyevent_type = ? 
-                and (holyevent_p1_name LIKE ? or holyevent_witness LIKE ? or holyevent_implementer LIKE ?)
+                SELECT h.*,              -- 查询 student 表中的所有字段
+                       s1.student_name AS holyevent_p1_name,
+                       s1.student_holyname AS holyevent_p1_holyname,
+                       s1.student_gender AS holyevent_p1_gender,
+                       s2.student_name AS holyevent_p2_name,
+                       s2.student_holyname AS holyevent_p2_holyname,
+                       s2.student_gender AS holyevent_p2_gender
+                -- 查询 classes 表中的 class_name 字段（班级名称）
+                FROM holyevent h           -- 从 student 表中查询数据，给表取别名为 s
+                JOIN student s1 ON h.holyevent_p1_id = s1.student_id
+                JOIN student s2 ON h.holyevent_p2_id = s2.student_id
+                where h.holyevent_type = ?
+                and (holyevent_witness LIKE ? or holyevent_implementer LIKE ?)
                 """
-        params = (even_type, f"%{like_str}%", f"%{like_str}%", f"%{like_str}%")
+        params = (even_type, f"%{like_str}%", f"%{like_str}%")
         return self.fetch_query(query, params=params)
 
     def delete_event(self, event_id):
@@ -85,4 +91,4 @@ if __name__ == '__main__':
         #         "family_notes": "无备注"
         #     }
         #     db.add_family(family_info)
-        print(db.fetch_family_with_like("527"))
+        print(db.fetch_all_event_by_type(0))
