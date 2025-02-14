@@ -18,6 +18,7 @@ from DataBase.school_db import SchoolDb
 from DataBase.user_db import UserDB
 from HolyEvent.holyevent_interface import HolyEvenTabInterface
 from LoginWindow import Ui_Form
+from Parishioner.Parishioner_Interface import Parishioner_Main_Interface
 from school.school_interface import ShowSchoolInterface
 from student.student_interface import StudentInterface
 
@@ -146,7 +147,7 @@ class MainWindow(MSFluentWindow):
             self.setWindowTitle('当前学校:%s' % self.school_info['school_name'])
 
             # create sub interface
-            self.studentInterface = StudentInterface(self)
+            self.studentInterface = Parishioner_Main_Interface(self.school_info['school_id'])
             self.videoInterface = HolyEvenTabInterface(self)
             self.libraryInterface = Widget('请先选择学校..', self)
 

@@ -75,10 +75,21 @@ class BaseMessageBoxWidget(QWidget):
 
         hbox_6 = QHBoxLayout()
         self.label_11 = QLabel("label_11")
-        self.inputLine_11 = LineEdit()
+        self.inputLine_11 = ComboBox()
+        self.label_12 = QLabel("label_12")
+        self.inputLine_12 = PushButton()
         hbox_6.addWidget(self.label_11)
         hbox_6.addWidget(self.inputLine_11)
+        hbox_6.addWidget(self.label_12)
+        hbox_6.addWidget(self.inputLine_12)
         vbox.addLayout(hbox_6)
+
+        hbox_7 = QHBoxLayout()
+        self.label_13 = QLabel("label_13")
+        self.inputLine_13 = LineEdit()
+        hbox_7.addWidget(self.label_13)
+        hbox_7.addWidget(self.inputLine_13)
+        vbox.addLayout(hbox_7)
 
         hbox.addLayout(vbox)
 
@@ -143,12 +154,11 @@ class BaseQueryWidget(QWidget):
             checkBox = QCheckBox()
             self.tableWidget.setCellWidget(row, 0, checkBox)
             for column, key in enumerate(header_info):
-                if key == "holyevent_date":
-                    value = data.get(key, "")
-                    item = QTableWidgetItem(str(get_datestr_from_timestamp(value)))
+                if key == "student_gender":
+                    value = "男" if data.get(key, "") == 0 else "女"
                 else:
                     value = data.get(key, "")
-                    item = QTableWidgetItem(str(value))
+                item = QTableWidgetItem(str(value))
                 self.tableWidget.setItem(row, column + 1, item)
 
 
