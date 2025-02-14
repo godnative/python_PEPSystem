@@ -2,8 +2,9 @@ import enum
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPixmap
-from PyQt6.QtWidgets import QApplication, QVBoxLayout, QWidget
-from qfluentwidgets import MessageBoxBase, SubtitleLabel, InfoBar
+from PyQt6.QtWidgets import QApplication, QVBoxLayout, QWidget, QAbstractItemView, QHeaderView, QCheckBox, \
+    QTableWidgetItem
+from qfluentwidgets import MessageBoxBase, SubtitleLabel, InfoBar, TableWidget
 
 from BaseWidgets.BaseModule import BaseMainInterface, BaseMessageBoxWidget
 from DataBase.family_db import FamilyDB
@@ -16,65 +17,93 @@ class QUERY_TYPE(enum.Enum):
     QUERY_LIKE = 2
 
 
-class Parishioner_MessageBox(MessageBoxBase):
+class Family_MessageBox(MessageBoxBase):
 
-    def __init__(self, parent=None):
+    def __init__(self, school_info, massage_type, parent=None):
         super().__init__(parent)
         self.family_info = None
+        self.school_info = school_info
+        self.massage_type = massage_type
         self.titleLabel = SubtitleLabel('人员', self)
-        self.Parishioner_Info_Edit_widgets = BaseMessageBoxWidget(self)
+        self.family_Info_Edit_widgets = BaseMessageBoxWidget(self)
+        self.header_info = [
+            'student_name', 'student_holyname', 'student_gender', 'student_phonenum', 'family_name'
+        ]
 
         # add widget to view layout
         self.viewLayout.addWidget(self.titleLabel)
-        self.viewLayout.addWidget(self.Parishioner_Info_Edit_widgets)
+        self.viewLayout.addWidget(self.family_Info_Edit_widgets)
+
+        self.tableWidget = TableWidget(self)
+        self.tableWidget.setBorderVisible(True)
+        self.tableWidget.setBorderRadius(8)
+        self.tableWidget.setWordWrap(False)
+        self.tableWidget.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+
+        self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
+
+        parishioner_tableView_header = [
+            "姓名", "圣名", "性别", "手机", "家庭名称"
+        ]
+        self.tableWidget.setColumnCount(len(parishioner_tableView_header))
+        self.tableWidget.setHorizontalHeaderLabels(parishioner_tableView_header)
+        self.viewLayout.addWidget(self.tableWidget)
 
         # 设置UI
-        self.Parishioner_Info_Edit_widgets.label_1.setText("姓名")
-        self.Parishioner_Info_Edit_widgets.label_2.setText("圣名")
-        self.Parishioner_Info_Edit_widgets.label_3.setText("手机")
-        self.Parishioner_Info_Edit_widgets.label_4.setText("身份证")
-        self.Parishioner_Info_Edit_widgets.label_9.setText("性别")
-        self.Parishioner_Info_Edit_widgets.label_10.setText("出生日期")
-        self.Parishioner_Info_Edit_widgets.label_11.setText("家庭")
-        self.Parishioner_Info_Edit_widgets.inputLine_12.setText("添加家庭")
-        self.Parishioner_Info_Edit_widgets.label_13.setText("备注")
+        self.family_Info_Edit_widgets.label_1.setText("家庭名称")
+        self.family_Info_Edit_widgets.label_3.setText("地址")
+        self.family_Info_Edit_widgets.label_13.setText("备注")
 
-        self.Parishioner_Info_Edit_widgets.label_5.hide()
-        self.Parishioner_Info_Edit_widgets.inputLine_5.hide()
-        self.Parishioner_Info_Edit_widgets.label_6.hide()
-        self.Parishioner_Info_Edit_widgets.inputLine_6.hide()
-        self.Parishioner_Info_Edit_widgets.label_7.hide()
-        self.Parishioner_Info_Edit_widgets.inputLine_7.hide()
-        self.Parishioner_Info_Edit_widgets.label_8.hide()
-        self.Parishioner_Info_Edit_widgets.inputLine_8.hide()
-        # self.Parishioner_Info_Edit_widgets.label_12.hide()
-        self.Parishioner_Info_Edit_widgets.label_12.setText("     ")
+        self.family_Info_Edit_widgets.label_2.hide()
+        self.family_Info_Edit_widgets.inputLine_2.hide()
+        self.family_Info_Edit_widgets.label_4.hide()
+        self.family_Info_Edit_widgets.inputLine_4.hide()
+        self.family_Info_Edit_widgets.label_5.hide()
+        self.family_Info_Edit_widgets.inputLine_5.hide()
+        self.family_Info_Edit_widgets.label_6.hide()
+        self.family_Info_Edit_widgets.inputLine_6.hide()
+        self.family_Info_Edit_widgets.label_7.hide()
+        self.family_Info_Edit_widgets.inputLine_7.hide()
+        self.family_Info_Edit_widgets.label_8.hide()
+        self.family_Info_Edit_widgets.inputLine_8.hide()
+        self.family_Info_Edit_widgets.label_9.hide()
+        self.family_Info_Edit_widgets.inputLine_9.hide()
+        self.family_Info_Edit_widgets.label_10.hide()
+        self.family_Info_Edit_widgets.inputLine_10.hide()
+        self.family_Info_Edit_widgets.label_11.hide()
+        self.family_Info_Edit_widgets.inputLine_11.hide()
+        self.family_Info_Edit_widgets.label_12.hide()
+        self.family_Info_Edit_widgets.inputLine_12.hide()
 
-        self.Parishioner_Info_Edit_widgets.inputLine_9.addItem("男", userData=0)
-        self.Parishioner_Info_Edit_widgets.inputLine_9.addItem("女", userData=1)
-
-        self.Parishioner_Info_Edit_widgets.pic.setMaximumSize(100, 100)
-        pixmap = QPixmap("./resource/pic/2.png").scaled(
-            self.Parishioner_Info_Edit_widgets.pic.size(),
+        self.family_Info_Edit_widgets.pic.setMaximumSize(100, 100)
+        pixmap = QPixmap("./resource/pic/4.png").scaled(
+            self.family_Info_Edit_widgets.pic.size(),
             Qt.AspectRatioMode.KeepAspectRatioByExpanding,
             Qt.TransformationMode.SmoothTransformation
         )
-        self.Parishioner_Info_Edit_widgets.pic.setPixmap(pixmap)
+        self.family_Info_Edit_widgets.pic.setPixmap(pixmap)
 
         self.widget.setMinimumWidth(350)
-        self.load_family()
+        self.family_Info_Edit_widgets.inputLine_1.setMinimumWidth(200)
+        self.family_Info_Edit_widgets.inputLine_3.setMinimumWidth(200)
+
+        with FamilyDB() as db:
+            self.cur_family_cnt = db.get_family_cnt() + 1
 
     def _validateInput(self):
         errors = []  # 初始化错误信息列表
 
-        if not self.Parishioner_Info_Edit_widgets.inputLine_1.text().strip():
-            errors.append("请输入姓名")  # 验证姓名是否填写，如果未填写，添加错误信息
+        if not self.family_Info_Edit_widgets.inputLine_1.text().strip():
+            errors.append("请输入家庭名称")  # 验证姓名是否填写，如果未填写，添加错误信息
 
-        if self.Parishioner_Info_Edit_widgets.inputLine_11.currentData() is None:
-            errors.append("请选择家庭")  # 验证学号是否填写，如果未填写，添加错误信息
+        if not self.family_Info_Edit_widgets.inputLine_3.text().strip():
+            errors.append("请选择家庭地址")  # 验证学号是否填写，如果未填写，添加错误信息
 
-        if self.Parishioner_Info_Edit_widgets.inputLine_9.currentData() is None:
-            errors.append("请选择性别")  # 验证班级是否选择，如果未选择班级，添加错误信息
+        if not self.family_Info_Edit_widgets.inputLine_13.text().strip():
+            errors.append("请输入备注")  # 验证班级是否选择，如果未选择班级，添加错误信息
+
+        if self.massage_type == 1 and self.tableWidget.rowCount() != 0:
+            errors.append("当前家庭还有%d个成员，请先移除成员后再删除家庭" % self.tableWidget.rowCount())  # 验证班级是否选择，如果未选择班级，添加错误信息
 
         return errors  # 返回所有错误信息
 
@@ -88,153 +117,171 @@ class Parishioner_MessageBox(MessageBoxBase):
             return False
         return True  # 返回验证结果，True 表示验证通过，False 表示验证失败
 
-    def get_InputParishionerMessageinfo(self):
-        parishioner_messageinfo = {
-            "student_name": self.Parishioner_Info_Edit_widgets.inputLine_1.text(),
-            "student_gender": self.Parishioner_Info_Edit_widgets.inputLine_9.currentData(),
-            "student_phonenum": self.Parishioner_Info_Edit_widgets.inputLine_3.text(),  # 性别字段与对应的下拉框
-            "student_holyname": self.Parishioner_Info_Edit_widgets.inputLine_2.text(),  # 班级字段与对应的下拉框
-            "student_family_id": self.Parishioner_Info_Edit_widgets.inputLine_11.currentData(),  # 语文字段与对应的输入框
-            "student_school_id": None
+    def get_InputFamilyMessageinfo(self):
+        family_messageinfo = {
+            "family_name": self.family_Info_Edit_widgets.inputLine_1.text(),
+            "family_address": self.family_Info_Edit_widgets.inputLine_3.text(),  # 性别字段与对应的下拉框
+            "family_notes": self.family_Info_Edit_widgets.inputLine_13.text(),  # 班级字段与对应的下拉框
+            "family_school_id": None
         }
-        return parishioner_messageinfo
+        return family_messageinfo
 
-    def set_InputParishionerMessageinfo(self, parishioner_messageinfo):
-        self.Parishioner_Info_Edit_widgets.inputLine_1.setText(parishioner_messageinfo["student_name"])
-        self.Parishioner_Info_Edit_widgets.inputLine_9.setCurrentIndex(parishioner_messageinfo["student_gender"])
-        self.Parishioner_Info_Edit_widgets.inputLine_3.setText(parishioner_messageinfo["student_phonenum"])
-        self.Parishioner_Info_Edit_widgets.inputLine_2.setText(parishioner_messageinfo["student_holyname"])
-        family_idx = self.Parishioner_Info_Edit_widgets.inputLine_11.findData(
-            parishioner_messageinfo["student_family_id"])
-        self.Parishioner_Info_Edit_widgets.inputLine_11.setCurrentIndex(family_idx)
+    def set_InputfFamilyMessageinfo(self, family_messageinfo):
+        self.family_Info_Edit_widgets.inputLine_1.setText(family_messageinfo["family_name"])
+        self.family_Info_Edit_widgets.inputLine_3.setText(family_messageinfo["family_address"])
+        self.family_Info_Edit_widgets.inputLine_13.setText(family_messageinfo["family_notes"])
         return
 
-    def load_family(self):
-        self.Parishioner_Info_Edit_widgets.inputLine_11.clear()  # 清空 classCombo 下拉框中的所有选项
-        with FamilyDB() as db:  # 使用上下文管理器创建 ClassDB 的实例，并确保使用后自动关闭数据库连接
-            self.family_info = db.fetch_family()  # 如果没有可管理的班级 ID 列表，则获取所有班级信息
-        self.Parishioner_Info_Edit_widgets.inputLine_11.addItem('请选择班级',
-                                                                None)  # 在下拉框中添加默认选项 "请选择班级"，并将其关联的数据设为 None
-
-        for family_info in self.family_info:  # 遍历获取到的班级信息列表
-            self.Parishioner_Info_Edit_widgets.inputLine_11.addItem(family_info['family_name'],
-                                                                    userData=family_info['family_id'])
-
     def set_lineedit_uneditable(self):  # 定义一个方法，用于设置输入框不可编辑
-        self.Parishioner_Info_Edit_widgets.inputLine_1.setReadOnly(True)  # 设置输入框为只读模式，禁止用户输入
-        self.Parishioner_Info_Edit_widgets.inputLine_2.setReadOnly(True)  # 设置输入框为只读模式，禁止用户输入
-        self.Parishioner_Info_Edit_widgets.inputLine_3.setReadOnly(True)  # 设置输入框为只读模式，禁止用户输入
-        self.Parishioner_Info_Edit_widgets.inputLine_4.setReadOnly(True)  # 设置输入框为只读模式，禁止用户输入
-        self.Parishioner_Info_Edit_widgets.inputLine_9.setEnabled(False)  # 设置输入框为只读模式，禁止用户输入
-        self.Parishioner_Info_Edit_widgets.inputLine_10.setEnabled(False)  # 设置输入框为只读模式，禁止用户输入
-        self.Parishioner_Info_Edit_widgets.inputLine_11.setEnabled(False)  # 设置输入框为只读模式，禁止用户输入
-        self.Parishioner_Info_Edit_widgets.inputLine_12.hide()  # 设置输入框为只读模式，禁止用户输入
+        self.family_Info_Edit_widgets.inputLine_1.setReadOnly(True)  # 设置输入框为只读模式，禁止用户输入
+        self.family_Info_Edit_widgets.inputLine_3.setReadOnly(True)  # 设置输入框为只读模式，禁止用户输入
 
+    def set_family_name_when_add(self):
+        family_name = "%s第%d号家庭" % (self.school_info["school_name"], self.cur_family_cnt)
+        self.family_Info_Edit_widgets.inputLine_1.setText(family_name)
+        self.tableWidget.hide()
 
-class Parishioner_Main_Interface(QWidget):
+    def set_viewWidget_data(self, datas):
+        self.tableWidget.clearContents()
+        self.tableWidget.setRowCount(len(datas))
+        for row, data in enumerate(datas):
+            for column, key in enumerate(self.header_info):
+                if key == "student_gender":
+                    value = "男" if data.get(key, "") == 0 else "女"
+                else:
+                    value = data.get(key, "")
+                item = QTableWidgetItem(str(value))
+                self.tableWidget.setItem(row, column, item)
+
+class Family_Main_Interface(QWidget):
     def __init__(self, cur_parish_id=1):
         super().__init__()
 
         # 创建主布局
-        self.setObjectName("Parishioner_Main_Interface")
+        self.family_info_all = None
+        self.setObjectName("Family_Main_Interface")
         self.parishioner_info_all = None
         self.cur_parish_id = cur_parish_id
         main_layout = QVBoxLayout(self)
 
         self.BaseMainInterface = BaseMainInterface(self)
         self.BaseMainInterface.label.setMinimumSize(100, 100)
-        # self.BaseMainInterface.label.setText("Parishioner")
-        pixmap = QPixmap("./resource/pic/1.png").scaled(
+        pixmap = QPixmap("./resource/pic/3.png").scaled(
             self.BaseMainInterface.label.size(),
             Qt.AspectRatioMode.KeepAspectRatioByExpanding,
             Qt.TransformationMode.SmoothTransformation
         )
         self.BaseMainInterface.label.setPixmap(pixmap)
-        self.BaseMainInterface.label_2.setText("添加人员")
+        self.BaseMainInterface.label_2.setText("添加家庭")
         main_layout.addWidget(self.BaseMainInterface)  # 正确地将 ReusableWidget 作为一个整体添加到布局中
 
         self.resize(800, 600)
 
-        self.BaseMainInterface.BaseQuery.addButton.clicked.connect(self.add_parishioner)
-        self.BaseMainInterface.BaseQuery.delButton.clicked.connect(self.delete_parishioner)
-        self.BaseMainInterface.BaseQuery.ModButton.clicked.connect(self.modify_parishioner)
-        self.BaseMainInterface.BaseQuery.searchInput.searchSignal.connect(self.query_parishioner_info_with_like)
-        self.BaseMainInterface.BaseQuery.searchInput.returnPressed.connect(self.query_parishioner_info_with_like)
+        self.BaseMainInterface.BaseQuery.addButton.clicked.connect(self.add_family)
+        self.BaseMainInterface.BaseQuery.delButton.clicked.connect(self.delete_family)
+        self.BaseMainInterface.BaseQuery.ModButton.clicked.connect(self.modify_family)
+        self.BaseMainInterface.BaseQuery.searchInput.searchSignal.connect(self.query_family_info_with_like)
+        self.BaseMainInterface.BaseQuery.searchInput.returnPressed.connect(self.query_family_info_with_like)
 
-        self.parishioner_tableView_header = [
-            "", "姓名", "圣名", "性别", "手机", "家庭名称"
+        self.family_viewTable_header_info = [
+            "", "家庭名称", "地址", "备注"
         ]
-        self.BaseMainInterface.BaseQuery.tableWidget.setColumnCount(len(self.parishioner_tableView_header))
-        self.BaseMainInterface.BaseQuery.tableWidget.setHorizontalHeaderLabels(self.parishioner_tableView_header)
-        self.Load_Parishioner(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
+        self.BaseMainInterface.BaseQuery.tableWidget.setColumnCount(len(self.family_viewTable_header_info))
+        self.BaseMainInterface.BaseQuery.tableWidget.setHorizontalHeaderLabels(self.family_viewTable_header_info)
 
-    def query_parishioner_info_with_like(self):
+        self.Load_family(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
+
+    def query_family_info_with_like(self):
         if self.BaseMainInterface.BaseQuery.searchInput.text() == "":
-            self.Load_Parishioner(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
+            self.Load_family(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
         else:
-            self.Load_Parishioner(QUERY_TYPE.QUERY_LIKE, self.BaseMainInterface.BaseQuery.searchInput.text())
+            self.Load_family(QUERY_TYPE.QUERY_LIKE, self.BaseMainInterface.BaseQuery.searchInput.text())
 
-    def Load_Parishioner(self, query_type, query_param):
-        with StudentDB() as db:
+    def Load_family(self, query_type, query_param):
+        with FamilyDB() as db:
             if query_type == QUERY_TYPE.QUERY_ONE:
-                self.parishioner_info_all = db.fetch_students_with_school_id_and_family_id(query_param)
+                self.family_info_all = db.fetch_family_with_family_id(query_param)
             elif query_type == QUERY_TYPE.QUERY_ALL:
-                self.parishioner_info_all = db.fetch_students_with_school_id(query_param)
+                self.family_info_all = db.fetch_family_with_school_id(query_param)
             elif query_type == QUERY_TYPE.QUERY_LIKE:
-                self.parishioner_info_all = db.fetch_students_with_like(query_param)
+                self.family_info_all = db.fetch_family_with_like(query_param)
             else:
                 return
 
-        if self.parishioner_info_all is None:
+        if self.family_info_all is None:
             return
 
         header_info = [
-            'student_name', 'student_holyname', 'student_gender', 'student_phonenum', 'family_name'
+            'family_name', 'family_address', 'family_notes'
         ]
-        self.BaseMainInterface.BaseQuery.set_viewWidget_data(header_info, self.parishioner_info_all)
+        self.BaseMainInterface.BaseQuery.set_viewWidget_data(header_info, self.family_info_all)
 
-    def add_parishioner(self):
-        w = Parishioner_MessageBox(self)
-        w.titleLabel.setText("添加人员")
+    def add_family(self):
+        school_info = {
+            "school_id": 1,
+            "school_name": "崇义小学"
+        }
+        w = Family_MessageBox(school_info, 0, self)
+        w.titleLabel.setText("添加家庭")
+        w.set_family_name_when_add()
         if w.exec():
-            with StudentDB() as db:
-                get_InputParishionerMessageinfo = w.get_InputParishionerMessageinfo()
-                get_InputParishionerMessageinfo["student_school_id"] = self.cur_parish_id
-                db.add_student(get_InputParishionerMessageinfo)
-            self.Load_Parishioner(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
+            with FamilyDB() as db:
+                get_InputParishionerMessageinfo = w.get_InputFamilyMessageinfo()
+                get_InputParishionerMessageinfo["family_school_id"] = self.cur_parish_id
+                db.add_family(get_InputParishionerMessageinfo)
+            self.Load_family(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
 
-    def delete_parishioner(self):
+    def delete_family(self):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
-            w = Parishioner_MessageBox(self)
-            w.titleLabel.setText("删除人员")
+            school_info = {
+                "school_id": 1,
+                "school_name": "崇义小学"
+            }
+            w = Family_MessageBox(school_info, 1, self)
+            del_family_id = self.family_info_all[idx]["family_id"]
+            w.titleLabel.setText("删除家庭")
             w.set_lineedit_uneditable()
-            w.set_InputParishionerMessageinfo(self.parishioner_info_all[idx])
+            with StudentDB() as db:
+                parishioner_info_all = db.fetch_students_with_school_id_and_family_id(del_family_id)
+                if parishioner_info_all is not None:
+                    w.set_viewWidget_data(parishioner_info_all)
+            w.set_InputfFamilyMessageinfo(self.family_info_all[idx])
             if w.exec():
-                with StudentDB() as db:
-                    db.delete_student(self.parishioner_info_all[idx]["student_id"])
-                self.Load_Parishioner(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
+                with FamilyDB() as db:
+                    db.delete_family(self.family_info_all[idx]["family_id"])
+                self.Load_family(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
 
-    def modify_parishioner(self):
+    def modify_family(self):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
-            w = Parishioner_MessageBox(self)
-            w.titleLabel.setText("修改人员信息")
-            w.set_InputParishionerMessageinfo(self.parishioner_info_all[idx])
+            school_info = {
+                "school_id": 1,
+                "school_name": "崇义小学"
+            }
+            w = Family_MessageBox(school_info, 2, self)
+            del_family_id = self.family_info_all[idx]["family_id"]
+            w.titleLabel.setText("修改家庭")
+            with StudentDB() as db:
+                parishioner_info_all = db.fetch_students_with_school_id_and_family_id(del_family_id)
+                if parishioner_info_all is not None:
+                    w.set_viewWidget_data(parishioner_info_all)
+            w.set_InputfFamilyMessageinfo(self.family_info_all[idx])
             if w.exec():
-                with StudentDB() as db:
-                    parishioner_info = w.get_InputParishionerMessageinfo()
-                    parishioner_info["student_id"] = self.parishioner_info_all[idx]["student_id"]
-                    parishioner_info["student_school_id"] = self.cur_parish_id
-                    db.update_student(parishioner_info)
-                self.Load_Parishioner(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
+                with FamilyDB() as db:
+                    family = w.get_InputFamilyMessageinfo()
+                    family["family_id"] = self.family_info_all[idx]["family_id"]
+                    family["family_school_id"] = self.cur_parish_id
+                    db.update_family(family)
+                self.Load_family(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
+
 
 if __name__ == "__main__":
     import sys
 
     app = QApplication(sys.argv)
 
-    main_window = Parishioner_Main_Interface()
+    main_window = Family_Main_Interface(1)
     main_window.show()
 
     sys.exit(app.exec())
