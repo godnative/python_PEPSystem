@@ -94,24 +94,6 @@ class BaseMessageBoxWidget(QWidget):
         hbox.addLayout(vbox)
 
 
-class CustomMessageBox(MessageBoxBase):
-
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.titleLabel = SubtitleLabel('打开 URL', self)
-        self.urlLineEdit = BaseMessageBoxWidget(self)
-
-        # add widget to view layout
-        self.viewLayout.addWidget(self.titleLabel)
-        self.viewLayout.addWidget(self.urlLineEdit)
-
-        self.widget.setMinimumWidth(350)
-
-    def validate(self):
-        """ 重写验证表单数据的方法 """
-        return True
-
-
 class BaseQueryWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -151,15 +133,15 @@ class BaseQueryWidget(QWidget):
         self.tableWidget.clearContents()
         self.tableWidget.setRowCount(len(datas))
         for row, data in enumerate(datas):
-            checkBox = QCheckBox()
-            self.tableWidget.setCellWidget(row, 0, checkBox)
+            # checkBox = QCheckBox()
+            # self.tableWidget.setCellWidget(row, 0, checkBox)
             for column, key in enumerate(header_info):
                 if key == "student_gender":
                     value = "男" if data.get(key, "") == 0 else "女"
                 else:
                     value = data.get(key, "")
                 item = QTableWidgetItem(str(value))
-                self.tableWidget.setItem(row, column + 1, item)
+                self.tableWidget.setItem(row, column, item)
 
 
 class BaseMainInterface(QWidget):

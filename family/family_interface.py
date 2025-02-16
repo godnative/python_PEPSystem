@@ -6,7 +6,7 @@ from PyQt6.QtWidgets import QApplication, QVBoxLayout, QWidget, QAbstractItemVie
     QTableWidgetItem
 from qfluentwidgets import MessageBoxBase, SubtitleLabel, InfoBar, TableWidget
 
-from BaseWidgets.BaseModule import BaseMainInterface, BaseMessageBoxWidget
+from BaseWidgets.BaseModule import BaseMainInterface, BaseMessageBoxWidget, BaseQueryWidget
 from DataBase.family_db import FamilyDB
 from DataBase.student_db import StudentDB
 
@@ -34,20 +34,14 @@ class Family_MessageBox(MessageBoxBase):
         self.viewLayout.addWidget(self.titleLabel)
         self.viewLayout.addWidget(self.family_Info_Edit_widgets)
 
-        self.tableWidget = TableWidget(self)
-        self.tableWidget.setBorderVisible(True)
-        self.tableWidget.setBorderRadius(8)
-        self.tableWidget.setWordWrap(False)
-        self.tableWidget.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
-
-        self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
+        self.BaseQueryWidget = BaseQueryWidget(self)
 
         parishioner_tableView_header = [
             "姓名", "圣名", "性别", "手机", "家庭名称"
         ]
-        self.tableWidget.setColumnCount(len(parishioner_tableView_header))
-        self.tableWidget.setHorizontalHeaderLabels(parishioner_tableView_header)
-        self.viewLayout.addWidget(self.tableWidget)
+        self.BaseQueryWidget.tableWidget.setColumnCount(len(parishioner_tableView_header))
+        self.BaseQueryWidget.tableWidget.setHorizontalHeaderLabels(parishioner_tableView_header)
+        self.viewLayout.addWidget(self.BaseQueryWidget)
 
         # 设置UI
         self.family_Info_Edit_widgets.label_1.setText("家庭名称")
@@ -74,6 +68,11 @@ class Family_MessageBox(MessageBoxBase):
         self.family_Info_Edit_widgets.inputLine_11.hide()
         self.family_Info_Edit_widgets.label_12.hide()
         self.family_Info_Edit_widgets.inputLine_12.hide()
+
+        self.BaseQueryWidget.addButton.hide()
+        self.BaseQueryWidget.delButton.hide()
+        self.BaseQueryWidget.ModButton.hide()
+        self.BaseQueryWidget.searchInput.hide()
 
         self.family_Info_Edit_widgets.pic.setMaximumSize(100, 100)
         pixmap = QPixmap("./resource/pic/4.png").scaled(
@@ -103,7 +102,8 @@ class Family_MessageBox(MessageBoxBase):
             errors.append("请输入备注")  # 验证班级是否选择，如果未选择班级，添加错误信息
 
         if self.massage_type == 1 and self.tableWidget.rowCount() != 0:
-            errors.append("当前家庭还有%d个成员，请先移除成员后再删除家庭" % self.tableWidget.rowCount())  # 验证班级是否选择，如果未选择班级，添加错误信息
+            errors.append(
+                "当前家庭还有%d个成员，请先移除成员后再删除家庭" % self.tableWidget.rowCount())  # 验证班级是否选择，如果未选择班级，添加错误信息
 
         return errors  # 返回所有错误信息
 
@@ -139,19 +139,8 @@ class Family_MessageBox(MessageBoxBase):
     def set_family_name_when_add(self):
         family_name = "%s第%d号家庭" % (self.school_info["school_name"], self.cur_family_cnt)
         self.family_Info_Edit_widgets.inputLine_1.setText(family_name)
-        self.tableWidget.hide()
+        self.BaseQueryWidget.hide()
 
-    def set_viewWidget_data(self, datas):
-        self.tableWidget.clearContents()
-        self.tableWidget.setRowCount(len(datas))
-        for row, data in enumerate(datas):
-            for column, key in enumerate(self.header_info):
-                if key == "student_gender":
-                    value = "男" if data.get(key, "") == 0 else "女"
-                else:
-                    value = data.get(key, "")
-                item = QTableWidgetItem(str(value))
-                self.tableWidget.setItem(row, column, item)
 
 class Family_Main_Interface(QWidget):
     def __init__(self, cur_parish_id=1):
@@ -184,7 +173,7 @@ class Family_Main_Interface(QWidget):
         self.BaseMainInterface.BaseQuery.searchInput.returnPressed.connect(self.query_family_info_with_like)
 
         self.family_viewTable_header_info = [
-            "", "家庭名称", "地址", "备注"
+            "家庭名称", "地址", "备注"
         ]
         self.BaseMainInterface.BaseQuery.tableWidget.setColumnCount(len(self.family_viewTable_header_info))
         self.BaseMainInterface.BaseQuery.tableWidget.setHorizontalHeaderLabels(self.family_viewTable_header_info)
@@ -245,7 +234,7 @@ class Family_Main_Interface(QWidget):
             with StudentDB() as db:
                 parishioner_info_all = db.fetch_students_with_school_id_and_family_id(del_family_id)
                 if parishioner_info_all is not None:
-                    w.set_viewWidget_data(parishioner_info_all)
+                    w.BaseQueryWidget.set_viewWidget_data(w.header_info, parishioner_info_all)
             w.set_InputfFamilyMessageinfo(self.family_info_all[idx])
             if w.exec():
                 with FamilyDB() as db:
@@ -265,7 +254,7 @@ class Family_Main_Interface(QWidget):
             with StudentDB() as db:
                 parishioner_info_all = db.fetch_students_with_school_id_and_family_id(del_family_id)
                 if parishioner_info_all is not None:
-                    w.set_viewWidget_data(parishioner_info_all)
+                    w.BaseQueryWidget.set_viewWidget_data(w.header_info, parishioner_info_all)
             w.set_InputfFamilyMessageinfo(self.family_info_all[idx])
             if w.exec():
                 with FamilyDB() as db:

@@ -17,65 +17,65 @@ class QUERY_TYPE(enum.Enum):
     QUERY_LIKE = 2
 
 
-class Parishioner_MessageBox(MessageBoxBase):
+class EventBaptism_MessageBox(MessageBoxBase):
 
     def __init__(self, parent=None):
         super().__init__(parent)
         self.family_info = None
         self.titleLabel = SubtitleLabel('人员', self)
-        self.Parishioner_Info_Edit_widgets = BaseMessageBoxWidget(self)
+        self.BaseMessageBoxWidget = BaseMessageBoxWidget(self)
 
         # add widget to view layout
         self.viewLayout.addWidget(self.titleLabel)
-        self.viewLayout.addWidget(self.Parishioner_Info_Edit_widgets)
+        self.viewLayout.addWidget(self.BaseMessageBoxWidget)
 
         # 设置UI
-        self.Parishioner_Info_Edit_widgets.label_1.setText("姓名")
-        self.Parishioner_Info_Edit_widgets.label_2.setText("圣名")
-        self.Parishioner_Info_Edit_widgets.label_3.setText("手机")
-        self.Parishioner_Info_Edit_widgets.label_4.setText("身份证")
-        self.Parishioner_Info_Edit_widgets.label_9.setText("性别")
-        self.Parishioner_Info_Edit_widgets.label_10.setText("出生日期")
-        self.Parishioner_Info_Edit_widgets.label_11.setText("家庭")
-        self.Parishioner_Info_Edit_widgets.inputLine_12.setText("添加家庭")
-        self.Parishioner_Info_Edit_widgets.label_13.setText("备注")
+        self.BaseMessageBoxWidget.label_1.setText("姓名")
+        self.BaseMessageBoxWidget.label_2.setText("圣名")
+        self.BaseMessageBoxWidget.label_3.setText("手机")
+        self.BaseMessageBoxWidget.label_4.setText("身份证")
+        self.BaseMessageBoxWidget.label_9.setText("性别")
+        self.BaseMessageBoxWidget.label_10.setText("出生日期")
+        self.BaseMessageBoxWidget.label_11.setText("家庭")
+        self.BaseMessageBoxWidget.inputLine_12.setText("添加家庭")
+        self.BaseMessageBoxWidget.label_13.setText("备注")
 
-        self.Parishioner_Info_Edit_widgets.label_5.hide()
-        self.Parishioner_Info_Edit_widgets.inputLine_5.hide()
-        self.Parishioner_Info_Edit_widgets.label_6.hide()
-        self.Parishioner_Info_Edit_widgets.inputLine_6.hide()
-        self.Parishioner_Info_Edit_widgets.label_7.hide()
-        self.Parishioner_Info_Edit_widgets.inputLine_7.hide()
-        self.Parishioner_Info_Edit_widgets.label_8.hide()
-        self.Parishioner_Info_Edit_widgets.inputLine_8.hide()
+        self.BaseMessageBoxWidget.label_5.hide()
+        self.BaseMessageBoxWidget.inputLine_5.hide()
+        self.BaseMessageBoxWidget.label_6.hide()
+        self.BaseMessageBoxWidget.inputLine_6.hide()
+        self.BaseMessageBoxWidget.label_7.hide()
+        self.BaseMessageBoxWidget.inputLine_7.hide()
+        self.BaseMessageBoxWidget.label_8.hide()
+        self.BaseMessageBoxWidget.inputLine_8.hide()
         # self.Parishioner_Info_Edit_widgets.label_12.hide()
-        self.Parishioner_Info_Edit_widgets.label_12.setText("     ")
+        self.BaseMessageBoxWidget.label_12.setText("     ")
 
-        self.Parishioner_Info_Edit_widgets.inputLine_9.addItem("男", userData=0)
-        self.Parishioner_Info_Edit_widgets.inputLine_9.addItem("女", userData=1)
+        self.BaseMessageBoxWidget.inputLine_9.addItem("男", userData=0)
+        self.BaseMessageBoxWidget.inputLine_9.addItem("女", userData=1)
 
-        self.Parishioner_Info_Edit_widgets.pic.setMaximumSize(100, 100)
+        self.BaseMessageBoxWidget.pic.setMaximumSize(100, 100)
         pixmap = QPixmap("./resource/pic/2.png").scaled(
-            self.Parishioner_Info_Edit_widgets.pic.size(),
+            self.BaseMessageBoxWidget.pic.size(),
             Qt.AspectRatioMode.KeepAspectRatioByExpanding,
             Qt.TransformationMode.SmoothTransformation
         )
-        self.Parishioner_Info_Edit_widgets.pic.setPixmap(pixmap)
+        self.BaseMessageBoxWidget.pic.setPixmap(pixmap)
 
         self.widget.setMinimumWidth(350)
-        self.Parishioner_Info_Edit_widgets.inputLine_12.clicked.connect(self.add_family)
+        self.BaseMessageBoxWidget.inputLine_12.clicked.connect(self.add_family)
         self.load_family()
 
     def _validateInput(self):
         errors = []  # 初始化错误信息列表
 
-        if not self.Parishioner_Info_Edit_widgets.inputLine_1.text().strip():
+        if not self.BaseMessageBoxWidget.inputLine_1.text().strip():
             errors.append("请输入姓名")  # 验证姓名是否填写，如果未填写，添加错误信息
 
-        if self.Parishioner_Info_Edit_widgets.inputLine_11.currentData() is None:
+        if self.BaseMessageBoxWidget.inputLine_11.currentData() is None:
             errors.append("请选择家庭")  # 验证学号是否填写，如果未填写，添加错误信息
 
-        if self.Parishioner_Info_Edit_widgets.inputLine_9.currentData() is None:
+        if self.BaseMessageBoxWidget.inputLine_9.currentData() is None:
             errors.append("请选择性别")  # 验证班级是否选择，如果未选择班级，添加错误信息
 
         return errors  # 返回所有错误信息
@@ -107,45 +107,45 @@ class Parishioner_MessageBox(MessageBoxBase):
 
     def get_InputParishionerMessageinfo(self):
         parishioner_messageinfo = {
-            "student_name": self.Parishioner_Info_Edit_widgets.inputLine_1.text(),
-            "student_gender": self.Parishioner_Info_Edit_widgets.inputLine_9.currentData(),
-            "student_phonenum": self.Parishioner_Info_Edit_widgets.inputLine_3.text(),  # 性别字段与对应的下拉框
-            "student_holyname": self.Parishioner_Info_Edit_widgets.inputLine_2.text(),  # 班级字段与对应的下拉框
-            "student_family_id": self.Parishioner_Info_Edit_widgets.inputLine_11.currentData(),  # 语文字段与对应的输入框
+            "student_name": self.BaseMessageBoxWidget.inputLine_1.text(),
+            "student_gender": self.BaseMessageBoxWidget.inputLine_9.currentData(),
+            "student_phonenum": self.BaseMessageBoxWidget.inputLine_3.text(),  # 性别字段与对应的下拉框
+            "student_holyname": self.BaseMessageBoxWidget.inputLine_2.text(),  # 班级字段与对应的下拉框
+            "student_family_id": self.BaseMessageBoxWidget.inputLine_11.currentData(),  # 语文字段与对应的输入框
             "student_school_id": None
         }
         return parishioner_messageinfo
 
     def set_InputParishionerMessageinfo(self, parishioner_messageinfo):
-        self.Parishioner_Info_Edit_widgets.inputLine_1.setText(parishioner_messageinfo["student_name"])
-        self.Parishioner_Info_Edit_widgets.inputLine_9.setCurrentIndex(parishioner_messageinfo["student_gender"])
-        self.Parishioner_Info_Edit_widgets.inputLine_3.setText(parishioner_messageinfo["student_phonenum"])
-        self.Parishioner_Info_Edit_widgets.inputLine_2.setText(parishioner_messageinfo["student_holyname"])
-        family_idx = self.Parishioner_Info_Edit_widgets.inputLine_11.findData(
+        self.BaseMessageBoxWidget.inputLine_1.setText(parishioner_messageinfo["student_name"])
+        self.BaseMessageBoxWidget.inputLine_9.setCurrentIndex(parishioner_messageinfo["student_gender"])
+        self.BaseMessageBoxWidget.inputLine_3.setText(parishioner_messageinfo["student_phonenum"])
+        self.BaseMessageBoxWidget.inputLine_2.setText(parishioner_messageinfo["student_holyname"])
+        family_idx = self.BaseMessageBoxWidget.inputLine_11.findData(
             parishioner_messageinfo["student_family_id"])
-        self.Parishioner_Info_Edit_widgets.inputLine_11.setCurrentIndex(family_idx)
+        self.BaseMessageBoxWidget.inputLine_11.setCurrentIndex(family_idx)
         return
 
     def load_family(self):
-        self.Parishioner_Info_Edit_widgets.inputLine_11.clear()  # 清空 classCombo 下拉框中的所有选项
+        self.BaseMessageBoxWidget.inputLine_11.clear()  # 清空 classCombo 下拉框中的所有选项
         with FamilyDB() as db:  # 使用上下文管理器创建 ClassDB 的实例，并确保使用后自动关闭数据库连接
             self.family_info = db.fetch_family()  # 如果没有可管理的班级 ID 列表，则获取所有班级信息
-        self.Parishioner_Info_Edit_widgets.inputLine_11.addItem('请选择班级',
-                                                                None)  # 在下拉框中添加默认选项 "请选择班级"，并将其关联的数据设为 None
+        self.BaseMessageBoxWidget.inputLine_11.addItem('请选择班级',
+                                                       None)  # 在下拉框中添加默认选项 "请选择班级"，并将其关联的数据设为 None
 
         for family_info in self.family_info:  # 遍历获取到的班级信息列表
-            self.Parishioner_Info_Edit_widgets.inputLine_11.addItem(family_info['family_name'],
-                                                                    userData=family_info['family_id'])
+            self.BaseMessageBoxWidget.inputLine_11.addItem(family_info['family_name'],
+                                                           userData=family_info['family_id'])
 
     def set_lineedit_uneditable(self):  # 定义一个方法，用于设置输入框不可编辑
-        self.Parishioner_Info_Edit_widgets.inputLine_1.setReadOnly(True)  # 设置输入框为只读模式，禁止用户输入
-        self.Parishioner_Info_Edit_widgets.inputLine_2.setReadOnly(True)  # 设置输入框为只读模式，禁止用户输入
-        self.Parishioner_Info_Edit_widgets.inputLine_3.setReadOnly(True)  # 设置输入框为只读模式，禁止用户输入
-        self.Parishioner_Info_Edit_widgets.inputLine_4.setReadOnly(True)  # 设置输入框为只读模式，禁止用户输入
-        self.Parishioner_Info_Edit_widgets.inputLine_9.setEnabled(False)  # 设置输入框为只读模式，禁止用户输入
-        self.Parishioner_Info_Edit_widgets.inputLine_10.setEnabled(False)  # 设置输入框为只读模式，禁止用户输入
-        self.Parishioner_Info_Edit_widgets.inputLine_11.setEnabled(False)  # 设置输入框为只读模式，禁止用户输入
-        self.Parishioner_Info_Edit_widgets.inputLine_12.hide()  # 设置输入框为只读模式，禁止用户输入
+        self.BaseMessageBoxWidget.inputLine_1.setReadOnly(True)  # 设置输入框为只读模式，禁止用户输入
+        self.BaseMessageBoxWidget.inputLine_2.setReadOnly(True)  # 设置输入框为只读模式，禁止用户输入
+        self.BaseMessageBoxWidget.inputLine_3.setReadOnly(True)  # 设置输入框为只读模式，禁止用户输入
+        self.BaseMessageBoxWidget.inputLine_4.setReadOnly(True)  # 设置输入框为只读模式，禁止用户输入
+        self.BaseMessageBoxWidget.inputLine_9.setEnabled(False)  # 设置输入框为只读模式，禁止用户输入
+        self.BaseMessageBoxWidget.inputLine_10.setEnabled(False)  # 设置输入框为只读模式，禁止用户输入
+        self.BaseMessageBoxWidget.inputLine_11.setEnabled(False)  # 设置输入框为只读模式，禁止用户输入
+        self.BaseMessageBoxWidget.inputLine_12.hide()  # 设置输入框为只读模式，禁止用户输入
 
 
 class Parishioner_Main_Interface(QWidget):
