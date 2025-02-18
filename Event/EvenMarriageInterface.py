@@ -7,7 +7,6 @@ from qfluentwidgets import MessageBoxBase, SubtitleLabel, InfoBar
 
 from BaseWidgets.BaseModule import BaseMainInterface, BaseMessageBoxWidget
 from DataBase.holyevent_db import HolyEventDB
-from DataBase.student_db import StudentDB
 from Parishioner.Parishioner_Interface import Parishioner_Main_Interface
 from utils.utils_tool import qdate_to_timestamp, timestamp_to_date
 
@@ -18,7 +17,7 @@ class QUERY_TYPE(enum.Enum):
     QUERY_LIKE = 2
 
 
-class EventBaptism_MessageBox(MessageBoxBase):
+class EventMarriage_MessageBox(MessageBoxBase):
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -35,7 +34,6 @@ class EventBaptism_MessageBox(MessageBoxBase):
         self.parishioner_widgets.BaseMainInterface.BaseQuery.ModButton.hide()
         self.parishioner_widgets.BaseMainInterface.BaseQuery.extendButton_1.clicked.connect(self.set_persion_info)
 
-
         # add widget to view layout
         self.viewLayout.addWidget(self.titleLabel)
         self.viewLayout.addWidget(self.BaseMessageBoxWidget)
@@ -43,22 +41,22 @@ class EventBaptism_MessageBox(MessageBoxBase):
         self.viewLayout.addWidget(self.parishioner_widgets)
 
         # 设置UI
-        self.BaseMessageBoxWidget.label_1.setText("姓名")
+        self.BaseMessageBoxWidget.label_1.setText("男方姓名")
         self.BaseMessageBoxWidget.label_2.setText("圣名")
-        self.BaseMessageBoxWidget.label_3.setText("见证人")
-        self.BaseMessageBoxWidget.label_4.setText("施行人")
-        self.BaseMessageBoxWidget.label_9.setText("性别")
+        self.BaseMessageBoxWidget.label_3.setText("女方姓名")
+        self.BaseMessageBoxWidget.label_4.setText("圣名")
+        self.BaseMessageBoxWidget.label_5.setText("见证人")
+        self.BaseMessageBoxWidget.label_6.setText("施行人")
+
         self.BaseMessageBoxWidget.label_10.setText("日期")
         self.BaseMessageBoxWidget.label_13.setText("备注")
 
-        self.BaseMessageBoxWidget.label_5.hide()
-        self.BaseMessageBoxWidget.inputLine_5.hide()
-        self.BaseMessageBoxWidget.label_6.hide()
-        self.BaseMessageBoxWidget.inputLine_6.hide()
         self.BaseMessageBoxWidget.label_7.hide()
         self.BaseMessageBoxWidget.inputLine_7.hide()
         self.BaseMessageBoxWidget.label_8.hide()
         self.BaseMessageBoxWidget.inputLine_8.hide()
+        self.BaseMessageBoxWidget.label_9.hide()
+        self.BaseMessageBoxWidget.inputLine_9.hide()
         self.BaseMessageBoxWidget.label_11.hide()
         self.BaseMessageBoxWidget.inputLine_11.hide()
         self.BaseMessageBoxWidget.label_12.hide()
@@ -67,11 +65,8 @@ class EventBaptism_MessageBox(MessageBoxBase):
         self.parishioner_widgets.BaseMainInterface.label.hide()
         self.parishioner_widgets.BaseMainInterface.label_2.hide()
 
-        self.BaseMessageBoxWidget.inputLine_9.addItem("男", userData=0)
-        self.BaseMessageBoxWidget.inputLine_9.addItem("女", userData=1)
-
         self.BaseMessageBoxWidget.pic.setMaximumSize(100, 100)
-        pixmap = QPixmap("./resource/pic/7.png").scaled(
+        pixmap = QPixmap("./resource/pic/c2.png").scaled(
             self.BaseMessageBoxWidget.pic.size(),
             Qt.AspectRatioMode.KeepAspectRatioByExpanding,
             Qt.TransformationMode.SmoothTransformation
@@ -79,15 +74,15 @@ class EventBaptism_MessageBox(MessageBoxBase):
         self.BaseMessageBoxWidget.pic.setPixmap(pixmap)
 
         self.widget.setMinimumWidth(350)
+        self.yesButton.setDisabled(True)
 
     def _validateInput(self):
         errors = []  # 初始化错误信息列表
 
         if not self.BaseMessageBoxWidget.inputLine_1.text().strip():
             errors.append("请输入姓名")  # 验证姓名是否填写，如果未填写，添加错误信息
-        if not self.BaseMessageBoxWidget.inputLine_2.text().strip():
-            errors.append("请输入圣名")  # 验证姓名是否填写，如果未填写，添加错误信息
-        if not self.BaseMessageBoxWidget.inputLine_4.text().strip():
+
+        if not self.BaseMessageBoxWidget.inputLine_6.text().strip():
             errors.append("请输入施行人")  # 验证班级是否选择，如果未选择班级，添加错误信息
 
         return errors  # 返回所有错误信息
@@ -106,9 +101,8 @@ class EventBaptism_MessageBox(MessageBoxBase):
         even_messageinfo = {
             'holyevent_p1_id': self.parishioner_1_id,
             'holyevent_p2_id': self.parishioner_2_id,
-            'holyevent_p1_holyname': self.BaseMessageBoxWidget.inputLine_2.text(),
-            'holyevent_implementer': self.BaseMessageBoxWidget.inputLine_4.text(),
-            'holyevent_witness': self.BaseMessageBoxWidget.inputLine_3.text(),
+            'holyevent_implementer': self.BaseMessageBoxWidget.inputLine_6.text(),
+            'holyevent_witness': self.BaseMessageBoxWidget.inputLine_5.text(),
             'holyevent_school_id': "",
             'holyevent_date': qdate_to_timestamp(self.BaseMessageBoxWidget.inputLine_10.date),
             'holyevent_note': self.BaseMessageBoxWidget.inputLine_13.text()
@@ -120,13 +114,13 @@ class EventBaptism_MessageBox(MessageBoxBase):
         self.parishioner_2_id = even_messageinfo["holyevent_p2_id"]
         self.BaseMessageBoxWidget.inputLine_1.setText(even_messageinfo["holyevent_p1_name"])
         self.BaseMessageBoxWidget.inputLine_2.setText(even_messageinfo["holyevent_p1_holyname"])
-        self.BaseMessageBoxWidget.inputLine_3.setText(even_messageinfo["holyevent_witness"])
-        self.BaseMessageBoxWidget.inputLine_4.setText(even_messageinfo["holyevent_implementer"])
-        self.BaseMessageBoxWidget.inputLine_9.setCurrentIndex(even_messageinfo["holyevent_p1_gender"])
+        self.BaseMessageBoxWidget.inputLine_3.setText(even_messageinfo["holyevent_p2_name"])
+        self.BaseMessageBoxWidget.inputLine_4.setText(even_messageinfo["holyevent_p2_holyname"])
+        self.BaseMessageBoxWidget.inputLine_5.setText(even_messageinfo["holyevent_witness"])
+        self.BaseMessageBoxWidget.inputLine_6.setText(even_messageinfo["holyevent_implementer"])
         self.BaseMessageBoxWidget.inputLine_10.setDate(timestamp_to_date(even_messageinfo["holyevent_date"]))
         self.BaseMessageBoxWidget.inputLine_13.setText(even_messageinfo["holyevent_note"])
         return
-
 
     def set_lineedit_uneditable(self):  # 定义一个方法，用于设置输入框不可编辑
         self.BaseMessageBoxWidget.inputLine_1.setReadOnly(True)  # 设置输入框为只读模式，禁止用户输入
@@ -142,33 +136,45 @@ class EventBaptism_MessageBox(MessageBoxBase):
         idx = self.parishioner_widgets.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
             parishioner_info = self.parishioner_widgets.parishioner_info_all[idx]
-            self.parishioner_1_id = parishioner_info["student_id"]
-            self.BaseMessageBoxWidget.inputLine_1.setText(parishioner_info["student_name"])
-            self.BaseMessageBoxWidget.inputLine_2.setText(parishioner_info["student_holyname"])
-            self.BaseMessageBoxWidget.inputLine_9.setCurrentIndex(parishioner_info["student_gender"])
+            if parishioner_info["student_gender"] == 0:
+                self.parishioner_1_id = parishioner_info["student_id"]
+                self.BaseMessageBoxWidget.inputLine_1.setText(parishioner_info["student_name"])
+                self.BaseMessageBoxWidget.inputLine_2.setText(parishioner_info["student_holyname"])
+            else:
+                self.parishioner_2_id = parishioner_info["student_id"]
+                self.BaseMessageBoxWidget.inputLine_3.setText(parishioner_info["student_name"])
+                self.BaseMessageBoxWidget.inputLine_4.setText(parishioner_info["student_holyname"])
+
+            select = 0
+            if self.BaseMessageBoxWidget.inputLine_1.text().strip():
+                select = 1
+            if self.BaseMessageBoxWidget.inputLine_3.text().strip():
+                select = 2
+                self.yesButton.setDisabled(False)
+            self.parishioner_widgets.BaseMainInterface.BaseQuery.extendButton_1.setText("已选中(%d / 2) 人" % select)
 
 
-class EventBaptism_Main_Interface(QWidget):
+class EventMarriage_Main_Interface(QWidget):
     def __init__(self, cur_parish_id=1):
         super().__init__()
 
         # 创建主布局
-        self.setObjectName("EventBaptism_Main_Interface")
+        self.setObjectName("EventMarriage_Main_Interface")
         self.Event_all_info = None
         self.cur_parish_id = cur_parish_id
-        self.evenType = 1
+        self.evenType = 2
         main_layout = QVBoxLayout(self)
 
         self.BaseMainInterface = BaseMainInterface(self)
         self.BaseMainInterface.label.setMinimumSize(100, 100)
         # self.BaseMainInterface.label.setText("Parishioner")
-        pixmap = QPixmap("./resource/pic/8.png").scaled(
+        pixmap = QPixmap("./resource/pic/c1.png").scaled(
             self.BaseMainInterface.label.size(),
             Qt.AspectRatioMode.KeepAspectRatioByExpanding,
             Qt.TransformationMode.SmoothTransformation
         )
         self.BaseMainInterface.label.setPixmap(pixmap)
-        self.BaseMainInterface.label_2.setText("圣洗圣事")
+        self.BaseMainInterface.label_2.setText("婚姻圣事")
         main_layout.addWidget(self.BaseMainInterface)  # 正确地将 ReusableWidget 作为一个整体添加到布局中
 
         self.resize(800, 600)
@@ -180,7 +186,7 @@ class EventBaptism_Main_Interface(QWidget):
         self.BaseMainInterface.BaseQuery.searchInput.returnPressed.connect(self.query_evenBaptism_info_with_like)
 
         self.evenBaptism_tableView_header = [
-             "姓名", "圣名", "施行人", "见证人", "堂区", "日期", "备注"
+            "男方姓名", "女方姓名", "施行人", "见证人", "堂区", "日期", "备注"
         ]
         self.BaseMainInterface.BaseQuery.tableWidget.setColumnCount(len(self.evenBaptism_tableView_header))
         self.BaseMainInterface.BaseQuery.tableWidget.setHorizontalHeaderLabels(self.evenBaptism_tableView_header)
@@ -205,13 +211,13 @@ class EventBaptism_Main_Interface(QWidget):
             return
 
         header_info = [
-            'holyevent_p1_name', 'holyevent_p1_holyname', 'holyevent_implementer',
+            'holyevent_p1_name', 'holyevent_p2_name', 'holyevent_implementer',
             'holyevent_witness', 'holyevent_school_id', 'holyevent_date', 'holyevent_note'
         ]
         self.BaseMainInterface.BaseQuery.set_viewWidget_data(header_info, self.Event_all_info)
 
     def add_even(self):
-        w = EventBaptism_MessageBox(self)
+        w = EventMarriage_MessageBox(self)
         w.titleLabel.setText("添加事件")
         if w.exec():
             with HolyEventDB() as db:
@@ -219,15 +225,12 @@ class EventBaptism_Main_Interface(QWidget):
                 get_InputEvenBaptismMessageinfo["student_school_id"] = self.cur_parish_id
                 get_InputEvenBaptismMessageinfo["holyevent_type"] = self.evenType
                 db.add_even(get_InputEvenBaptismMessageinfo)
-            with StudentDB() as db:
-                db.update_student_holyname(get_InputEvenBaptismMessageinfo["holyevent_p1_id"],
-                                           get_InputEvenBaptismMessageinfo["holyevent_p1_holyname"])
             self.Load_even(QUERY_TYPE.QUERY_ALL, self.evenType, self.cur_parish_id)
 
     def delete_even(self):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
-            w = EventBaptism_MessageBox(self)
+            w = EventMarriage_MessageBox(self)
             w.parishioner_widgets.hide()
             w.titleLabel.setText("删除事件")
             w.set_lineedit_uneditable()
@@ -240,7 +243,7 @@ class EventBaptism_Main_Interface(QWidget):
     def modify_even(self):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
-            w = EventBaptism_MessageBox(self)
+            w = EventMarriage_MessageBox(self)
             w.parishioner_widgets.hide()
             w.titleLabel.setText("修改事件信息")
             w.set_InputEventMessageinfo(self.Event_all_info[idx])
@@ -250,10 +253,8 @@ class EventBaptism_Main_Interface(QWidget):
                     Even_info["student_school_id"] = self.cur_parish_id
                     Even_info["holyevent_id"] = self.Event_all_info[idx]["holyevent_id"]
                     db.update_even(Even_info)
-                with StudentDB() as db:
-                    db.update_student_holyname(Even_info["holyevent_p1_id"],
-                                               Even_info["holyevent_p1_holyname"])
                 self.Load_even(QUERY_TYPE.QUERY_ALL, self.evenType, self.cur_parish_id)
+
 
 if __name__ == "__main__":
     import sys

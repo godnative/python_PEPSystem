@@ -1,9 +1,8 @@
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout, \
-    QAbstractItemView, QHeaderView, QCheckBox, QTableWidgetItem
-from qfluentwidgets import PushButton, SearchLineEdit, TableWidget, LineEdit, CalendarPicker, ComboBox, MessageBoxBase, \
-    SubtitleLabel
+    QAbstractItemView, QHeaderView, QTableWidgetItem
+from qfluentwidgets import PushButton, SearchLineEdit, TableWidget, LineEdit, CalendarPicker, ComboBox
 
-from utils.utils_tool import get_datestr_from_timestamp
+from utils.utils_tool import get_now_date
 
 
 class BaseMessageBoxWidget(QWidget):
@@ -67,6 +66,7 @@ class BaseMessageBoxWidget(QWidget):
         self.inputLine_9 = ComboBox()
         self.label_10 = QLabel("label_10")
         self.inputLine_10 = CalendarPicker()
+        self.inputLine_10.setDate(get_now_date())
         hbox_5.addWidget(self.label_9)
         hbox_5.addWidget(self.inputLine_9)
         hbox_5.addWidget(self.label_10)
@@ -113,10 +113,14 @@ class BaseQueryWidget(QWidget):
 
         self.ModButton = PushButton("Mod")
 
+        self.extendButton_1 = PushButton("Mod")
+        self.extendButton_1.hide()
+
         layout.addWidget(self.addButton)
         layout.addWidget(self.searchInput)
         layout.addWidget(self.delButton)
         layout.addWidget(self.ModButton)
+        layout.addWidget(self.extendButton_1)
 
         self.tableWidget = TableWidget(self)
         self.tableWidget.setBorderVisible(True)

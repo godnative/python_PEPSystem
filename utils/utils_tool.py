@@ -17,9 +17,14 @@ def qdate_to_timestamp(date):
 # 时间戳转换为 QDate
 def timestamp_to_date(timestamp):
     # 将时间戳（秒）转换为 datetime 对象
-    date_time = datetime.utcfromtimestamp(timestamp)
-    # 将 datetime 对象转换为 QDate
-    date = QDate(date_time.year, date_time.month, date_time.day)
+    dt_object = datetime.fromtimestamp(timestamp)
+    date = QDate(dt_object.year, dt_object.month, dt_object.day)
+    return date
+
+
+def get_now_date():
+    now = datetime.now()
+    date = QDate(now.year, now.month, now.day)
     return date
 
 
@@ -52,3 +57,8 @@ class ImageLabel(QLabel):
                 image_path = file_paths[0]
                 self.setPixmap(QPixmap(image_path))
                 self.image_path = image_path
+
+
+if __name__ == '__main__':
+    print(get_now_date())
+    print(timestamp_to_date(1692492800))
