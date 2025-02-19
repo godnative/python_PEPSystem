@@ -1,17 +1,25 @@
 from PyQt6.QtWidgets import QWidget, QStackedWidget, QVBoxLayout
 from qfluentwidgets import (qrouter, TabBar, TabCloseButtonDisplayMode)
 
+from Event.EvenConfirmationInterface import EventConfirmation_Main_Interface
+from Event.EvenMarriageInterface import EventMarriage_Main_Interface
+from Event.EventBaptismInterFace import EventBaptism_Main_Interface
 from utils.custom_style import StyleSheet
 
 
-class HolyEvenTabInterface(QWidget):
+class EvenMainTabInterface(QWidget):
 
-    def __init__(self, parent=None):
-        super().__init__(parent=parent)
+    def __init__(self, cur_parish, cur_user, ObjectName):
+        super().__init__()
+
+        # 创建主布局
+        self.setObjectName(ObjectName)
+        self.cur_parish = cur_parish
+        self.cur_user = cur_user
+
         self.tabCount = 1
-        self.setObjectName("HolyEvenTabInterface")
-        self.role = parent.role
-        self.school_info = parent.school_info
+        self.setObjectName(ObjectName)
+
         self.tabBar = TabBar(self)
         self.stackedWidget = QStackedWidget(self)
         self.tabView = QWidget(self)
@@ -25,17 +33,19 @@ class HolyEvenTabInterface(QWidget):
         self.main_vBoxLayout = QVBoxLayout(self)
         self.vBoxLayout = QVBoxLayout(self.tabView)
 
-        self.baptism_interface = (self)
-        self.student_widget = Student_Widget(self)
-        self.confirmation_interface = HolyEventConfirmationInterFace(self)
-        self.marriage_interface = HolyEventmarriageInterFace(self)
+        self.baptism_interface = EventBaptism_Main_Interface(self.cur_parish, self.cur_user,
+                                                             "EventBaptism_Main_Interface_from_Main_Even", self)
+
+        self.confirmation_interface = EventConfirmation_Main_Interface(self.cur_parish, self.cur_user,
+                                                                       "EventConfirmation_Main_Interface_from_Main_Even")
+        self.marriage_interface = EventMarriage_Main_Interface(self.cur_parish, self.cur_user,
+                                                               "EventMarriage_Main_Interface_from_Main_Even")
 
         # add items to pivot
         self.__initWidget()
 
     def __initWidget(self):
         self.main_vBoxLayout.addWidget(self.tabView)
-        self.main_vBoxLayout.addWidget(self.student_widget)
 
         self.vBoxLayout.addWidget(self.tabBar)
         self.vBoxLayout.addWidget(self.stackedWidget)
@@ -52,13 +62,6 @@ class HolyEvenTabInterface(QWidget):
         qrouter.setDefaultRouteKey(self.stackedWidget, self.baptism_interface.objectName())
 
         self.stackedWidget.currentChanged.connect(self.onCurrentIndexChanged)
-
-        # 将人员信息只保留两个按钮
-        self.student_widget.baseStudentFuncTemp_1.button_1.hide()
-        self.student_widget.baseStudentFuncTemp_1.button_2.hide()
-        self.student_widget.baseStudentFuncTemp_1.button_3.setText("将选中人员填充到上表")
-        self.student_widget.baseStudentFuncTemp_1.button_3.clicked.connect(self.setDataFromStudnetWidget)
-        self.student_widget.baseStudentFuncTemp_1.button_4.setText("清除选择")
 
     def addSubInterface(self, widget, objectName, text, icon):
         widget.setObjectName(objectName)
@@ -77,15 +80,3 @@ class HolyEvenTabInterface(QWidget):
 
         self.tabBar.setCurrentTab(widget.objectName())
         qrouter.push(self.stackedWidget, widget.objectName())
-
-    def setDataFromStudnetWidget(self):
-        idx = self.student_widget.baseStudentFuncTemp_1.tableWidget.currentRow()
-        if idx == -1:
-            return
-
-        if self.stackedWidget.currentIndex() == 0:
-            student_info = self.student_widget.students[idx]
-            self.baptism_interface.seteveninfoFromParent(student_info)
-        elif self.stackedWidget.currentIndex() == 1:
-            student_info = self.student_widget.students[idx]
-            self.confirmation_interface.seteveninfoFromParent(student_info)

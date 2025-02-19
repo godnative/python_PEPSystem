@@ -20,14 +20,16 @@ class QUERY_TYPE(enum.Enum):
 
 class EventBaptism_MessageBox(MessageBoxBase):
 
-    def __init__(self, parent=None):
+    def __init__(self, cur_parish, parent=None):
         super().__init__(parent)
         self.family_info = None
+        self.cur_parish = cur_parish
+        self.parishioner_widgets = Parishioner_Main_Interface(self.cur_parish, 1,
+                                                              "Parishioner_Main_Interface_from_EventBaptism_MessageBox")
         self.parishioner_1_id = 1
         self.parishioner_2_id = 1
         self.titleLabel = SubtitleLabel('人员', self)
         self.BaseMessageBoxWidget = BaseMessageBoxWidget(self)
-        self.parishioner_widgets = Parishioner_Main_Interface(1)
 
         self.parishioner_widgets.BaseMainInterface.BaseQuery.extendButton_1.show()
         self.parishioner_widgets.BaseMainInterface.BaseQuery.extendButton_1.setText("添加选中人员")
@@ -149,13 +151,16 @@ class EventBaptism_MessageBox(MessageBoxBase):
 
 
 class EventBaptism_Main_Interface(QWidget):
-    def __init__(self, cur_parish_id=1):
-        super().__init__()
+    def __init__(self, cur_parish, cur_user, ObjectName, parent=None):
+        super().__init__(parent)
 
         # 创建主布局
-        self.setObjectName("EventBaptism_Main_Interface")
+        self.setObjectName(ObjectName)
+        self.cur_parish = cur_parish
+        self.cur_user = cur_user
+        self.cur_parish_id = self.cur_parish["school_id"]
         self.Event_all_info = None
-        self.cur_parish_id = cur_parish_id
+
         self.evenType = 1
         main_layout = QVBoxLayout(self)
 
@@ -190,16 +195,17 @@ class EventBaptism_Main_Interface(QWidget):
         if self.BaseMainInterface.BaseQuery.searchInput.text() == "":
             self.Load_even(QUERY_TYPE.QUERY_ALL, self.evenType, self.cur_parish_id)
         else:
-            self.Load_even(QUERY_TYPE.QUERY_LIKE, self.evenType, self.BaseMainInterface.BaseQuery.searchInput.text())
+            self.Load_even(QUERY_TYPE.QUERY_LIKE, self.evenType, self.cur_parish_id,
+                           self.BaseMainInterface.BaseQuery.searchInput.text())
 
-    def Load_even(self, query_type, even_type, query_param):
+    def Load_even(self, query_type, even_type, school_id, query_param=None):
         with HolyEventDB() as db:
             if QUERY_TYPE.QUERY_ALL == query_type:
-                self.Event_all_info = db.fetch_all_event_by_type(even_type)
+                self.Event_all_info = db.fetch_all_event_by_type(even_type, school_id)
             elif QUERY_TYPE.QUERY_LIKE == query_type:
-                self.Event_all_info = db.fetch_even_with_like(even_type, query_param)
-            elif QUERY_TYPE.QUERY_ONE == query_type:
-                self.Event_all_info = db.fetch_all_event_by_type(even_type)
+                self.Event_all_info = db.fetch_even_with_like(even_type, query_param, school_id)
+            else:
+                return
 
         if self.Event_all_info is None:
             return
@@ -211,7 +217,7 @@ class EventBaptism_Main_Interface(QWidget):
         self.BaseMainInterface.BaseQuery.set_viewWidget_data(header_info, self.Event_all_info)
 
     def add_even(self):
-        w = EventBaptism_MessageBox(self)
+        w = EventBaptism_MessageBox(self.cur_parish, self)
         w.titleLabel.setText("添加事件")
         if w.exec():
             with HolyEventDB() as db:
@@ -227,7 +233,7 @@ class EventBaptism_Main_Interface(QWidget):
     def delete_even(self):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
-            w = EventBaptism_MessageBox(self)
+            w = EventBaptism_MessageBox(self.cur_parish, self)
             w.parishioner_widgets.hide()
             w.titleLabel.setText("删除事件")
             w.set_lineedit_uneditable()
@@ -235,12 +241,12 @@ class EventBaptism_Main_Interface(QWidget):
             if w.exec():
                 with HolyEventDB() as db:
                     db.delete_event(self.Event_all_info[idx]["holyevent_id"])
-                    self.Load_even(QUERY_TYPE.QUERY_ALL, self.evenType, None)
+                    self.Load_even(QUERY_TYPE.QUERY_ALL, self.evenType, self.cur_parish_id)
 
     def modify_even(self):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
-            w = EventBaptism_MessageBox(self)
+            w = EventBaptism_MessageBox(self.cur_parish, self)
             w.parishioner_widgets.hide()
             w.titleLabel.setText("修改事件信息")
             w.set_InputEventMessageinfo(self.Event_all_info[idx])
