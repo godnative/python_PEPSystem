@@ -9,7 +9,7 @@ class HolyEventDB(DataBaseManage):
     def __init__(self):
         super().__init__()
 
-    def fetch_all_event_by_type(self, event_type):
+    def fetch_all_event_by_type(self, event_type, school_id):
         # 定义 SQL 查询语句，用于选择 CLASSES 表中的所有数据
         query = """
             SELECT h.*,              -- 查询 student 表中的所有字段
@@ -25,9 +25,9 @@ class HolyEventDB(DataBaseManage):
             FROM holyevent h           -- 从 student 表中查询数据，给表取别名为 s
             JOIN student s1 ON h.holyevent_p1_id = s1.student_id
             JOIN student s2 ON h.holyevent_p2_id = s2.student_id
-            where h.holyevent_type = ?;
+            where h.holyevent_type = ? and h.holyevent_school_id =?;
         """
-        params = (event_type,)
+        params = (event_type, school_id)
         # 使用父类的 fetch_query 方法执行查询，并返回查询结果
         return self.fetch_query(query, params=params)
 
@@ -42,7 +42,7 @@ class HolyEventDB(DataBaseManage):
                   event_info["holyevent_note"], event_info["holyevent_school_id"])
         return self.execute_query(query, params)
 
-    def fetch_even_with_like(self, even_type, like_str):
+    def fetch_even_with_like(self, even_type, like_str, school_id):
         query = """
                 SELECT h.*,              -- 查询 student 表中的所有字段
                        s1.student_name AS holyevent_p1_name,
@@ -57,10 +57,10 @@ class HolyEventDB(DataBaseManage):
                 FROM holyevent h           -- 从 student 表中查询数据，给表取别名为 s
                 JOIN student s1 ON h.holyevent_p1_id = s1.student_id
                 JOIN student s2 ON h.holyevent_p2_id = s2.student_id
-                where h.holyevent_type = ?
+                where h.holyevent_type = ? and h.holyevent_school_id =?
                 and (holyevent_witness LIKE ? or holyevent_implementer LIKE ?)
                 """
-        params = (even_type, f"%{like_str}%", f"%{like_str}%")
+        params = (even_type, school_id, f"%{like_str}%", f"%{like_str}%")
         return self.fetch_query(query, params=params)
 
     def delete_event(self, event_id):

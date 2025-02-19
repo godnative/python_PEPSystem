@@ -16,11 +16,10 @@ from qframelesswindow import AcrylicWindow as Window
 
 from DataBase.school_db import SchoolDb
 from DataBase.user_db import UserDB
-from HolyEvent.holyevent_interface import HolyEvenTabInterface
+from Event.EvenMainTabInterface import EvenMainTabInterface
 from LoginWindow import Ui_Form
-from Parishioner.Parishioner_Interface import Parishioner_Main_Interface
+from Parishioner.Parishioner_main_interface import ParishionerMainInterface
 from school.school_interface import ShowSchoolInterface
-from student.student_interface import StudentInterface
 
 
 class LoginWindow(Window, Ui_Form):
@@ -147,8 +146,8 @@ class MainWindow(MSFluentWindow):
             self.setWindowTitle('当前学校:%s' % self.school_info['school_name'])
 
             # create sub interface
-            self.studentInterface = Parishioner_Main_Interface(self.school_info['school_id'])
-            self.videoInterface = HolyEvenTabInterface(self)
+            self.studentInterface = ParishionerMainInterface(self.school_info, self.role, "Parishioner_Main_Interface")
+            self.videoInterface = EvenMainTabInterface(self.school_info, self.role, "EvenMainTabInterface")
             self.libraryInterface = Widget('请先选择学校..', self)
 
         self.initNavigation()

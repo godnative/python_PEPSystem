@@ -2,9 +2,8 @@ import enum
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPixmap
-from PyQt6.QtWidgets import QApplication, QVBoxLayout, QWidget, QAbstractItemView, QHeaderView, QCheckBox, \
-    QTableWidgetItem
-from qfluentwidgets import MessageBoxBase, SubtitleLabel, InfoBar, TableWidget
+from PyQt6.QtWidgets import QVBoxLayout, QWidget
+from qfluentwidgets import MessageBoxBase, SubtitleLabel, InfoBar
 
 from BaseWidgets.BaseModule import BaseMainInterface, BaseMessageBoxWidget, BaseQueryWidget
 from DataBase.family_db import FamilyDB
@@ -143,14 +142,16 @@ class Family_MessageBox(MessageBoxBase):
 
 
 class Family_Main_Interface(QWidget):
-    def __init__(self, cur_parish_id=1):
+    def __init__(self, cur_parish, cur_user, ObjectName):
         super().__init__()
 
         # 创建主布局
         self.family_info_all = None
-        self.setObjectName("Family_Main_Interface")
+        self.cur_parish = cur_parish
+        self.cur_user = cur_user
+        self.setObjectName(ObjectName)
         self.parishioner_info_all = None
-        self.cur_parish_id = cur_parish_id
+        self.cur_parish_id = self.cur_parish["school_id"]
         main_layout = QVBoxLayout(self)
 
         self.BaseMainInterface = BaseMainInterface(self)
@@ -163,8 +164,6 @@ class Family_Main_Interface(QWidget):
         self.BaseMainInterface.label.setPixmap(pixmap)
         self.BaseMainInterface.label_2.setText("添加家庭")
         main_layout.addWidget(self.BaseMainInterface)  # 正确地将 ReusableWidget 作为一个整体添加到布局中
-
-        self.resize(800, 600)
 
         self.BaseMainInterface.BaseQuery.addButton.clicked.connect(self.add_family)
         self.BaseMainInterface.BaseQuery.delButton.clicked.connect(self.delete_family)
@@ -184,16 +183,15 @@ class Family_Main_Interface(QWidget):
         if self.BaseMainInterface.BaseQuery.searchInput.text() == "":
             self.Load_family(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
         else:
-            self.Load_family(QUERY_TYPE.QUERY_LIKE, self.BaseMainInterface.BaseQuery.searchInput.text())
+            self.Load_family(QUERY_TYPE.QUERY_LIKE, self.cur_parish_id,
+                             self.BaseMainInterface.BaseQuery.searchInput.text())
 
-    def Load_family(self, query_type, query_param):
+    def Load_family(self, query_type, school_id, query_param=None):
         with FamilyDB() as db:
-            if query_type == QUERY_TYPE.QUERY_ONE:
-                self.family_info_all = db.fetch_family_with_family_id(query_param)
-            elif query_type == QUERY_TYPE.QUERY_ALL:
-                self.family_info_all = db.fetch_family_with_school_id(query_param)
+            if query_type == QUERY_TYPE.QUERY_ALL:
+                self.family_info_all = db.fetch_family_with_school_id(school_id)
             elif query_type == QUERY_TYPE.QUERY_LIKE:
-                self.family_info_all = db.fetch_family_with_like(query_param)
+                self.family_info_all = db.fetch_family_with_like(school_id, query_param)
             else:
                 return
 
@@ -206,11 +204,8 @@ class Family_Main_Interface(QWidget):
         self.BaseMainInterface.BaseQuery.set_viewWidget_data(header_info, self.family_info_all)
 
     def add_family(self):
-        school_info = {
-            "school_id": 1,
-            "school_name": "崇义小学"
-        }
-        w = Family_MessageBox(school_info, 0, self)
+
+        w = Family_MessageBox(self.cur_parish, 0, self)
         w.titleLabel.setText("添加家庭")
         w.set_family_name_when_add()
         if w.exec():
@@ -223,11 +218,7 @@ class Family_Main_Interface(QWidget):
     def delete_family(self):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
-            school_info = {
-                "school_id": 1,
-                "school_name": "崇义小学"
-            }
-            w = Family_MessageBox(school_info, 1, self)
+            w = Family_MessageBox(self.cur_parish, 1, self)
             del_family_id = self.family_info_all[idx]["family_id"]
             w.titleLabel.setText("删除家庭")
             w.set_lineedit_uneditable()
@@ -244,11 +235,7 @@ class Family_Main_Interface(QWidget):
     def modify_family(self):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
-            school_info = {
-                "school_id": 1,
-                "school_name": "崇义小学"
-            }
-            w = Family_MessageBox(school_info, 2, self)
+            w = Family_MessageBox(self.cur_parish, 2, self)
             del_family_id = self.family_info_all[idx]["family_id"]
             w.titleLabel.setText("修改家庭")
             with StudentDB() as db:
@@ -265,12 +252,3 @@ class Family_Main_Interface(QWidget):
                 self.Load_family(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
 
 
-if __name__ == "__main__":
-    import sys
-
-    app = QApplication(sys.argv)
-
-    main_window = Family_Main_Interface(1)
-    main_window.show()
-
-    sys.exit(app.exec())

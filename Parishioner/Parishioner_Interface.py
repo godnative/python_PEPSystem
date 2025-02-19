@@ -8,7 +8,7 @@ from qfluentwidgets import MessageBoxBase, SubtitleLabel, InfoBar
 from BaseWidgets.BaseModule import BaseMainInterface, BaseMessageBoxWidget
 from DataBase.family_db import FamilyDB
 from DataBase.student_db import StudentDB
-from family.family_interface import Family_MessageBox
+from Parishioner.family_interface import Family_MessageBox
 
 
 class QUERY_TYPE(enum.Enum):
@@ -149,18 +149,21 @@ class Parishioner_MessageBox(MessageBoxBase):
 
 
 class Parishioner_Main_Interface(QWidget):
-    def __init__(self, cur_parish_id=1):
+    def __init__(self, cur_parish, cur_user, ObjectName):
         super().__init__()
 
         # 创建主布局
-        self.setObjectName("Parishioner_Main_Interface")
+        self.setObjectName(ObjectName)
         self.parishioner_info_all = None
-        self.cur_parish_id = cur_parish_id
+        self.cur_parish = cur_parish
+        self.cur_user = cur_user
+        self.cur_parish_id = self.cur_parish['school_id']
         main_layout = QVBoxLayout(self)
+        self.setMinimumSize(500, 500)
 
         self.BaseMainInterface = BaseMainInterface(self)
         self.BaseMainInterface.label.setMinimumSize(100, 100)
-        # self.BaseMainInterface.label.setText("Parishioner")
+
         pixmap = QPixmap("./resource/pic/1.png").scaled(
             self.BaseMainInterface.label.size(),
             Qt.AspectRatioMode.KeepAspectRatioByExpanding,
@@ -169,8 +172,6 @@ class Parishioner_Main_Interface(QWidget):
         self.BaseMainInterface.label.setPixmap(pixmap)
         self.BaseMainInterface.label_2.setText("添加人员")
         main_layout.addWidget(self.BaseMainInterface)  # 正确地将 ReusableWidget 作为一个整体添加到布局中
-
-        self.resize(800, 600)
 
         self.BaseMainInterface.BaseQuery.addButton.clicked.connect(self.add_parishioner)
         self.BaseMainInterface.BaseQuery.delButton.clicked.connect(self.delete_parishioner)
@@ -189,16 +190,15 @@ class Parishioner_Main_Interface(QWidget):
         if self.BaseMainInterface.BaseQuery.searchInput.text() == "":
             self.Load_Parishioner(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
         else:
-            self.Load_Parishioner(QUERY_TYPE.QUERY_LIKE, self.BaseMainInterface.BaseQuery.searchInput.text())
+            self.Load_Parishioner(QUERY_TYPE.QUERY_LIKE, self.cur_parish_id,
+                                  self.BaseMainInterface.BaseQuery.searchInput.text())
 
-    def Load_Parishioner(self, query_type, query_param):
+    def Load_Parishioner(self, query_type, school_id, query_param=None):
         with StudentDB() as db:
-            if query_type == QUERY_TYPE.QUERY_ONE:
-                self.parishioner_info_all = db.fetch_students_with_school_id_and_family_id(query_param)
-            elif query_type == QUERY_TYPE.QUERY_ALL:
-                self.parishioner_info_all = db.fetch_students_with_school_id(query_param)
+            if query_type == QUERY_TYPE.QUERY_ALL:
+                self.parishioner_info_all = db.fetch_students_with_school_id(school_id)
             elif query_type == QUERY_TYPE.QUERY_LIKE:
-                self.parishioner_info_all = db.fetch_students_with_like(query_param)
+                self.parishioner_info_all = db.fetch_students_with_like(school_id, query_param)
             else:
                 return
 

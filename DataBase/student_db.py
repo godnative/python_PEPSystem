@@ -47,7 +47,7 @@ class StudentDB(DataBaseManage):
         # 调用父类的 fetch_query 方法执行查询，并返回查询结果
         return self.fetch_query(query, params=params)
 
-    def fetch_students_with_school_id_and_family_id(self, family_id):
+    def fetch_students_with_school_id_and_family_id(self, family_id, school_id):
         # 定义查询语句
         query = """
                -- 查询学生表（student）中的所有字段，并关联班级表（classes），获取学生所属班级的名称
@@ -56,22 +56,22 @@ class StudentDB(DataBaseManage):
                 FROM student s           -- 从 student 表中查询数据，给表取别名为 s
                 JOIN family c
                 ON s.student_family_id = c.family_id
-                where s.student_family_id = ? -- 通过 student 表的 class_id 字段与 classes 表的 class_id 字段进行匹配
+                where s.student_family_id = ? and s.student_id == ?-- 通过 student 表的 class_id 字段与 classes 表的 class_id 字段进行匹配
                """
-        params = (family_id,)
+        params = (family_id, school_id)
         # 调用父类的 fetch_query 方法执行查询，并返回查询结果
         return self.fetch_query(query, params=params)
 
-    def fetch_students_with_like(self, like_str):
+    def fetch_students_with_like(self, school_id, like_str):
         query = """
                 SELECT s.* ,             -- 查询 student 表中的所有字段
                         c.family_name
                 FROM student s
                 JOIN family c
                 ON s.student_family_id = c.family_id
-                WHERE student_name LIKE ? or student_phonenum LIKE ?
+                WHERE student_school_id = ? and ( student_name LIKE ? or student_phonenum LIKE ? )
                 """
-        params = (f"%{like_str}%", f"%{like_str}%")
+        params = (school_id, f"%{like_str}%", f"%{like_str}%")
         return self.fetch_query(query, params=params)
 
     def update_student(self, student):
