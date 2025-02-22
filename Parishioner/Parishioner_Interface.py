@@ -9,6 +9,7 @@ from BaseWidgets.BaseModule import BaseMainInterface, BaseMessageBoxWidget
 from DataBase.family_db import FamilyDB
 from DataBase.student_db import StudentDB
 from Parishioner.family_interface import Family_MessageBox
+from user.User_Interface import check_auth_permission
 
 
 class QUERY_TYPE(enum.Enum):
@@ -209,6 +210,7 @@ class Parishioner_Main_Interface(QWidget):
         ]
         self.BaseMainInterface.BaseQuery.set_viewWidget_data(header_info, self.parishioner_info_all)
 
+    @check_auth_permission(required_permission={"module_data": "parishioner", "permission_data": "add"})
     def add_parishioner(self):
         w = Parishioner_MessageBox(self.cur_parish, self)
         w.titleLabel.setText("添加人员")

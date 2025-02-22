@@ -20,6 +20,7 @@ from Event.EvenMainTabInterface import EvenMainTabInterface
 from LoginWindow import Ui_Form
 from Parishioner.Parishioner_main_interface import ParishionerMainInterface
 from school.school_interface import ShowSchoolInterface
+from user.user_main_interface import UserMainInterface
 
 
 class LoginWindow(Window, Ui_Form):
@@ -148,7 +149,7 @@ class MainWindow(MSFluentWindow):
             # create sub interface
             self.studentInterface = ParishionerMainInterface(self.school_info, self.role, "Parishioner_Main_Interface")
             self.videoInterface = EvenMainTabInterface(self.school_info, self.role, "EvenMainTabInterface")
-            self.libraryInterface = Widget('请先选择学校..', self)
+            self.libraryInterface = UserMainInterface(self.school_info, self.role, "UserMainInterface")
 
         self.initNavigation()
         self.initWindow()

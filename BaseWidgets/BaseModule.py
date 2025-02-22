@@ -1,6 +1,7 @@
+from PyQt6 import QtWidgets
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout, \
-    QAbstractItemView, QHeaderView, QTableWidgetItem
-from qfluentwidgets import PushButton, SearchLineEdit, TableWidget, LineEdit, CalendarPicker, ComboBox
+    QAbstractItemView, QHeaderView, QTableWidgetItem, QApplication, QGridLayout
+from qfluentwidgets import PushButton, SearchLineEdit, TableWidget, LineEdit, CalendarPicker, ComboBox, CheckBox
 
 from utils.utils_tool import get_now_date
 
@@ -165,3 +166,133 @@ class BaseMainInterface(QWidget):
         vbox.addLayout(title_info_box)
         self.BaseQuery = BaseQueryWidget(self)
         vbox.addWidget(self.BaseQuery)
+
+
+class BaseUserInterface(QWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.checkBox_maxtir = None
+        self.user_type = ["管理员", "录入员", "游客"]
+        self.initUI()
+
+    def initUI(self):
+        vbox = QVBoxLayout(self)
+        title_info_box = QHBoxLayout()
+        spacerItem = QtWidgets.QSpacerItem(100, 20)
+        self.label = QLabel(self)
+        title_info_box.addWidget(self.label)
+        title_info_box.addItem(spacerItem)
+
+        user_info_box = QGridLayout()
+        self.label_name = QLabel("姓名")
+        user_info_box.addWidget(self.label_name, 0, 0)
+        self.line_name = LineEdit(self)
+        # self.line_name.setMaximumWidth(200)
+        user_info_box.addWidget(self.line_name, 0, 1)
+        self.label_type = QLabel("人员类别")
+        user_info_box.addWidget(self.label_type, 1, 0)
+        self.line_type = ComboBox(self)
+        self.line_type.addItems(["管理员", "录入员", "游客"])
+        # self.line_type.setMaximumWidth(200)
+        user_info_box.addWidget(self.line_type, 1, 1)
+        self.label_note = QLabel("备注")
+        user_info_box.addWidget(self.label_note, 2, 0)
+        self.line_note = LineEdit(self)
+        # self.line_note.setMaximumWidth(200)
+        user_info_box.addWidget(self.line_note, 2, 1)
+
+        self.label_password = QLabel("密码")
+        user_info_box.addWidget(self.label_password, 3, 0)
+        self.line_password = LineEdit(self)
+        # self.line_note.setMaximumWidth(200)
+        user_info_box.addWidget(self.line_password, 3, 1)
+
+        title_info_box.addLayout(user_info_box)
+
+        title_info_box.addItem(spacerItem)
+
+        user_authiory_box = QGridLayout()
+        permission_operation = ['', '添加', '删除', '修改']
+        modules = ['', '人员', '家庭', '事件', '教区', '权限']
+        for i, module in enumerate(permission_operation):
+            label = QLabel(module)
+            user_authiory_box.addWidget(label, 0, i)
+
+        for i, module in enumerate(modules):
+            label = QLabel(module)
+            user_authiory_box.addWidget(label, i, 0)
+
+        self.checkBox_maxtir = []
+
+        for i in range(1, len(modules)):
+            for j in range(1, len(permission_operation)):
+                checkBox = CheckBox()
+                self.checkBox_maxtir.append(checkBox)
+                user_authiory_box.addWidget(checkBox, i, j)
+
+        title_info_box.addLayout(user_authiory_box)
+        vbox.addLayout(title_info_box)
+
+        self.BaseQuery = BaseQueryWidget(self)
+        self.BaseQuery.delButton.hide()
+        self.BaseQuery.addButton.hide()
+        self.BaseQuery.searchInput.hide()
+        self.BaseQuery.extendButton_1.hide()
+        self.BaseQuery.ModButton.hide()
+        vbox.addWidget(self.BaseQuery)
+
+        self.line_type.currentIndexChanged.connect(self.change_set_checkbox)
+
+    def set_checkbox_state_from_bitmap(self, bitmap):
+        """
+        根据输入的 bitmap 来设置 checkbox 的状态
+        :param bitmap: 一个整数，每一位控制一个 checkbox 的状态
+        """
+        for i, checkbox in enumerate(self.checkBox_maxtir):
+            # 检查 bitmap 的第 i 位是否为 1
+            bit = (bitmap >> i) & 1
+            checkbox.setChecked(bit == 1)
+
+    def get_bitmap_from_checkbox_state(self):
+        """
+        根据 checkbox 的状态生成一个 bitmap 数
+        :return: 一个整数，每一位代表一个 checkbox 的状态
+        """
+        bitmap = 0
+        for i, checkbox in enumerate(self.checkBox_maxtir):
+            if checkbox.isChecked():
+                bitmap |= (1 << i)
+        return bitmap
+
+    def set_all_checkbox_state(self, state):
+        """
+        根据输入的 state 来设置所有 checkbox 的状态
+        :param state: 一个布尔值，控制所有 checkbox 的状态
+        """
+        for checkbox in self.checkBox_maxtir:
+            checkbox.setEnabled(state)
+
+    def set_user_info(self, user_info):
+        self.line_name.setText(user_info["user_name"])
+        self.line_type.setCurrentIndex(user_info["user_type"])
+        self.line_note.setText(user_info["user_note"])
+        self.set_checkbox_state_from_bitmap(user_info["user_authnum"])
+
+    def change_set_checkbox(self):
+        if self.line_type.currentIndex() == 0:
+            self.set_checkbox_state_from_bitmap(32767)
+        elif self.line_type.currentIndex() == 1:
+            self.set_checkbox_state_from_bitmap(4681)
+        else:
+            self.set_checkbox_state_from_bitmap(0)
+
+
+if __name__ == "__main__":
+    import sys
+
+    app = QApplication(sys.argv)
+
+    main_window = BaseUserInterface()
+    main_window.show()
+
+    sys.exit(app.exec())
