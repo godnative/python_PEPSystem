@@ -224,12 +224,12 @@ class EventMarriage_Main_Interface(QWidget):
         self.BaseMainInterface.BaseQuery.set_viewWidget_data(header_info, self.Event_all_info)
 
     def add_even(self):
-        w = EventMarriage_MessageBox(self)
+        w = EventMarriage_MessageBox(self.cur_parish, self)
         w.titleLabel.setText("添加事件")
         if w.exec():
             with HolyEventDB() as db:
                 get_InputEvenBaptismMessageinfo = w.get_InputEvenMessageinfo()
-                get_InputEvenBaptismMessageinfo["student_school_id"] = self.cur_parish_id
+                get_InputEvenBaptismMessageinfo["holyevent_school_id"] = self.cur_parish_id
                 get_InputEvenBaptismMessageinfo["holyevent_type"] = self.evenType
                 db.add_even(get_InputEvenBaptismMessageinfo)
             self.Load_even(QUERY_TYPE.QUERY_ALL, self.evenType, self.cur_parish_id)
@@ -237,7 +237,7 @@ class EventMarriage_Main_Interface(QWidget):
     def delete_even(self):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
-            w = EventMarriage_MessageBox(self)
+            w = EventMarriage_MessageBox(self.cur_parish, self)
             w.parishioner_widgets.hide()
             w.titleLabel.setText("删除事件")
             w.set_lineedit_uneditable()
@@ -250,14 +250,14 @@ class EventMarriage_Main_Interface(QWidget):
     def modify_even(self):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
-            w = EventMarriage_MessageBox(self)
+            w = EventMarriage_MessageBox(self.cur_parish, self)
             w.parishioner_widgets.hide()
             w.titleLabel.setText("修改事件信息")
             w.set_InputEventMessageinfo(self.Event_all_info[idx])
             if w.exec():
                 with HolyEventDB() as db:
                     Even_info = w.get_InputEvenMessageinfo()
-                    Even_info["student_school_id"] = self.cur_parish_id
+                    Even_info["holyevent_school_id"] = self.cur_parish_id
                     Even_info["holyevent_id"] = self.Event_all_info[idx]["holyevent_id"]
                     db.update_even(Even_info)
                 self.Load_even(QUERY_TYPE.QUERY_ALL, self.evenType, self.cur_parish_id)

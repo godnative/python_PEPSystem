@@ -26,11 +26,12 @@ class FamilyDB(DataBaseManage):
         params = (family["family_name"], family["family_address"], family["family_school_id"], family["family_notes"])
         return self.execute_query(query, params)
 
-    def get_family_cnt(self):
+    def get_family_cnt_with_parish_id(self, family_school_id):
         query = """
-        SELECT COUNT(*) FROM family
+        SELECT COUNT(*) FROM family where family_school_id = ?
         """
-        return self.fetch_query(query)[0]["COUNT(*)"]
+        params = (family_school_id,)
+        return self.fetch_query(query, params=params)[0]["COUNT(*)"]
 
     def fetch_family_with_school_id(self, school_id):
         # 定义 SQL 查询语句，用于选择 CLASSES 表中的所有数据
@@ -97,4 +98,4 @@ if __name__ == '__main__':
         #         "family_notes": "无备注"
         #     }
         #     db.add_family(family_info)
-        print(db.fetch_tempfamily_with_school_id("临时", 0))
+        print(db.get_family_cnt(0))

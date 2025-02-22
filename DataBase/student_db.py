@@ -47,7 +47,7 @@ class StudentDB(DataBaseManage):
         # 调用父类的 fetch_query 方法执行查询，并返回查询结果
         return self.fetch_query(query, params=params)
 
-    def fetch_students_with_school_id_and_family_id(self, family_id, school_id):
+    def fetch_students_with_school_id_and_family_id(self, family_id):
         # 定义查询语句
         query = """
                -- 查询学生表（student）中的所有字段，并关联班级表（classes），获取学生所属班级的名称
@@ -56,9 +56,9 @@ class StudentDB(DataBaseManage):
                 FROM student s           -- 从 student 表中查询数据，给表取别名为 s
                 JOIN family c
                 ON s.student_family_id = c.family_id
-                where s.student_family_id = ? and s.student_id == ?-- 通过 student 表的 class_id 字段与 classes 表的 class_id 字段进行匹配
+                where s.student_family_id = ? -- 通过 student 表的 class_id 字段与 classes 表的 class_id 字段进行匹配
                """
-        params = (family_id, school_id)
+        params = (family_id,)
         # 调用父类的 fetch_query 方法执行查询，并返回查询结果
         return self.fetch_query(query, params=params)
 

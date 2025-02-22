@@ -19,9 +19,10 @@ class QUERY_TYPE(enum.Enum):
 
 class Parishioner_MessageBox(MessageBoxBase):
 
-    def __init__(self, parent=None):
+    def __init__(self, cur_parish, parent=None):
         super().__init__(parent)
         self.family_info = None
+        self.cur_parish = cur_parish
         self.titleLabel = SubtitleLabel('人员', self)
         self.Parishioner_Info_Edit_widgets = BaseMessageBoxWidget(self)
 
@@ -81,17 +82,14 @@ class Parishioner_MessageBox(MessageBoxBase):
         return errors  # 返回所有错误信息
 
     def add_family(self):
-        school_info = {
-            "school_id": 1,
-            "school_name": "崇义小学"
-        }
-        w = Family_MessageBox(school_info, 0, self)
+
+        w = Family_MessageBox(self.cur_parish, 0, self)
         w.titleLabel.setText("添加家庭")
         w.set_family_name_when_add()
         if w.exec():
             with FamilyDB() as db:
                 get_InputParishionerMessageinfo = w.get_InputFamilyMessageinfo()
-                get_InputParishionerMessageinfo["family_school_id"] = school_info["school_id"]
+                get_InputParishionerMessageinfo["family_school_id"] = self.cur_parish["school_id"]
                 db.add_family(get_InputParishionerMessageinfo)
             self.load_family()
 
@@ -129,7 +127,8 @@ class Parishioner_MessageBox(MessageBoxBase):
     def load_family(self):
         self.Parishioner_Info_Edit_widgets.inputLine_11.clear()  # 清空 classCombo 下拉框中的所有选项
         with FamilyDB() as db:  # 使用上下文管理器创建 ClassDB 的实例，并确保使用后自动关闭数据库连接
-            self.family_info = db.fetch_family()  # 如果没有可管理的班级 ID 列表，则获取所有班级信息
+            self.family_info = db.fetch_family_with_school_id(
+                self.cur_parish["school_id"])  # 如果没有可管理的班级 ID 列表，则获取所有班级信息
         self.Parishioner_Info_Edit_widgets.inputLine_11.addItem('请选择班级',
                                                                 None)  # 在下拉框中添加默认选项 "请选择班级"，并将其关联的数据设为 None
 
@@ -211,7 +210,7 @@ class Parishioner_Main_Interface(QWidget):
         self.BaseMainInterface.BaseQuery.set_viewWidget_data(header_info, self.parishioner_info_all)
 
     def add_parishioner(self):
-        w = Parishioner_MessageBox(self)
+        w = Parishioner_MessageBox(self.cur_parish, self)
         w.titleLabel.setText("添加人员")
         if w.exec():
             with StudentDB() as db:
@@ -223,7 +222,7 @@ class Parishioner_Main_Interface(QWidget):
     def delete_parishioner(self):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
-            w = Parishioner_MessageBox(self)
+            w = Parishioner_MessageBox(self.cur_parish, self)
             w.titleLabel.setText("删除人员")
             w.set_lineedit_uneditable()
             w.set_InputParishionerMessageinfo(self.parishioner_info_all[idx])
@@ -235,7 +234,7 @@ class Parishioner_Main_Interface(QWidget):
     def modify_parishioner(self):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
-            w = Parishioner_MessageBox(self)
+            w = Parishioner_MessageBox(self.cur_parish, self)
             w.titleLabel.setText("修改人员信息")
             w.set_InputParishionerMessageinfo(self.parishioner_info_all[idx])
             if w.exec():

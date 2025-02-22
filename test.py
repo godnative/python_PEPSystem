@@ -1,11 +1,5 @@
-import sys
-
-from PyQt6.QtWidgets import QApplication
-
-from Event.EvenMarriageInterface import EventMarriage_Main_Interface
+from DataBase.family_db import FamilyDB
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    ex = EventMarriage_Main_Interface(1)
-    ex.show()
-    sys.exit(app.exec())
+    with FamilyDB() as db:
+        print(db.fetch_family_with_school_id(2))

@@ -18,10 +18,10 @@ class QUERY_TYPE(enum.Enum):
 
 class Family_MessageBox(MessageBoxBase):
 
-    def __init__(self, school_info, massage_type, parent=None):
+    def __init__(self, cur_parish, massage_type, parent=None):
         super().__init__(parent)
         self.family_info = None
-        self.school_info = school_info
+        self.cur_parish = cur_parish
         self.massage_type = massage_type
         self.titleLabel = SubtitleLabel('人员', self)
         self.family_Info_Edit_widgets = BaseMessageBoxWidget(self)
@@ -86,7 +86,7 @@ class Family_MessageBox(MessageBoxBase):
         self.family_Info_Edit_widgets.inputLine_3.setMinimumWidth(200)
 
         with FamilyDB() as db:
-            self.cur_family_cnt = db.get_family_cnt() + 1
+            self.cur_family_cnt = db.get_family_cnt_with_parish_id(self.cur_parish["school_id"]) + 1
 
     def _validateInput(self):
         errors = []  # 初始化错误信息列表
@@ -136,7 +136,7 @@ class Family_MessageBox(MessageBoxBase):
         self.family_Info_Edit_widgets.inputLine_3.setReadOnly(True)  # 设置输入框为只读模式，禁止用户输入
 
     def set_family_name_when_add(self):
-        family_name = "%s第%d号家庭" % (self.school_info["school_name"], self.cur_family_cnt)
+        family_name = "%s第%d号家庭" % (self.cur_parish["school_name"], self.cur_family_cnt)
         self.family_Info_Edit_widgets.inputLine_1.setText(family_name)
         self.BaseQueryWidget.hide()
 

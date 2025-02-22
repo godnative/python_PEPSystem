@@ -222,7 +222,7 @@ class EventBaptism_Main_Interface(QWidget):
         if w.exec():
             with HolyEventDB() as db:
                 get_InputEvenBaptismMessageinfo = w.get_InputEvenMessageinfo()
-                get_InputEvenBaptismMessageinfo["student_school_id"] = self.cur_parish_id
+                get_InputEvenBaptismMessageinfo["holyevent_school_id"] = self.cur_parish_id
                 get_InputEvenBaptismMessageinfo["holyevent_type"] = self.evenType
                 db.add_even(get_InputEvenBaptismMessageinfo)
             with StudentDB() as db:
@@ -253,7 +253,7 @@ class EventBaptism_Main_Interface(QWidget):
             if w.exec():
                 with HolyEventDB() as db:
                     Even_info = w.get_InputEvenMessageinfo()
-                    Even_info["student_school_id"] = self.cur_parish_id
+                    Even_info["holyevent_school_id"] = self.cur_parish_id
                     Even_info["holyevent_id"] = self.Event_all_info[idx]["holyevent_id"]
                     db.update_even(Even_info)
                 with StudentDB() as db:
