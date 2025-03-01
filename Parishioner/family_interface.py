@@ -2,12 +2,13 @@ import enum
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPixmap
-from PyQt6.QtWidgets import QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QVBoxLayout, QWidget, QHeaderView
 from qfluentwidgets import MessageBoxBase, SubtitleLabel, InfoBar
 
 from BaseWidgets.BaseModule import BaseMainInterface, BaseMessageBoxWidget, BaseQueryWidget
 from DataBase.family_db import FamilyDB
 from DataBase.student_db import StudentDB
+from user.User_Interface import check_auth_permission
 
 
 class QUERY_TYPE(enum.Enum):
@@ -100,9 +101,9 @@ class Family_MessageBox(MessageBoxBase):
         if not self.family_Info_Edit_widgets.inputLine_13.text().strip():
             errors.append("请输入备注")  # 验证班级是否选择，如果未选择班级，添加错误信息
 
-        if self.massage_type == 1 and self.tableWidget.rowCount() != 0:
+        if self.massage_type == 1 and self.BaseQueryWidget.tableWidget.rowCount() != 0:
             errors.append(
-                "当前家庭还有%d个成员，请先移除成员后再删除家庭" % self.tableWidget.rowCount())  # 验证班级是否选择，如果未选择班级，添加错误信息
+                "当前家庭还有%d个成员，请先移除成员后再删除家庭" % self.BaseQueryWidget.tableWidget.rowCount())  # 验证班级是否选择，如果未选择班级，添加错误信息
 
         return errors  # 返回所有错误信息
 
@@ -130,10 +131,6 @@ class Family_MessageBox(MessageBoxBase):
         self.family_Info_Edit_widgets.inputLine_3.setText(family_messageinfo["family_address"])
         self.family_Info_Edit_widgets.inputLine_13.setText(family_messageinfo["family_notes"])
         return
-
-    def set_lineedit_uneditable(self):  # 定义一个方法，用于设置输入框不可编辑
-        self.family_Info_Edit_widgets.inputLine_1.setReadOnly(True)  # 设置输入框为只读模式，禁止用户输入
-        self.family_Info_Edit_widgets.inputLine_3.setReadOnly(True)  # 设置输入框为只读模式，禁止用户输入
 
     def set_family_name_when_add(self):
         family_name = "%s第%d号家庭" % (self.cur_parish["school_name"], self.cur_family_cnt)
@@ -176,7 +173,9 @@ class Family_Main_Interface(QWidget):
         ]
         self.BaseMainInterface.BaseQuery.tableWidget.setColumnCount(len(self.family_viewTable_header_info))
         self.BaseMainInterface.BaseQuery.tableWidget.setHorizontalHeaderLabels(self.family_viewTable_header_info)
-
+        header = self.BaseMainInterface.BaseQuery.tableWidget.horizontalHeader()
+        # 其他列自适应宽度
+        header.setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
         self.Load_family(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
 
     def query_family_info_with_like(self):
@@ -203,8 +202,8 @@ class Family_Main_Interface(QWidget):
         ]
         self.BaseMainInterface.BaseQuery.set_viewWidget_data(header_info, self.family_info_all)
 
+    @check_auth_permission(required_permission={"module_data": "family", "permission_data": "add"})
     def add_family(self):
-
         w = Family_MessageBox(self.cur_parish, 0, self)
         w.titleLabel.setText("添加家庭")
         w.set_family_name_when_add()
@@ -214,14 +213,16 @@ class Family_Main_Interface(QWidget):
                 get_InputParishionerMessageinfo["family_school_id"] = self.cur_parish_id
                 db.add_family(get_InputParishionerMessageinfo)
             self.Load_family(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
+            return True
+        return False
 
+    @check_auth_permission(required_permission={"module_data": "family", "permission_data": "delete"})
     def delete_family(self):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
             w = Family_MessageBox(self.cur_parish, 1, self)
             del_family_id = self.family_info_all[idx]["family_id"]
             w.titleLabel.setText("删除家庭")
-            w.set_lineedit_uneditable()
             with StudentDB() as db:
                 parishioner_info_all = db.fetch_students_with_school_id_and_family_id(del_family_id)
                 if parishioner_info_all is not None:
@@ -231,7 +232,10 @@ class Family_Main_Interface(QWidget):
                 with FamilyDB() as db:
                     db.delete_family(self.family_info_all[idx]["family_id"])
                 self.Load_family(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
+                return True
+            return False
 
+    @check_auth_permission(required_permission={"module_data": "family", "permission_data": "modify"})
     def modify_family(self):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
@@ -250,5 +254,5 @@ class Family_Main_Interface(QWidget):
                     family["family_school_id"] = self.cur_parish_id
                     db.update_family(family)
                 self.Load_family(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
-
-
+                return True
+            return False

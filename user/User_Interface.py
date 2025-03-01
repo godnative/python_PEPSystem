@@ -50,22 +50,27 @@ def check_auth_permission(required_permission):
 
             if check_bit_at_position(authnum, check_pos):
                 # 如果有操作权限，执行原函数
-                exec_log = "[%s] 执行 %s 操作 成功" % (formatted_time, required_permission)
-                print(exec_log)
                 with UserDB() as db:
-                    db.add_user_log({"user_id": self.cur_user["user_id"], "user_log_info": exec_log})
-                return func(self)
+                    ret = func(self)
+                    if ret:
+                        exec_log = "[%s] 执行 %s 操作 成功" % (formatted_time, required_permission)
+                        db.add_user_log({"user_id": self.cur_user["user_id"], "user_log_info": exec_log})
+                        print(exec_log)
+                    else:
+                        exec_log = "[%s] 取消 %s 操作 " % (formatted_time, required_permission)
+                        print(exec_log)
+                return
             else:
                 # 如果没有操作权限，打印失败消息并退出
                 error_message = "当前用户：%s 无此权限，请联系管理员\n" % self.cur_user[
                     "user_name"]  # 如果存在错误信息，将错误信息列表转换为字符串，按行显示
                 InfoBar.error(title="权限错误", content=error_message, parent=self,
                               duration=1000)  # 使用 InfoBar 显示错误提示，设置标题、内容、父窗口和持续时间
-                exec_log = "[%s] 执行 %s 操作 失败" % (formatted_time, required_permission)
+                exec_log = "[%s] 执行 %s 操作 失败[权限不足]" % (formatted_time, required_permission)
                 print(exec_log)
-                with UserDB() as db:
-                    db.add_user_log({"user_id": self.cur_user["user_id"], "user_log_info": exec_log})
-                return None
+                # with UserDB() as db:
+                #     db.add_user_log({"user_id": self.cur_user["user_id"], "user_log_info": exec_log})
+            return None
 
         return wrapper
 

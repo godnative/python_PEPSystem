@@ -36,8 +36,8 @@ class EvenMainTabInterface(QWidget):
         self.baptism_interface = EventBaptism_Main_Interface(self.cur_parish, self.cur_user,
                                                              "EventBaptism_Main_Interface_from_Main_Even", self)
 
-        self.confirmation_interface = EventConfirmation_Main_Interface(self.cur_parish, self.cur_user,
-                                                                       "EventConfirmation_Main_Interface_from_Main_Even")
+        self.confirmation_interface = EventConfirmation_Main_Interface(
+            self.cur_parish, self.cur_user, "EventConfirmation_Main_Interface_from_Main_Even", self)
         self.marriage_interface = EventMarriage_Main_Interface(self.cur_parish, self.cur_user,
                                                                "EventMarriage_Main_Interface_from_Main_Even")
 

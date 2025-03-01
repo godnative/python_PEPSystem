@@ -1,8 +1,8 @@
 import enum
 
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QDate
 from PyQt6.QtGui import QPixmap
-from PyQt6.QtWidgets import QApplication, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QApplication, QVBoxLayout, QWidget, QHeaderView
 from qfluentwidgets import MessageBoxBase, SubtitleLabel, InfoBar
 
 from BaseWidgets.BaseModule import BaseMainInterface, BaseMessageBoxWidget
@@ -10,6 +10,7 @@ from DataBase.family_db import FamilyDB
 from DataBase.student_db import StudentDB
 from Parishioner.family_interface import Family_MessageBox
 from user.User_Interface import check_auth_permission
+from utils.utils_tool import qdate_to_timestamp, timestamp_to_date
 
 
 class QUERY_TYPE(enum.Enum):
@@ -38,6 +39,7 @@ class Parishioner_MessageBox(MessageBoxBase):
         self.Parishioner_Info_Edit_widgets.label_4.setText("身份证")
         self.Parishioner_Info_Edit_widgets.label_9.setText("性别")
         self.Parishioner_Info_Edit_widgets.label_10.setText("出生日期")
+        self.Parishioner_Info_Edit_widgets.inputLine_10.setDate(QDate(2025, 1, 1))
         self.Parishioner_Info_Edit_widgets.label_11.setText("家庭")
         self.Parishioner_Info_Edit_widgets.inputLine_12.setText("添加家庭")
         self.Parishioner_Info_Edit_widgets.label_13.setText("备注")
@@ -111,6 +113,9 @@ class Parishioner_MessageBox(MessageBoxBase):
             "student_phonenum": self.Parishioner_Info_Edit_widgets.inputLine_3.text(),  # 性别字段与对应的下拉框
             "student_holyname": self.Parishioner_Info_Edit_widgets.inputLine_2.text(),  # 班级字段与对应的下拉框
             "student_family_id": self.Parishioner_Info_Edit_widgets.inputLine_11.currentData(),  # 语文字段与对应的输入框
+            "student_identity_num": self.Parishioner_Info_Edit_widgets.inputLine_4.text(),  # 语文字段与对应的输入框
+            "student_birthday": qdate_to_timestamp(self.Parishioner_Info_Edit_widgets.inputLine_10.getDate()),
+            "student_note": self.Parishioner_Info_Edit_widgets.inputLine_13.text(),
             "student_school_id": None
         }
         return parishioner_messageinfo
@@ -120,6 +125,10 @@ class Parishioner_MessageBox(MessageBoxBase):
         self.Parishioner_Info_Edit_widgets.inputLine_9.setCurrentIndex(parishioner_messageinfo["student_gender"])
         self.Parishioner_Info_Edit_widgets.inputLine_3.setText(parishioner_messageinfo["student_phonenum"])
         self.Parishioner_Info_Edit_widgets.inputLine_2.setText(parishioner_messageinfo["student_holyname"])
+        self.Parishioner_Info_Edit_widgets.inputLine_4.setText(str(parishioner_messageinfo["student_identity_num"]))
+        self.Parishioner_Info_Edit_widgets.inputLine_10.setDate(
+            timestamp_to_date(parishioner_messageinfo["student_birthday"]))
+        self.Parishioner_Info_Edit_widgets.inputLine_13.setText(parishioner_messageinfo["student_note"])
         family_idx = self.Parishioner_Info_Edit_widgets.inputLine_11.findData(
             parishioner_messageinfo["student_family_id"])
         self.Parishioner_Info_Edit_widgets.inputLine_11.setCurrentIndex(family_idx)
@@ -136,16 +145,6 @@ class Parishioner_MessageBox(MessageBoxBase):
         for family_info in self.family_info:  # 遍历获取到的班级信息列表
             self.Parishioner_Info_Edit_widgets.inputLine_11.addItem(family_info['family_name'],
                                                                     userData=family_info['family_id'])
-
-    def set_lineedit_uneditable(self):  # 定义一个方法，用于设置输入框不可编辑
-        self.Parishioner_Info_Edit_widgets.inputLine_1.setReadOnly(True)  # 设置输入框为只读模式，禁止用户输入
-        self.Parishioner_Info_Edit_widgets.inputLine_2.setReadOnly(True)  # 设置输入框为只读模式，禁止用户输入
-        self.Parishioner_Info_Edit_widgets.inputLine_3.setReadOnly(True)  # 设置输入框为只读模式，禁止用户输入
-        self.Parishioner_Info_Edit_widgets.inputLine_4.setReadOnly(True)  # 设置输入框为只读模式，禁止用户输入
-        self.Parishioner_Info_Edit_widgets.inputLine_9.setEnabled(False)  # 设置输入框为只读模式，禁止用户输入
-        self.Parishioner_Info_Edit_widgets.inputLine_10.setEnabled(False)  # 设置输入框为只读模式，禁止用户输入
-        self.Parishioner_Info_Edit_widgets.inputLine_11.setEnabled(False)  # 设置输入框为只读模式，禁止用户输入
-        self.Parishioner_Info_Edit_widgets.inputLine_12.hide()  # 设置输入框为只读模式，禁止用户输入
 
 
 class Parishioner_Main_Interface(QWidget):
@@ -180,10 +179,17 @@ class Parishioner_Main_Interface(QWidget):
         self.BaseMainInterface.BaseQuery.searchInput.returnPressed.connect(self.query_parishioner_info_with_like)
 
         self.parishioner_tableView_header = [
-             "姓名", "圣名", "性别", "手机", "家庭名称"
+            "姓名", "圣名", "性别", "手机", "家庭名称", "生日", "备注"
         ]
         self.BaseMainInterface.BaseQuery.tableWidget.setColumnCount(len(self.parishioner_tableView_header))
         self.BaseMainInterface.BaseQuery.tableWidget.setHorizontalHeaderLabels(self.parishioner_tableView_header)
+        header = self.BaseMainInterface.BaseQuery.tableWidget.horizontalHeader()
+        header.resizeSection(0, 50)
+        header.resizeSection(1, 50)
+        header.resizeSection(3, 50)
+        header.resizeSection(4, 100)
+        # 其他列自适应宽度
+        header.setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
         self.Load_Parishioner(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
 
     def query_parishioner_info_with_like(self):
@@ -206,7 +212,8 @@ class Parishioner_Main_Interface(QWidget):
             return
 
         header_info = [
-            'student_name', 'student_holyname', 'student_gender', 'student_phonenum', 'family_name'
+            'student_name', 'student_holyname', 'student_gender',
+            'student_phonenum', 'family_name', 'student_birthday', 'student_note'
         ]
         self.BaseMainInterface.BaseQuery.set_viewWidget_data(header_info, self.parishioner_info_all)
 
@@ -220,19 +227,24 @@ class Parishioner_Main_Interface(QWidget):
                 get_InputParishionerMessageinfo["student_school_id"] = self.cur_parish_id
                 db.add_student(get_InputParishionerMessageinfo)
             self.Load_Parishioner(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
+            return True
+        return False
 
+    @check_auth_permission(required_permission={"module_data": "parishioner", "permission_data": "delete"})
     def delete_parishioner(self):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
             w = Parishioner_MessageBox(self.cur_parish, self)
             w.titleLabel.setText("删除人员")
-            w.set_lineedit_uneditable()
             w.set_InputParishionerMessageinfo(self.parishioner_info_all[idx])
             if w.exec():
                 with StudentDB() as db:
                     db.delete_student(self.parishioner_info_all[idx]["student_id"])
                 self.Load_Parishioner(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
+                return True
+            return False
 
+    @check_auth_permission(required_permission={"module_data": "parishioner", "permission_data": "modify"})
     def modify_parishioner(self):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
@@ -246,6 +258,8 @@ class Parishioner_Main_Interface(QWidget):
                     parishioner_info["student_school_id"] = self.cur_parish_id
                     db.update_student(parishioner_info)
                 self.Load_Parishioner(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
+                return True
+            return False
 
 if __name__ == "__main__":
     import sys

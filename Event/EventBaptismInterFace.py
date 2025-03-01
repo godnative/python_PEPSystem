@@ -9,6 +9,7 @@ from BaseWidgets.BaseModule import BaseMainInterface, BaseMessageBoxWidget
 from DataBase.holyevent_db import HolyEventDB
 from DataBase.student_db import StudentDB
 from Parishioner.Parishioner_Interface import Parishioner_Main_Interface
+from user.User_Interface import check_auth_permission
 from utils.utils_tool import qdate_to_timestamp, timestamp_to_date
 
 
@@ -20,11 +21,12 @@ class QUERY_TYPE(enum.Enum):
 
 class EventBaptism_MessageBox(MessageBoxBase):
 
-    def __init__(self, cur_parish, parent=None):
+    def __init__(self, cur_parish, cur_user, parent=None):
         super().__init__(parent)
         self.family_info = None
         self.cur_parish = cur_parish
-        self.parishioner_widgets = Parishioner_Main_Interface(self.cur_parish, 1,
+        self.cur_user = cur_user
+        self.parishioner_widgets = Parishioner_Main_Interface(self.cur_parish, self.cur_user,
                                                               "Parishioner_Main_Interface_from_EventBaptism_MessageBox")
         self.parishioner_1_id = 1
         self.parishioner_2_id = 1
@@ -216,8 +218,9 @@ class EventBaptism_Main_Interface(QWidget):
         ]
         self.BaseMainInterface.BaseQuery.set_viewWidget_data(header_info, self.Event_all_info)
 
+    @check_auth_permission(required_permission={"module_data": "event", "permission_data": "add"})
     def add_even(self):
-        w = EventBaptism_MessageBox(self.cur_parish, self)
+        w = EventBaptism_MessageBox(self.cur_parish, self.cur_user, self)
         w.titleLabel.setText("添加事件")
         if w.exec():
             with HolyEventDB() as db:
@@ -230,10 +233,11 @@ class EventBaptism_Main_Interface(QWidget):
                                            get_InputEvenBaptismMessageinfo["holyevent_p1_holyname"])
             self.Load_even(QUERY_TYPE.QUERY_ALL, self.evenType, self.cur_parish_id)
 
+    @check_auth_permission(required_permission={"module_data": "event", "permission_data": "delete"})
     def delete_even(self):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
-            w = EventBaptism_MessageBox(self.cur_parish, self)
+            w = EventBaptism_MessageBox(self.cur_parish, self.cur_user, self)
             w.parishioner_widgets.hide()
             w.titleLabel.setText("删除事件")
             w.set_lineedit_uneditable()
@@ -243,10 +247,11 @@ class EventBaptism_Main_Interface(QWidget):
                     db.delete_event(self.Event_all_info[idx]["holyevent_id"])
                     self.Load_even(QUERY_TYPE.QUERY_ALL, self.evenType, self.cur_parish_id)
 
+    @check_auth_permission(required_permission={"module_data": "event", "permission_data": "modify"})
     def modify_even(self):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
-            w = EventBaptism_MessageBox(self.cur_parish, self)
+            w = EventBaptism_MessageBox(self.cur_parish, self.cur_user, self)
             w.parishioner_widgets.hide()
             w.titleLabel.setText("修改事件信息")
             w.set_InputEventMessageinfo(self.Event_all_info[idx])

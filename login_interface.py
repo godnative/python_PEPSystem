@@ -11,7 +11,7 @@ from PyQt6.QtWidgets import QMessageBox
 from qfluentwidgets import FluentIcon as FIF
 from qfluentwidgets import (NavigationItemPosition, MSFluentWindow,
                             SubtitleLabel, setFont)
-from qfluentwidgets import setThemeColor, SplitTitleBar, isDarkTheme
+from qfluentwidgets import setThemeColor, SplitTitleBar
 from qframelesswindow import AcrylicWindow as Window
 
 from DataBase.school_db import SchoolDb
@@ -38,7 +38,7 @@ class LoginWindow(Window, Ui_Form):
         self.setWindowIcon(QIcon("./login/resource/images/logo.png"))
         self.resize(1000, 650)
 
-        self.windowEffect.setMicaEffect(self.winId(), isDarkMode=isDarkTheme())
+        # self.windowEffect.setMicaEffect(self.winId(), isDarkMode=isDarkTheme())
 
         if sys.platform == "darwin":
             self.setSystemTitleBarButtonVisible(True)
@@ -70,7 +70,7 @@ class LoginWindow(Window, Ui_Form):
 
     def resizeEvent(self, e):
         super().resizeEvent(e)
-        pixmap = QPixmap("./login/resource/images/background.jpg").scaled(
+        pixmap = QPixmap("./resource/pic/background.jpg").scaled(
             self.label.size(),
             Qt.AspectRatioMode.KeepAspectRatioByExpanding,
             Qt.TransformationMode.SmoothTransformation
@@ -119,7 +119,6 @@ class LoginWindow(Window, Ui_Form):
 
 
 class Widget(QFrame):
-
     def __init__(self, text: str, parent=None):
         super().__init__(parent=parent)
         self.label = SubtitleLabel(text, self)
@@ -145,7 +144,6 @@ class MainWindow(MSFluentWindow):
             self.libraryInterface = Widget('请先选择学校..', self)
         else:
             self.setWindowTitle('当前学校:%s' % self.school_info['school_name'])
-
             # create sub interface
             self.studentInterface = ParishionerMainInterface(self.school_info, self.role, "Parishioner_Main_Interface")
             self.videoInterface = EvenMainTabInterface(self.school_info, self.role, "EvenMainTabInterface")
@@ -155,20 +153,12 @@ class MainWindow(MSFluentWindow):
         self.initWindow()
 
     def initNavigation(self):
-        self.addSubInterface(self.schoolInterface, FIF.APPLICATION, '学校')
-        self.addSubInterface(self.studentInterface, FIF.HOME, '学生', FIF.HOME_FILL)
+        self.addSubInterface(self.schoolInterface, FIF.APPLICATION, '教区')
+        self.addSubInterface(self.studentInterface, FIF.HOME, '教友')
+        self.addSubInterface(self.videoInterface, FIF.VIDEO, '圣事')
 
-        self.addSubInterface(self.videoInterface, FIF.VIDEO, '视频')
-
-        self.addSubInterface(self.libraryInterface, FIF.BOOK_SHELF, '库', FIF.LIBRARY_FILL,
+        self.addSubInterface(self.libraryInterface, FIF.BOOK_SHELF, '资料', FIF.LIBRARY_FILL,
                              NavigationItemPosition.BOTTOM)
-        self.navigationInterface.addItem(
-            routeKey='Help',
-            icon=FIF.HELP,
-            text='帮助',
-            selectable=False,
-            position=NavigationItemPosition.BOTTOM,
-        )
 
         self.navigationInterface.setCurrentItem(self.schoolInterface.objectName())
 

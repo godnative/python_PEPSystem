@@ -24,11 +24,13 @@ class StudentDB(DataBaseManage):
     def add_student(self, student):
         query = """
             INSERT INTO student (student_name, student_gender, student_phonenum, student_holyname, 
-                                    student_family_id, student_school_id)
-            VALUES (?, ?, ?, ?, ?, ?)
+                                    student_family_id, student_school_id, student_identity_num,
+                                    student_birthday, student_note)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         """
         params = (student["student_name"], student["student_gender"], student["student_phonenum"],
-                  student["student_holyname"], student["student_family_id"], student["student_school_id"])
+                  student["student_holyname"], student["student_family_id"], student["student_school_id"],
+                  student["student_identity_num"], student["student_birthday"], student["student_note"])
         return self.execute_query_return_id(query, params)
 
     def fetch_students_with_school_id(self, school_id):
@@ -82,11 +84,15 @@ class StudentDB(DataBaseManage):
                     student_holyname  = ?,
                     student_family_id = ?,
                     student_school_id = ?,
-                    student_name      = ?
+                    student_name      = ?,
+                    student_identity_num =?,
+                    student_birthday  =?,
+                    student_note      =?
                 WHERE student_id = ?;
         """
         params = (student["student_gender"], student["student_phonenum"], student["student_holyname"],
                   student["student_family_id"], student["student_school_id"], student["student_name"],
+                  student["student_identity_num"], student["student_birthday"], student["student_note"],
                   student["student_id"])
         return self.execute_query(query, params)
 

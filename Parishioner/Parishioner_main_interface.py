@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import QWidget, QStackedWidget, QVBoxLayout
-from qfluentwidgets import (qrouter, TabBar, TabCloseButtonDisplayMode)
+from qfluentwidgets import (qrouter, TabBar, TabCloseButtonDisplayMode, FluentIcon)
 
 from Parishioner.Parishioner_Interface import Parishioner_Main_Interface
 from Parishioner.family_interface import Family_Main_Interface
@@ -48,9 +48,9 @@ class ParishionerMainInterface(QWidget):
         self.vBoxLayout.addWidget(self.stackedWidget)
 
         self.addSubInterface(self.parishioner_interface,
-                             'parishioner_interface', self.tr('人员信息'), ':/gallery/images/MusicNote.png')
+                             'parishioner_interface', self.tr('教友信息'), FluentIcon.VIEW)
         self.addSubInterface(self.family_interface,
-                             'family_interface', self.tr('家庭信息'), ':/gallery/images/Dvd.png')
+                             'family_interface', self.tr('家庭信息'), FluentIcon.ZOOM)
 
         StyleSheet.NAVIGATION_VIEW_INTERFACE.apply(self)
 

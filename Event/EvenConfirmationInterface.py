@@ -8,6 +8,7 @@ from qfluentwidgets import MessageBoxBase, SubtitleLabel, InfoBar
 from BaseWidgets.BaseModule import BaseMainInterface, BaseMessageBoxWidget
 from DataBase.holyevent_db import HolyEventDB
 from Parishioner.Parishioner_Interface import Parishioner_Main_Interface
+from user.User_Interface import check_auth_permission
 from utils.utils_tool import qdate_to_timestamp, timestamp_to_date
 
 
@@ -19,14 +20,16 @@ class QUERY_TYPE(enum.Enum):
 
 class EventConfirmation_MessageBox(MessageBoxBase):
 
-    def __init__(self, cur_parish, parent=None):
+    def __init__(self, cur_parish, cur_user, parent=None):
         super().__init__(parent)
         self.family_info = None
+        self.setMinimumWidth(800)
         self.cur_parish = cur_parish
-        self.parishioner_widgets = Parishioner_Main_Interface(self.cur_parish, 1,
+        self.cur_user = cur_user
+        self.parishioner_widgets = Parishioner_Main_Interface(self.cur_parish, self.cur_user,
                                                               "Parishioner_Main_Interface_from_EventConfirmation_MessageBox")
-        self.parishioner_1_id = None
-        self.parishioner_2_id = None
+        self.parishioner_1_id = 1
+        self.parishioner_2_id = 1
         self.titleLabel = SubtitleLabel('人员', self)
         self.BaseMessageBoxWidget = BaseMessageBoxWidget(self)
 
@@ -146,8 +149,8 @@ class EventConfirmation_MessageBox(MessageBoxBase):
 
 
 class EventConfirmation_Main_Interface(QWidget):
-    def __init__(self, cur_parish, cur_user, ObjectName):
-        super().__init__()
+    def __init__(self, cur_parish, cur_user, ObjectName, parent=None):
+        super().__init__(parent)
 
         # 创建主布局
         self.setObjectName(ObjectName)
@@ -203,15 +206,15 @@ class EventConfirmation_Main_Interface(QWidget):
 
         if self.Event_all_info is None:
             return
-
         header_info = [
             'holyevent_p1_name', 'holyevent_p1_holyname', 'holyevent_implementer',
             'holyevent_witness', 'holyevent_school_id', 'holyevent_date', 'holyevent_note'
         ]
         self.BaseMainInterface.BaseQuery.set_viewWidget_data(header_info, self.Event_all_info)
 
+    @check_auth_permission(required_permission={"module_data": "event", "permission_data": "add"})
     def add_even(self):
-        w = EventConfirmation_MessageBox(self)
+        w = EventConfirmation_MessageBox(self.cur_parish, self.cur_user, self)
         w.titleLabel.setText("添加事件")
         if w.exec():
             with HolyEventDB() as db:
@@ -220,11 +223,14 @@ class EventConfirmation_Main_Interface(QWidget):
                 get_InputEvenBaptismMessageinfo["holyevent_type"] = self.evenType
                 db.add_even(get_InputEvenBaptismMessageinfo)
             self.Load_even(QUERY_TYPE.QUERY_ALL, self.evenType, self.cur_parish_id)
+            return True
+        return False
 
+    @check_auth_permission(required_permission={"module_data": "event", "permission_data": "delete"})
     def delete_even(self):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
-            w = EventConfirmation_MessageBox(self)
+            w = EventConfirmation_MessageBox(self.cur_parish, self.cur_user, self)
             w.parishioner_widgets.hide()
             w.titleLabel.setText("删除事件")
             w.set_lineedit_uneditable()
@@ -233,11 +239,14 @@ class EventConfirmation_Main_Interface(QWidget):
                 with HolyEventDB() as db:
                     db.delete_event(self.Event_all_info[idx]["holyevent_id"])
                     self.Load_even(QUERY_TYPE.QUERY_ALL, self.evenType, self.cur_parish_id)
+                return True
+            return False
 
+    @check_auth_permission(required_permission={"module_data": "event", "permission_data": "modify"})
     def modify_even(self):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
-            w = EventConfirmation_MessageBox(self)
+            w = EventConfirmation_MessageBox(self.cur_parish, self.cur_user, self)
             w.parishioner_widgets.hide()
             w.titleLabel.setText("修改事件信息")
             w.set_InputEventMessageinfo(self.Event_all_info[idx])
@@ -248,7 +257,8 @@ class EventConfirmation_Main_Interface(QWidget):
                     Even_info["holyevent_id"] = self.Event_all_info[idx]["holyevent_id"]
                     db.update_even(Even_info)
                 self.Load_even(QUERY_TYPE.QUERY_ALL, self.evenType, self.cur_parish_id)
-
+                return True
+            return False
 
 if __name__ == "__main__":
     import sys

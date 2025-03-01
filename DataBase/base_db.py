@@ -1,6 +1,6 @@
 import sqlite3
 
-db_path = "C:/Users/97895/Desktop/workspace/NewCode/python_PEPSystem/DataBase/data.db"
+db_path = "./DataBase/data.db"
 
 
 class DataBaseManage:
