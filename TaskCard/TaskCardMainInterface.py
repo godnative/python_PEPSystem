@@ -1,12 +1,12 @@
 from PyQt6 import QtWidgets, QtCore
-from PyQt6.QtCore import QDate, pyqtSignal, QTimer
-from PyQt6.QtPrintSupport import QPrinter, QPrintDialog, QPrintPreviewDialog
+from PyQt6.QtCore import QDate, pyqtSignal, QTimer, Qt
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QSpacerItem
 from qfluentwidgets import MessageBoxBase, CardWidget, LineEdit, InfoBarIcon, \
     IconWidget, FluentIcon, StrongBodyLabel, TransparentToolButton, BodyLabel, LargeTitleLabel, \
-    ProgressRing, ScrollArea, CheckBox, CalendarPicker, TextEdit, PushButton
+    ProgressRing, ScrollArea, CheckBox, CalendarPicker, PushButton, FlyoutView, Flyout
 
 from DataBase.student_db import StudentDB
+from utils.utils_tool import timestamp_to_date
 
 
 class ProcessCard(CardWidget):
@@ -180,10 +180,12 @@ class TaskCardMain(CardWidget):
     # 添加信号量
     taskCountsChanged = pyqtSignal(int, int, int, int)
 
-    def __init__(self, parent=None):
+    def __init__(self, cur_parish, parent=None):
         super().__init__(parent)
 
+        self.task_card_parishioner_info = None
         self.setMinimumWidth(400)
+        self.cur_parish = cur_parish
         self.overTimeCnt = 0
         self.finishTimeCnt = 0
         self.waitTimeCnt = 0
@@ -241,12 +243,14 @@ class TaskCardMain(CardWidget):
 
         self.verticalLayout_main_vbox.addWidget(self.scroll_area)
         self.addTaskButton.clicked.connect(self.add_task)
-        self.syncTaskButton.clicked.connect(self.update_task_visibility)
+        self.syncTaskButton.clicked.connect(self.showFlyout2)
 
         # 添加定时器
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_task_visibility)
-        self.timer.start(5000)  # 5000 毫秒 = 5 秒
+        self.timer.start(3000)  # 5000 毫秒 = 5 秒
+
+        self.RefreshTaskCard()
 
     def add_task(self):
         # 创建一个新输入框和日期选择器
@@ -262,6 +266,17 @@ class TaskCardMain(CardWidget):
             content = content_input.text()
             todo_card = TaskCard(end_date_input.getDate(), content, "taskCard", self)
             self.todo_list_layout.addWidget(todo_card)
+
+    def add_task_with_info(self, parishioner_info):
+        cur_year = QDate.currentDate().year()
+        parishioner_birthday = timestamp_to_date(parishioner_info["student_birthday"])
+        diff_year = cur_year - parishioner_birthday.year()
+        # 计算当前年份的生日
+        parishioner_birthday = parishioner_birthday.addYears(diff_year)
+        content = f"{parishioner_info["student_name"]}:生日提醒"
+        objectname = "taskCard" + str(parishioner_info["student_id"])
+        todo_card = TaskCard(parishioner_birthday, content, objectname, self)
+        self.todo_list_layout.addWidget(todo_card)
 
     def update_task_visibility(self):
         # 遍历 todo_list_layout 中的所有任务卡片
@@ -302,61 +317,66 @@ class TaskCardMain(CardWidget):
         # 发射信号
         self.taskCountsChanged.emit(self.overTimeCnt, self.finishTimeCnt, self.waitTimeCnt, percentage)
 
+    def delete_all_tasks(self):
+        for i in range(self.todo_list_layout.count()):
+            item = self.todo_list_layout.itemAt(i)
+            task_card = item.widget()
+            if isinstance(task_card, TaskCard):
+                task_card.deleteLater()
+        self.update_task_visibility()
 
-class MainWindow(QWidget):
-    def __init__(self):
-        super().__init__()
+    def RefreshTaskCard(self):
+        with StudentDB() as db:
+            self.delete_all_tasks()
+            self.task_card_parishioner_info = db.fetch_students_with_birthday(self.cur_parish["school_id"])
+            if self.task_card_parishioner_info:
+                for i in self.task_card_parishioner_info:
+                    self.add_task_with_info(i)
+
+    def showFlyout2(self):
+        view = FlyoutView(
+            title='确认同步数据',
+            content="同步数据会清除已完成标记，并从当月开始从新添加所有的生日提醒",
+            isClosable=False
+            # image='resource/yiku.gif',
+        )
+
+        # add button to view
+        button = PushButton('Action')
+        button.clicked.connect(self.RefreshTaskCard)
+        button.setFixedWidth(120)
+        view.addWidget(button, align=Qt.AlignmentFlag.AlignRight)
+
+        # adjust layout (optional)
+        view.widgetLayout.insertSpacing(1, 5)
+        view.widgetLayout.addSpacing(5)
+
+        # show view
+        w = Flyout.make(view, self.syncTaskButton, self)
+        view.closed.connect(w.close)
+
+
+class TaskCardMainInterFace(QWidget):
+    taskcardwaitfinishnumchanged = pyqtSignal(int)
+
+    def __init__(self, cur_parish, objectname, parent=None):
+        super().__init__(parent)
+        self.task_card_parishioner_info = None
+        self.setObjectName(objectname)
+        self.cur_parish = cur_parish
+
         layout = QHBoxLayout(self)
-        self.printer = QPrinter()
 
         # 实际功能界面
         self.process_card = ProcessCard(self)
         self.process_card.setFixedSize(400, 400)
-        self.task_card_main = TaskCardMain(self)
+        self.task_card_main = TaskCardMain(self.cur_parish, self)
         layout.addWidget(self.process_card)
         layout.addWidget(self.task_card_main)
 
-        name = "小明"
-        self.texsss = f"""<center><font size=5>证明</font></center>\n\n***\n\n兹证明 _{name}_ 先生和 _小号_ 女士在 举 -行- 仪式"""
-        name2 = "小红"
-
-        verticalLayout = QVBoxLayout()
-        self.editor = TextEdit(self)
-        verticalLayout.addWidget(self.editor)
-        self.editor.setMarkdown(self.texsss)
-        self.pushbutton = PushButton("打印", self)
-        verticalLayout.addWidget(self.pushbutton)
-        self.pushbutton.clicked.connect(self.showPrintDialog_2)
-        layout.addLayout(verticalLayout)
-
         # 连接信号量
-        self.task_card_main.taskCountsChanged.connect(self.process_card.setOFWValue)
+        self.task_card_main.taskCountsChanged.connect(self.setOFWValue)
 
-    def showPrintDiaglog(self):
-        printDialog = QPrintPreviewDialog(self)
-        printDialog.paintRequested.connect(self.printPreview)
-        # 设置打印预览对话框的标题
-        printDialog.setWindowTitle("打印预览")
-
-        if printDialog.exec():
-            pass
-
-    def showPrintDialog_2(self):
-        printdialog = QPrintDialog(self)
-        print("d")
-        if printdialog.exec():
-            self.editor.print()
-            pass
-            # self.editor.print(self.printer)
-
-    def printPreview(self):
-        self.editor = TextEdit()
-        self.editor.setMarkdown(self.texsss)
-        # self.editor.print(printer)
-        printdiaglog = QPrintDialog(self.printer, self)
-        if printdiaglog.exec():
-            self.editor.print(self.printer)
-
-if __name__ == '__main__':
-    with StudentDB() as db:
-        print(db.fetch_students_with_birthday(2))
+    def setOFWValue(self, overTime, finishTime, waitTime, percentage):
+        self.process_card.setOFWValue(overTime, finishTime, waitTime, percentage)
+        self.taskcardwaitfinishnumchanged.emit(waitTime)

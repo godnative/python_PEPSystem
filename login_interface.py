@@ -8,7 +8,7 @@ from PyQt6.QtGui import QIcon
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import QApplication, QFrame, QHBoxLayout
 from PyQt6.QtWidgets import QMessageBox
-from qfluentwidgets import FluentIcon as FIF
+from qfluentwidgets import FluentIcon as FIF, InfoBadge, InfoBadgePosition
 from qfluentwidgets import (NavigationItemPosition, MSFluentWindow,
                             SubtitleLabel, setFont)
 from qfluentwidgets import setThemeColor, SplitTitleBar
@@ -19,6 +19,7 @@ from DataBase.user_db import UserDB
 from Event.EvenMainTabInterface import EvenMainTabInterface
 from LoginWindow import Ui_Form
 from Parishioner.Parishioner_main_interface import ParishionerMainInterface
+from TaskCard.TaskCardMainInterface import TaskCardMainInterFace
 from school.school_interface import ShowSchoolInterface
 from user.user_main_interface import UserMainInterface
 
@@ -142,12 +143,14 @@ class MainWindow(MSFluentWindow):
             self.studentInterface = Widget('请先选择学校', self)
             self.videoInterface = Widget('请先选择学校.', self)
             self.libraryInterface = Widget('请先选择学校..', self)
+            self.echoInterface = Widget('请先选择学校...', self)
         else:
             self.setWindowTitle('当前学校:%s' % self.school_info['school_name'])
             # create sub interface
             self.studentInterface = ParishionerMainInterface(self.school_info, self.role, "Parishioner_Main_Interface")
             self.videoInterface = EvenMainTabInterface(self.school_info, self.role, "EvenMainTabInterface")
             self.libraryInterface = UserMainInterface(self.school_info, self.role, "UserMainInterface")
+            self.taskCardInterface = TaskCardMainInterFace(self.school_info, "TaskCardMainInterFace")
 
         self.initNavigation()
         self.initWindow()
@@ -159,8 +162,12 @@ class MainWindow(MSFluentWindow):
 
         self.addSubInterface(self.libraryInterface, FIF.BOOK_SHELF, '资料', FIF.LIBRARY_FILL,
                              NavigationItemPosition.BOTTOM)
+        self.addSubInterface(self.taskCardInterface, FIF.BOOK_SHELF, '通知', FIF.LIBRARY_FILL,
+                             NavigationItemPosition.BOTTOM)
 
         self.navigationInterface.setCurrentItem(self.schoolInterface.objectName())
+
+        self.taskCardInterface.taskcardwaitfinishnumchanged.connect(self.setTaskCardWaitFinishNumber)
 
     def initWindow(self):
         self.resize(1500, 1000)
@@ -174,6 +181,16 @@ class MainWindow(MSFluentWindow):
         self.close()
         login_window = LoginWindow()
         login_window.show()
+
+    def setTaskCardWaitFinishNumber(self, num):
+        # add badge to navigation item
+        item = self.navigationInterface.widget(self.taskCardInterface.objectName())
+        InfoBadge.attension(
+            text=str(num),
+            parent=item.parent(),
+            target=item,
+            position=InfoBadgePosition.NAVIGATION_ITEM
+        )
 
 
 if __name__ == '__main__':

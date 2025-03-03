@@ -113,6 +113,18 @@ class StudentDB(DataBaseManage):
         """
         params = (student_holyname, student_id)
         return self.execute_query(query, params)
+
+    def fetch_students_with_birthday(self, school_id):
+        query = """
+            SELECT *
+            FROM student
+            -- 将 student_birthday 时间戳转换为日期格式，然后提取月份
+            WHERE strftime('%m', datetime(student_birthday, 'unixepoch')) = strftime('%m', 'now') and student_school_id = ?;
+        """
+        params = (school_id,)
+        return self.fetch_query(query, params=params)
+
+
 if __name__ == '__main__':
     with StudentDB() as db:
         # for i in range(10):
