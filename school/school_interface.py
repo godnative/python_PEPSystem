@@ -67,7 +67,7 @@ class ModifySchoolInterface(MessageBoxBase):
         self.yesButton.setText('修改')  # 设置确认按钮的文本为“添加”，以明确功能
 
         self.schoolInterface_temp.set_school_info(school_info)
-        self.schoolInterface_temp.lineEdit_2.setReadOnly(True)
+        #self.schoolInterface_temp.lineEdit_2.setReadOnly(True)
 
     def _validateInput(self):
         errors = []  # 初始化错误信息列表

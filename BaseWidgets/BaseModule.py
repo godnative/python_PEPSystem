@@ -114,6 +114,15 @@ class BaseQueryWidget(QWidget):
 
         self.ModButton = PushButton("Mod")
 
+        self.importButton = PushButton("导入")
+        self.importButton.hide()
+
+        self.exportButton = PushButton("导出")
+        self.exportButton.hide()
+
+        self.printButton = PushButton("打印")
+        self.printButton.hide()
+
         self.extendButton_1 = PushButton("Mod")
         self.extendButton_1.hide()
 
@@ -122,6 +131,9 @@ class BaseQueryWidget(QWidget):
         layout.addWidget(self.delButton)
         layout.addWidget(self.ModButton)
         layout.addWidget(self.extendButton_1)
+        layout.addWidget(self.importButton)
+        layout.addWidget(self.exportButton)
+        layout.addWidget(self.printButton)
 
         self.tableWidget = TableWidget(self)
         self.tableWidget.setBorderVisible(True)

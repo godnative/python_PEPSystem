@@ -1,7 +1,9 @@
+import sys
+
 from PyQt6 import QtWidgets, QtCore
 from PyQt6.QtCore import QDate, pyqtSignal, QTimer
 from PyQt6.QtPrintSupport import QPrinter, QPrintDialog, QPrintPreviewDialog
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QSpacerItem
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QSpacerItem, QApplication
 from qfluentwidgets import MessageBoxBase, CardWidget, LineEdit, InfoBarIcon, \
     IconWidget, FluentIcon, StrongBodyLabel, TransparentToolButton, BodyLabel, LargeTitleLabel, \
     ProgressRing, ScrollArea, CheckBox, CalendarPicker, TextEdit, PushButton
@@ -326,7 +328,7 @@ class MainWindow(QWidget):
         self.editor.setMarkdown(self.texsss)
         self.pushbutton = PushButton("打印", self)
         verticalLayout.addWidget(self.pushbutton)
-        self.pushbutton.clicked.connect(self.showPrintDialog_2)
+        self.pushbutton.clicked.connect(self.printPreview)
         layout.addLayout(verticalLayout)
 
         # 连接信号量
@@ -358,5 +360,7 @@ class MainWindow(QWidget):
             self.editor.print(self.printer)
 
 if __name__ == '__main__':
-    with StudentDB() as db:
-        print(db.fetch_students_with_birthday(2))
+    app = QApplication(sys.argv)
+    gui = MainWindow()
+    gui.show()
+    sys.exit(app.exec())

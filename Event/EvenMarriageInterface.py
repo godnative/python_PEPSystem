@@ -2,7 +2,8 @@ import enum
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPixmap
-from PyQt6.QtWidgets import QVBoxLayout, QWidget
+from PyQt6.QtPrintSupport import QPrinter, QPrintPreviewDialog
+from PyQt6.QtWidgets import QVBoxLayout, QWidget, QTextEdit
 from qfluentwidgets import MessageBoxBase, SubtitleLabel, InfoBar
 
 from BaseWidgets.BaseModule import BaseMainInterface, BaseMessageBoxWidget
@@ -184,6 +185,7 @@ class EventMarriage_Main_Interface(QWidget):
         self.BaseMainInterface.label.setPixmap(pixmap)
         self.BaseMainInterface.label_2.setText("婚姻圣事")
         main_layout.addWidget(self.BaseMainInterface)  # 正确地将 ReusableWidget 作为一个整体添加到布局中
+        self.textEdit = QTextEdit()
 
         self.resize(800, 600)
 
@@ -192,6 +194,9 @@ class EventMarriage_Main_Interface(QWidget):
         self.BaseMainInterface.BaseQuery.ModButton.clicked.connect(self.modify_even)
         self.BaseMainInterface.BaseQuery.searchInput.searchSignal.connect(self.query_evenBaptism_info_with_like)
         self.BaseMainInterface.BaseQuery.searchInput.returnPressed.connect(self.query_evenBaptism_info_with_like)
+        self.BaseMainInterface.BaseQuery.printButton.clicked.connect(self.tprint)
+        self.BaseMainInterface.BaseQuery.printButton.show()
+
 
         self.evenBaptism_tableView_header = [
             "男方姓名", "女方姓名", "施行人", "见证人", "堂区", "日期", "备注"
@@ -272,3 +277,23 @@ class EventMarriage_Main_Interface(QWidget):
                 self.Load_even(QUERY_TYPE.QUERY_ALL, self.evenType, self.cur_parish_id)
                 return True
             return False
+
+    def tprint(self):
+        idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
+        if idx != -1:
+            p1_name = self.Event_all_info[idx]["holyevent_p1_name"]
+            p2_name = self.Event_all_info[idx]["holyevent_p2_name"]
+            date = timestamp_to_date(self.Event_all_info[idx]["holyevent_date"]).toString("yyyy-MM-dd")
+            parish = self.cur_parish["school_name"]
+            implementer = self.Event_all_info[idx]["holyevent_implementer"]
+            witness = self.Event_all_info[idx]["holyevent_witness"]
+            data_str = f"""<center><font size=5>证明</font></center>\n\n***\n\n  兹证明 _{p1_name}_ 先生和 _{p2_name}_ 女士于 _{date}_ 在 _{parish}_ 举行仪式\n\n***\n\n施行人 _{implementer}_ \n\n见证人：_{witness}_ """
+            # self.textEdit.setHtml(data)
+            self.textEdit.setMarkdown(data_str)
+            self.printer = QPrinter()
+            preview = QPrintPreviewDialog(self.printer)
+            preview.paintRequested.connect(self.table2print)
+            preview.exec()
+
+    def table2print(self):
+        self.textEdit.print(self.printer)
