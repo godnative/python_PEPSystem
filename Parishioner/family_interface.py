@@ -1,4 +1,5 @@
 import enum
+import time
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPixmap
@@ -168,9 +169,21 @@ class Family_Main_Interface(QWidget):
         self.BaseMainInterface.BaseQuery.searchInput.searchSignal.connect(self.query_family_info_with_like)
         self.BaseMainInterface.BaseQuery.searchInput.returnPressed.connect(self.query_family_info_with_like)
 
-        self.family_viewTable_header_info = [
-            "家庭名称", "地址", "备注"
-        ]
+        if self.cur_user["user_type"] == 1:
+            self.family_viewTable_header_info = [
+                "家庭名称", "地址", "备注", "操作人员", "操作时间"
+            ]
+            self.header_info = [
+                'family_name', 'family_address', 'family_notes', 'operator', 'opera_time'
+            ]
+        else:
+            self.family_viewTable_header_info = [
+                "家庭名称", "地址", "备注"
+            ]
+            self.header_info = [
+                'family_name', 'family_address', 'family_notes'
+            ]
+
         self.BaseMainInterface.BaseQuery.tableWidget.setColumnCount(len(self.family_viewTable_header_info))
         self.BaseMainInterface.BaseQuery.tableWidget.setHorizontalHeaderLabels(self.family_viewTable_header_info)
         header = self.BaseMainInterface.BaseQuery.tableWidget.horizontalHeader()
@@ -197,10 +210,7 @@ class Family_Main_Interface(QWidget):
         if self.family_info_all is None:
             return
 
-        header_info = [
-            'family_name', 'family_address', 'family_notes'
-        ]
-        self.BaseMainInterface.BaseQuery.set_viewWidget_data(header_info, self.family_info_all)
+        self.BaseMainInterface.BaseQuery.set_viewWidget_data(self.header_info, self.family_info_all)
 
     @check_auth_permission(required_permission={"module_data": "family", "permission_data": "add"})
     def add_family(self):
@@ -211,6 +221,8 @@ class Family_Main_Interface(QWidget):
             with FamilyDB() as db:
                 get_InputParishionerMessageinfo = w.get_InputFamilyMessageinfo()
                 get_InputParishionerMessageinfo["family_school_id"] = self.cur_parish_id
+                get_InputParishionerMessageinfo["operator"] = self.cur_user["user_name"]
+                get_InputParishionerMessageinfo["opera_time"] = int(time.time())
                 db.add_family(get_InputParishionerMessageinfo)
             self.Load_family(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
             return True
@@ -252,6 +264,8 @@ class Family_Main_Interface(QWidget):
                     family = w.get_InputFamilyMessageinfo()
                     family["family_id"] = self.family_info_all[idx]["family_id"]
                     family["family_school_id"] = self.cur_parish_id
+                    family["operator"] = self.cur_user["user_name"]
+                    family["opera_time"] = int(time.time())
                     db.update_family(family)
                 self.Load_family(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
                 return True

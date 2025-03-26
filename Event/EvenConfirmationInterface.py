@@ -1,4 +1,5 @@
 import enum
+import time
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPixmap
@@ -181,9 +182,24 @@ class EventConfirmation_Main_Interface(QWidget):
         self.BaseMainInterface.BaseQuery.searchInput.searchSignal.connect(self.query_evenBaptism_info_with_like)
         self.BaseMainInterface.BaseQuery.searchInput.returnPressed.connect(self.query_evenBaptism_info_with_like)
 
-        self.evenBaptism_tableView_header = [
-            "姓名", "圣名", "施行人", "见证人", "堂区", "日期", "备注"
-        ]
+        if self.cur_user["user_type"] != 1:
+            self.evenBaptism_tableView_header = [
+                "姓名", "圣名", "施行人", "见证人", "堂区", "日期", "备注"
+            ]
+            self.header_info = [
+                'holyevent_p1_name', 'holyevent_p1_holyname', 'holyevent_implementer',
+                'holyevent_witness', 'holyevent_school_id', 'holyevent_date', 'holyevent_note'
+            ]
+        else:
+            self.evenBaptism_tableView_header = [
+                "姓名", "圣名", "施行人", "见证人", "堂区", "日期", "备注", "操作人员", "操作时间"
+            ]
+            self.header_info = [
+                'holyevent_p1_name', 'holyevent_p1_holyname', 'holyevent_implementer',
+                'holyevent_witness', 'holyevent_school_id', 'holyevent_date', 'holyevent_note',
+                'operator', 'opera_time'
+            ]
+
         self.BaseMainInterface.BaseQuery.tableWidget.setColumnCount(len(self.evenBaptism_tableView_header))
         self.BaseMainInterface.BaseQuery.tableWidget.setHorizontalHeaderLabels(self.evenBaptism_tableView_header)
         self.Load_even(QUERY_TYPE.QUERY_ALL, self.evenType, self.cur_parish_id)
@@ -206,11 +222,8 @@ class EventConfirmation_Main_Interface(QWidget):
 
         if self.Event_all_info is None:
             return
-        header_info = [
-            'holyevent_p1_name', 'holyevent_p1_holyname', 'holyevent_implementer',
-            'holyevent_witness', 'holyevent_school_id', 'holyevent_date', 'holyevent_note'
-        ]
-        self.BaseMainInterface.BaseQuery.set_viewWidget_data(header_info, self.Event_all_info)
+
+        self.BaseMainInterface.BaseQuery.set_viewWidget_data(self.header_info, self.Event_all_info)
 
     @check_auth_permission(required_permission={"module_data": "event", "permission_data": "add"})
     def add_even(self):
@@ -221,6 +234,8 @@ class EventConfirmation_Main_Interface(QWidget):
                 get_InputEvenBaptismMessageinfo = w.get_InputEvenBaptismMessageinfo()
                 get_InputEvenBaptismMessageinfo["holyevent_school_id"] = self.cur_parish_id
                 get_InputEvenBaptismMessageinfo["holyevent_type"] = self.evenType
+                get_InputEvenBaptismMessageinfo["operator"] = self.cur_user["user_name"]
+                get_InputEvenBaptismMessageinfo["opera_time"] = int(time.time())
                 db.add_even(get_InputEvenBaptismMessageinfo)
             self.Load_even(QUERY_TYPE.QUERY_ALL, self.evenType, self.cur_parish_id)
             return True
@@ -255,6 +270,8 @@ class EventConfirmation_Main_Interface(QWidget):
                     Even_info = w.get_InputEvenBaptismMessageinfo()
                     Even_info["holyevent_school_id"] = self.cur_parish_id
                     Even_info["holyevent_id"] = self.Event_all_info[idx]["holyevent_id"]
+                    Even_info["operator"] = self.cur_user["user_name"]
+                    Even_info["opera_time"] = int(time.time())
                     db.update_even(Even_info)
                 self.Load_even(QUERY_TYPE.QUERY_ALL, self.evenType, self.cur_parish_id)
                 return True

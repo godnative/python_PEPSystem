@@ -1,4 +1,5 @@
 import enum
+import time
 
 from PyQt6.QtCore import Qt, QDate
 from PyQt6.QtGui import QPixmap
@@ -182,9 +183,24 @@ class Parishioner_Main_Interface(QWidget):
         self.BaseMainInterface.BaseQuery.importButton.show()
         self.BaseMainInterface.BaseQuery.importButton.clicked.connect(self.import_from_csv)
 
-        self.parishioner_tableView_header = [
-            "姓名", "圣名", "性别", "手机", "家庭名称", "生日", "备注"
-        ]
+        if self.cur_user["user_type"] == 1:
+            self.parishioner_tableView_header = [
+                "姓名", "圣名", "性别", "手机", "家庭名称", "生日", "备注", "操作人员", "操作时间"
+            ]
+            self.header_info = [
+                'student_name', 'student_holyname', 'student_gender',
+                'student_phonenum', 'family_name', 'student_birthday',
+                'student_note', 'operator', 'opera_time'
+            ]
+        else:
+            self.parishioner_tableView_header = [
+                "姓名", "圣名", "性别", "手机", "家庭名称", "生日", "备注"
+            ]
+            self.header_info = [
+                'student_name', 'student_holyname', 'student_gender',
+                'student_phonenum', 'family_name', 'student_birthday',
+                'student_note'
+            ]
         self.BaseMainInterface.BaseQuery.tableWidget.setColumnCount(len(self.parishioner_tableView_header))
         self.BaseMainInterface.BaseQuery.tableWidget.setHorizontalHeaderLabels(self.parishioner_tableView_header)
         header = self.BaseMainInterface.BaseQuery.tableWidget.horizontalHeader()
@@ -215,11 +231,7 @@ class Parishioner_Main_Interface(QWidget):
         if self.parishioner_info_all is None:
             return
 
-        header_info = [
-            'student_name', 'student_holyname', 'student_gender',
-            'student_phonenum', 'family_name', 'student_birthday', 'student_note'
-        ]
-        self.BaseMainInterface.BaseQuery.set_viewWidget_data(header_info, self.parishioner_info_all)
+        self.BaseMainInterface.BaseQuery.set_viewWidget_data(self.header_info, self.parishioner_info_all)
 
     @check_auth_permission(required_permission={"module_data": "parishioner", "permission_data": "add"})
     def add_parishioner(self):
@@ -229,6 +241,8 @@ class Parishioner_Main_Interface(QWidget):
             with StudentDB() as db:
                 get_InputParishionerMessageinfo = w.get_InputParishionerMessageinfo()
                 get_InputParishionerMessageinfo["student_school_id"] = self.cur_parish_id
+                get_InputParishionerMessageinfo["operator"] = self.cur_user["user_name"]
+                get_InputParishionerMessageinfo["opera_time"] = int(time.time())
                 db.add_student(get_InputParishionerMessageinfo)
             self.Load_Parishioner(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
             return True
@@ -260,6 +274,8 @@ class Parishioner_Main_Interface(QWidget):
                     parishioner_info = w.get_InputParishionerMessageinfo()
                     parishioner_info["student_id"] = self.parishioner_info_all[idx]["student_id"]
                     parishioner_info["student_school_id"] = self.cur_parish_id
+                    parishioner_info["operator"] = self.cur_user["user_name"]
+                    parishioner_info["opera_time"] = int(time.time())
                     db.update_student(parishioner_info)
                 self.Load_Parishioner(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
                 return True

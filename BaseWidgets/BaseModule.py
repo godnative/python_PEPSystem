@@ -3,7 +3,7 @@ from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout, \
     QAbstractItemView, QHeaderView, QTableWidgetItem, QApplication, QGridLayout
 from qfluentwidgets import PushButton, SearchLineEdit, TableWidget, LineEdit, CalendarPicker, ComboBox, CheckBox
 
-from utils.utils_tool import get_now_date, timestamp_to_date
+from utils.utils_tool import get_now_date, timestamp_to_date, timestamp_to_times
 
 
 class BaseMessageBoxWidget(QWidget):
@@ -157,6 +157,8 @@ class BaseQueryWidget(QWidget):
                     value = "男" if data.get(key, "") == 0 else "女"
                 elif key == "student_birthday" or key == "holyevent_date":
                     value = timestamp_to_date(data.get(key, "")).toString("yyyy-MM-dd")
+                elif key == "opera_time":
+                    value = timestamp_to_times(data.get(key, ""))
                 else:
                     value = data.get(key, "")
                 item = QTableWidgetItem(str(value))
