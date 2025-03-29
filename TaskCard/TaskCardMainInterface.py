@@ -369,8 +369,9 @@ class TaskCardMainInterFace(QWidget):
 
         # 实际功能界面
         self.process_card = ProcessCard(self)
-        self.process_card.setFixedSize(400, 400)
+        # self.process_card.setFixedSize(400, 400)
         self.task_card_main = TaskCardMain(self.cur_parish, self)
+        self.task_card_main.setFixedSize(800, 600)
         layout.addWidget(self.process_card)
         layout.addWidget(self.task_card_main)
 
