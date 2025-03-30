@@ -78,7 +78,7 @@ class ModifySchoolInterface(MessageBoxBase):
             errors.append("学校地址不能为空")
 
         # 验证学校简介
-        school_info = self.schoolInterface_temp.textEdit.toPlainText()
+        school_info = "self.schoolInterface_temp.textEdit.toPlainText()"
         if not school_info:
             errors.append("学校简介不能为空")
         # 返回错误信息列表，如果为空则表示验证通过

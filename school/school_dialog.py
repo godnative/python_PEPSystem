@@ -82,7 +82,7 @@ class BaseSchoolInterface_Temp:
         school_info = {
             'school_name': self.lineEdit_2.text(),
             'school_address': self.lineEdit_4.text(),
-            'school_info': self.textEdit.toPlainText(),
+            'school_info': "self.textEdit.toPlainText()",
             'school_date': qdate_to_timestamp(self.calendarPicker.date),
             'school_pic_path': self.label.image_path
         }
