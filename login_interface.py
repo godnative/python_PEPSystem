@@ -60,10 +60,10 @@ class LoginWindow(Window, Ui_Form):
         ww, hh = desktop.width(), desktop.height()
         self.move(ww // 2 - self.width() // 2, hh // 2 - self.height() // 2)
 
-        self.lineEdit_3.setText("admin")
-        self.lineEdit_5.setText("admin123")
+        # self.lineEdit_3.setText("admin")
+        # self.lineEdit_5.setText("admin123")
         self.pushButton.clicked.connect(self.login)
-        self.load_schools()
+        self.load_schools_and_user()
 
     def systemTitleBarRect(self, size):
         """ Returns the system title bar rect, only works for macOS """
@@ -87,9 +87,13 @@ class LoginWindow(Window, Ui_Form):
             user_info = db.user_login_check(username, password)
 
         if user_info is not None:
-            if self.checkBox_2.isChecked():
+            if self.checkBox.isChecked():
                 with open("./schoolsetting.pkl", 'wb') as f:
-                    pickle.dump(self.comboBox.currentData(), f)
+                    save_data = {
+                        'school': self.comboBox.currentData(),
+                        'user': user_info
+                    }
+                    pickle.dump(save_data, f)
             else:
                 if os.path.exists('./schoolsetting.pkl'):
                     os.remove('./schoolsetting.pkl')
@@ -99,11 +103,11 @@ class LoginWindow(Window, Ui_Form):
         else:
             QMessageBox.warning(self, 'Login Failed', 'Invalid username or password')
 
-    def load_schools(self):
+    def load_schools_and_user(self):
         self.comboBox.clear()  # 清空 classCombo 下拉框中的所有选项
         with SchoolDb() as db:  # 使用上下文管理器创建 ClassDB 的实例，并确保使用后自动关闭数据库连接
             schools = db.fetch_school()  # 如果没有可管理的班级 ID 列表，则获取所有班级信息
-        self.comboBox.addItem('请选择学校', None)  # 在下拉框中添加默认选项 "请选择班级"，并将其关联的数据设为 None
+        self.comboBox.addItem('请选择教区', None)  # 在下拉框中添加默认选项 "请选择班级"，并将其关联的数据设为 None
 
         for school_info in schools:  # 遍历获取到的班级信息列表
             self.comboBox.addItem(school_info['school_name'],
@@ -113,10 +117,15 @@ class LoginWindow(Window, Ui_Form):
             with open('./schoolsetting.pkl', 'rb') as f:
                 data = pickle.load(f)
                 if data is not None:
+                    schoolinfo = data['school']
                     for school_info in schools:
-                        if school_info['school_id'] == data['school_id']:
+                        if school_info['school_id'] == schoolinfo['school_id']:
                             self.comboBox.setCurrentIndex(self.comboBox.findData(school_info))
                             break
+                    userinfo = data['user']
+                    if userinfo['user_name'] is not None:
+                        self.lineEdit_3.setText(userinfo['user_name'])
+                        self.lineEdit_5.setText(userinfo['user_password'])
 
 
 class Widget(QFrame):
@@ -139,13 +148,13 @@ class MainWindow(MSFluentWindow):
         self.school_info = school_info
         self.schoolInterface = ShowSchoolInterface(self)
         if self.school_info is None:
-            self.setWindowTitle('未选择当前学校')
-            self.studentInterface = Widget('请先选择学校', self)
-            self.videoInterface = Widget('请先选择学校.', self)
-            self.libraryInterface = Widget('请先选择学校..', self)
-            self.echoInterface = Widget('请先选择学校...', self)
+            self.setWindowTitle('未选择当前教区')
+            self.studentInterface = Widget('请先选择教区', self)
+            self.videoInterface = Widget('请先选择教区.', self)
+            self.libraryInterface = Widget('请先选择教区..', self)
+            self.echoInterface = Widget('请先选择教区...', self)
         else:
-            self.setWindowTitle('当前学校:%s' % self.school_info['school_name'])
+            self.setWindowTitle('当前教区:%s' % self.school_info['school_name'])
             # create sub interface
             self.studentInterface = ParishionerMainInterface(self.school_info, self.role, "Parishioner_Main_Interface")
             self.videoInterface = EvenMainTabInterface(self.school_info, self.role, "EvenMainTabInterface")

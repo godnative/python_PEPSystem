@@ -20,10 +20,12 @@ class FamilyDB(DataBaseManage):
 
     def add_family(self, family):
         query = """
-        INSERT INTO family ( family_name, family_address, family_school_id, family_notes
-        ) VALUES (?, ?, ?, ?)
+        INSERT INTO family ( family_name, family_address, family_school_id, family_notes, operator, opera_time
+        ) VALUES (?, ?, ?, ?, ? ,?)
         """
-        params = (family["family_name"], family["family_address"], family["family_school_id"], family["family_notes"])
+        params = (family["family_name"], family["family_address"],
+                  family["family_school_id"], family["family_notes"],
+                  family["operator"], family["opera_time"])
         return self.execute_query(query, params)
 
     def get_family_cnt_with_parish_id(self, family_school_id):
@@ -71,11 +73,13 @@ class FamilyDB(DataBaseManage):
                 SET family_name    = ?,
                     family_address  = ?,
                     family_school_id  = ?,
-                    family_notes = ?
+                    family_notes = ?,
+                    operator =?,
+                    opera_time =?
                 WHERE family_id = ?;
         """
         params = (family["family_name"], family["family_address"], family["family_school_id"], family["family_notes"],
-                  family["family_id"])
+                  family["family_id"], family["operator"], family["opera_time"])
         return self.execute_query(query, params)
 
     def delete_family(self, family_id):

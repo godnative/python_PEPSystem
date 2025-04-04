@@ -22,6 +22,14 @@ def timestamp_to_date(timestamp):
     return date
 
 
+def timestamp_to_times(timestamp):
+    # 将时间戳（秒）转换为 datetime 对象
+    if timestamp is None:
+        return None
+    dt_object = datetime.fromtimestamp(timestamp)
+    return dt_object.strftime("%Y-%m-%d %H:%M:%S")
+
+
 def get_now_date():
     now = datetime.now()
     date = QDate(now.year, now.month, now.day)

@@ -1,7 +1,10 @@
 import sys
 
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QApplication
-from qfluentwidgets import PushButton, setCustomStyleSheet, MessageBoxBase, InfoBar
+from PyQt6 import QtGui, QtCore, QtWidgets
+from PyQt6.QtCharts import QPieSeries, QChartView, QChart
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QApplication, QGridLayout, QSpacerItem
+from qfluentwidgets import PushButton, setCustomStyleSheet, MessageBoxBase, InfoBar, IconWidget, InfoBarIcon, \
+    StrongBodyLabel, TransparentToolButton, FluentIcon, CardWidget
 
 from DataBase.school_db import SchoolDb
 from school.school_dialog import BaseSchoolInterface_Temp
@@ -14,7 +17,6 @@ class AddSchoolInterface(MessageBoxBase):
         self.schoolInterface_temp = BaseSchoolInterface_Temp()
         self.schoolInterface_temp.label.uploaded_image = True
         self.viewLayout.addLayout(self.schoolInterface_temp.BaseSchoolInterface_layout)
-        self.schoolInterface_temp.label_title.setText("添加学校")
         self.setObjectName("AddSchoolInterface")
         self.school_id = None
         self.yesButton.setText('添加')  # 设置确认按钮的文本为“添加”，以明确功能
@@ -60,7 +62,6 @@ class ModifySchoolInterface(MessageBoxBase):
         super().__init__(parent)
         self.schoolInterface_temp = BaseSchoolInterface_Temp()
         self.viewLayout.addLayout(self.schoolInterface_temp.BaseSchoolInterface_layout)
-        self.schoolInterface_temp.label_title.setText("修改学校")
         self.schoolInterface_temp.label.uploaded_image = True
         self.setObjectName("ModifySchoolInterface")
         self.school_id = None  # 初始化学生 ID 属性，默认为 None，表示新建学生时不需要指定 ID
@@ -77,7 +78,7 @@ class ModifySchoolInterface(MessageBoxBase):
             errors.append("学校地址不能为空")
 
         # 验证学校简介
-        school_info = self.schoolInterface_temp.textEdit.toPlainText()
+        school_info = "self.schoolInterface_temp.textEdit.toPlainText()"
         if not school_info:
             errors.append("学校简介不能为空")
         # 返回错误信息列表，如果为空则表示验证通过
@@ -102,8 +103,13 @@ class ShowSchoolInterface(QWidget):
         self.school_info = parent.school_info
         self.setObjectName("ShowSchoolInterface")
         self.schoolInterface_temp = BaseSchoolInterface_Temp()
-        self.main_layout = QVBoxLayout(self)
-        self.main_layout.addLayout(self.schoolInterface_temp.BaseSchoolInterface_layout)
+        self.gender_pie_chart = GenderShowInfo()
+        self.gender_pie_chart.update_pie_chart(50, 50)
+        self.gender_pie_chart.setFixedSize(600, 500)
+        self.main_layout = QGridLayout(self)
+        self.main_layout.addLayout(self.schoolInterface_temp.BaseSchoolInterface_layout, 0, 0)
+        self.main_layout.addWidget(self.gender_pie_chart, 0, 1)
+
         self.setupUi()
         self.disable_widgets()
 
@@ -134,7 +140,7 @@ class ShowSchoolInterface(QWidget):
         self.horizontalLayout.addWidget(self.addButton)
         self.horizontalLayout.addWidget(self.modifyButton)
         # self.horizontalLayout.addWidget(self.setButton)
-        self.main_layout.addLayout(self.horizontalLayout)
+        self.schoolInterface_temp.BaseSchoolInterface_layout.addLayout(self.horizontalLayout)
 
     # def show_setschool_Flyout1(self):
     #     print(self.curSchool)
@@ -160,7 +166,6 @@ class ShowSchoolInterface(QWidget):
         self.schoolInterface_temp.lineEdit_4.setReadOnly(True)
         self.schoolInterface_temp.lineEdit_2.setReadOnly(True)
         self.schoolInterface_temp.calendarPicker.setDisabled(True)
-        self.schoolInterface_temp.textEdit.setReadOnly(True)
 
     def addSchoolInfo(self):
         w = AddSchoolInterface(self)
@@ -179,6 +184,92 @@ class ShowSchoolInterface(QWidget):
                 db.modify_school(w.schoolInterface_temp.get_InputSchoolDialoginfo())
                 self.schoolInterface_temp.set_school_info(w.schoolInterface_temp.get_InputSchoolDialoginfo())
 
+
+class GenderShowInfo(CardWidget):
+    def __init__(self):
+        super().__init__()
+        self.setObjectName("GenderShowInfo")
+
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.sizePolicy().hasHeightForWidth())
+        self.setSizePolicy(sizePolicy)
+
+        self.verticalLayout = QVBoxLayout(self)
+
+        self.horizontalLayout_title = QHBoxLayout()
+        self.horizontalLayout_title.setContentsMargins(5, -1, -1, -1)
+        self.progressIcon = IconWidget(self)
+        self.progressIcon.setFixedSize(24, 24)
+        self.progressIcon.setIcon(InfoBarIcon.SUCCESS)
+        self.horizontalLayout_title.addWidget(self.progressIcon)
+        self.dailyProgressLabel = StrongBodyLabel(text="本堂区男女教友比例", parent=self)
+        self.horizontalLayout_title.addWidget(self.dailyProgressLabel)
+        spacerItem1 = QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.horizontalLayout_title.addItem(spacerItem1)
+        self.editButton = TransparentToolButton(parent=self)
+        self.editButton.setIcon(FluentIcon.EDIT)
+        self.horizontalLayout_title.addWidget(self.editButton)
+        self.verticalLayout.addLayout(self.horizontalLayout_title)
+
+        self.male_ratio = 60
+        self.female_ratio = 40
+
+        # 创建饼图
+        self.create_pie_chart()
+
+    def create_pie_chart(self):
+        series = QPieSeries()
+        series.append("男", self.male_ratio)
+        series.append("女", self.female_ratio)
+
+        # 突出显示某一块（可选）
+        slice0 = series.slices()[0]
+        slice0.setExploded()
+        slice0.setLabelVisible()
+
+        slice1 = series.slices()[1]
+        slice1.setExploded()
+        slice1.setLabelVisible()
+
+        # 创建图表
+        self.chart = QChart()
+        self.chart.addSeries(series)
+        self.chart.setTitle("男女比例饼图")
+        self.chart.legend().setVisible(True)
+        self.chart.legend().setAlignment(QtCore.Qt.AlignmentFlag.AlignBottom)
+
+        # 创建图表视图
+        self.chart_view = QChartView(self.chart)
+        self.chart_view.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
+
+        self.verticalLayout.addWidget(self.chart_view)
+
+    def update_pie_chart(self, male_ratio, female_ratio):
+        # 更新比例数据
+        self.male_ratio = male_ratio
+        self.female_ratio = female_ratio
+
+        # 清空原有的系列数据
+        self.chart.removeAllSeries()
+
+        # 创建新的系列数据
+        series = QPieSeries()
+        series.append("男", self.male_ratio)
+        series.append("女", self.female_ratio)
+
+        # 突出显示某一块（可选）
+        slice0 = series.slices()[0]
+        slice0.setExploded()
+        slice0.setLabelVisible()
+
+        slice1 = series.slices()[1]
+        slice1.setExploded()
+        slice1.setLabelVisible()
+
+        # 将新的系列数据添加到图表中
+        self.chart.addSeries(series)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

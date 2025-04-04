@@ -34,12 +34,15 @@ class HolyEventDB(DataBaseManage):
     def add_even(self, event_info):
         query = """
         INSERT INTO holyevent ( holyevent_type, holyevent_date, holyevent_witness, 
-        holyevent_implementer, holyevent_p1_id, holyevent_p2_id, holyevent_note, holyevent_school_id)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        holyevent_implementer, holyevent_p1_id, holyevent_p2_id, 
+        holyevent_note, holyevent_school_id,
+        operator, opera_time)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """
         params = (event_info["holyevent_type"], event_info["holyevent_date"], event_info["holyevent_witness"],
                   event_info["holyevent_implementer"], event_info["holyevent_p1_id"], event_info["holyevent_p2_id"],
-                  event_info["holyevent_note"], event_info["holyevent_school_id"])
+                  event_info["holyevent_note"], event_info["holyevent_school_id"],
+                  event_info["operator"], event_info["opera_time"])
         return self.execute_query(query, params)
 
     def fetch_even_with_like(self, even_type, like_str, school_id):
@@ -81,12 +84,15 @@ class HolyEventDB(DataBaseManage):
             holyevent_p1_id  = ?, 
             holyevent_p2_id = ?, 
             holyevent_note = ?, 
-            holyevent_school_id = ?
+            holyevent_school_id = ?,
+            operator =?,
+            opera_time =?
         WHERE holyevent_id = ?;
         """
         params = (event_info["holyevent_date"], event_info["holyevent_witness"],
                   event_info["holyevent_implementer"], event_info["holyevent_p1_id"], event_info["holyevent_p2_id"],
-                  event_info["holyevent_note"], event_info["holyevent_school_id"], event_info["holyevent_id"])
+                  event_info["holyevent_note"], event_info["holyevent_school_id"], event_info["holyevent_id"],
+                  event_info["operator"], event_info["opera_time"])
         return self.execute_query(query, params)
 
 if __name__ == '__main__':
