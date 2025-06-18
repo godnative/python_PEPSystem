@@ -1,8 +1,11 @@
+import os
 import sys
 
 from PyQt6 import QtGui, QtCore, QtWidgets
 from PyQt6.QtCharts import QPieSeries, QChartView, QChart
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QApplication, QGridLayout, QSpacerItem
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QPixmap
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QApplication, QGridLayout, QSpacerItem, QLabel
 from qfluentwidgets import PushButton, setCustomStyleSheet, MessageBoxBase, InfoBar, IconWidget, InfoBarIcon, \
     StrongBodyLabel, TransparentToolButton, FluentIcon, CardWidget
 
@@ -39,9 +42,9 @@ class AddSchoolInterface(MessageBoxBase):
             errors.append("学校地址不能为空")
 
         # 验证学校简介
-        school_info = self.schoolInterface_temp.textEdit.toPlainText()
+        school_info = self.schoolInterface_temp.lineEdit_5.text()
         if not school_info:
-            errors.append("学校简介不能为空")
+            errors.append("当前主保不能为空")
         # 返回错误信息列表，如果为空则表示验证通过
         return errors
 
@@ -78,9 +81,9 @@ class ModifySchoolInterface(MessageBoxBase):
             errors.append("学校地址不能为空")
 
         # 验证学校简介
-        school_info = "self.schoolInterface_temp.textEdit.toPlainText()"
+        school_info = self.schoolInterface_temp.lineEdit_5.text()
         if not school_info:
-            errors.append("学校简介不能为空")
+            errors.append("当前主保不能为空")
         # 返回错误信息列表，如果为空则表示验证通过
         return errors
 
@@ -100,28 +103,46 @@ class ModifySchoolInterface(MessageBoxBase):
 class ShowSchoolInterface(QWidget):
     def __init__(self, parent):
         super().__init__()
-        self.school_info = parent.school_info
+
         self.setObjectName("ShowSchoolInterface")
         self.schoolInterface_temp = BaseSchoolInterface_Temp()
-        self.gender_pie_chart = GenderShowInfo()
-        self.gender_pie_chart.update_pie_chart(50, 50)
-        self.gender_pie_chart.setFixedSize(600, 500)
-        self.main_layout = QGridLayout(self)
-        self.main_layout.addLayout(self.schoolInterface_temp.BaseSchoolInterface_layout, 0, 0)
-        self.main_layout.addWidget(self.gender_pie_chart, 0, 1)
+
+        self.main_layout = QVBoxLayout(self)
+        self.title_pic = QLabel(self)
+        pixmap = QPixmap("./resource/pic/main_head_1.png").scaled(
+            self.title_pic.size()*5,
+            Qt.AspectRatioMode.KeepAspectRatioByExpanding,
+            Qt.TransformationMode.SmoothTransformation
+        )
+        self.title_pic.setPixmap(pixmap)
+        self.main_layout.addWidget(self.title_pic)
+        self.main_layout.addLayout(self.schoolInterface_temp.BaseSchoolInterface_layout)
+        self.tail_pic = QLabel(self)
+        pixmap = QPixmap("./resource/pic/main_tail.png").scaled(
+            self.tail_pic.size()*5,
+            Qt.AspectRatioMode.KeepAspectRatioByExpanding,
+            Qt.TransformationMode.SmoothTransformation
+        )
+        self.tail_pic.setPixmap(pixmap)
+        self.main_layout.addWidget(self.tail_pic)
+
+
+
+        if parent is not None:
+            self.school_info = parent.school_info
+        else:
+            self.school_info = None
 
         self.setupUi()
         self.disable_widgets()
 
-        if parent.school_info is None:
+        if self.school_info is None:
             self.schoolInterface_temp.label.setText("请先选择或建立学校")
             self.schoolInterface_temp.label.uploaded_image = False
             self.modifyButton.setDisabled(True)
         else:
             # 将时间戳转换为日期时间格式
-
-            self.schoolInterface_temp.set_school_info(parent.school_info)
-
+            self.schoolInterface_temp.set_school_info(self.school_info)
 
     def setupUi(self):
         self.addButton = PushButton('添加', self)
@@ -175,7 +196,7 @@ class ShowSchoolInterface(QWidget):
                 self.restartButton = PushButton('重启以重新选择学校', self)
                 setCustomStyleSheet(self.restartButton, UPDATE_BUTTON_STYLE, UPDATE_BUTTON_STYLE)
                 self.horizontalLayout.addWidget(self.restartButton)
-                self.restartButton.clicked.connect(self.parent.on_back_to_login)
+                # self.restartButton.clicked.connect(self.parent.on_back_to_login)
 
     def modifySchoolInfo(self):
         w = ModifySchoolInterface(self.schoolInterface_temp.get_InputSchoolDialoginfo(), self)

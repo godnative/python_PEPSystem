@@ -82,7 +82,7 @@ class BaseSchoolInterface_Temp:
         school_info = {
             'school_name': self.lineEdit_2.text(),
             'school_address': self.lineEdit_4.text(),
-            'school_info': "self.textEdit.toPlainText()",
+            'school_info': self.lineEdit_5.text(),
             'school_date': qdate_to_timestamp(self.calendarPicker.date),
             'school_pic_path': self.label.image_path
         }
@@ -92,6 +92,7 @@ class BaseSchoolInterface_Temp:
         # 设置学生信息
         self.lineEdit_2.setText(school_info['school_name'])
         self.lineEdit_4.setText(school_info['school_address'])
+        self.lineEdit_5.setText(school_info['school_info'])
         qDate = timestamp_to_date(school_info["school_date"])
         # 设置文本框的文本为格式化后的日期时间
         self.calendarPicker.setDate(qDate)

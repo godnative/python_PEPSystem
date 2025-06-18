@@ -104,15 +104,15 @@ class BaseQueryWidget(QWidget):
         vbox = QVBoxLayout(self)
         layout = QHBoxLayout()  # 这里直接将 QVBoxLayout 设置为 self 的布局
 
-        self.addButton = PushButton("add")
+        self.addButton = PushButton("添加")
 
         self.searchInput = SearchLineEdit(self)
         self.searchInput.setPlaceholderText('Search')
         self.searchInput.setFixedWidth(500)
 
-        self.delButton = PushButton("del")
+        self.delButton = PushButton("删除")
 
-        self.ModButton = PushButton("Mod")
+        self.ModButton = PushButton("修改")
 
         self.importButton = PushButton("导入")
         self.importButton.hide()
