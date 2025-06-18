@@ -14,6 +14,8 @@ from qfluentwidgets import (NavigationItemPosition, MSFluentWindow,
 from qfluentwidgets import setThemeColor, SplitTitleBar
 from qframelesswindow import AcrylicWindow as Window
 
+from BaseWidgets.BaseModule import user_type
+from DataBase.database_init import creat_all_database
 from DataBase.school_db import SchoolDb
 from DataBase.user_db import UserDB
 from Event.EvenMainTabInterface import EvenMainTabInterface
@@ -63,6 +65,7 @@ class LoginWindow(Window, Ui_Form):
         # self.lineEdit_3.setText("admin")
         # self.lineEdit_5.setText("admin123")
         self.pushButton.clicked.connect(self.login)
+        creat_all_database()
         self.load_schools_and_user()
 
     def systemTitleBarRect(self, size):
@@ -109,19 +112,21 @@ class LoginWindow(Window, Ui_Form):
             schools = db.fetch_school()  # 如果没有可管理的班级 ID 列表，则获取所有班级信息
         self.comboBox.addItem('请选择教区', None)  # 在下拉框中添加默认选项 "请选择班级"，并将其关联的数据设为 None
 
-        for school_info in schools:  # 遍历获取到的班级信息列表
-            self.comboBox.addItem(school_info['school_name'],
-                                  userData=school_info)  # 将每个班级的名称和对应的 ID 添加到下拉框中
+        if schools is not None:
+            for school_info in schools:  # 遍历获取到的班级信息列表
+                self.comboBox.addItem(school_info['school_name'],
+                                      userData=school_info)  # 将每个班级的名称和对应的 ID 添加到下拉框中
 
         if os.path.exists('./schoolsetting.pkl'):
             with open('./schoolsetting.pkl', 'rb') as f:
                 data = pickle.load(f)
                 if data is not None:
                     schoolinfo = data['school']
-                    for school_info in schools:
-                        if school_info['school_id'] == schoolinfo['school_id']:
-                            self.comboBox.setCurrentIndex(self.comboBox.findData(school_info))
-                            break
+                    if schoolinfo is not None and schools is not None:
+                        for school_info in schools:
+                            if school_info['school_id'] == schoolinfo['school_id']:
+                                self.comboBox.setCurrentIndex(self.comboBox.findData(school_info))
+                                break
                     userinfo = data['user']
                     if userinfo['user_name'] is not None:
                         self.lineEdit_3.setText(userinfo['user_name'])
@@ -146,37 +151,32 @@ class MainWindow(MSFluentWindow):
         super().__init__()
         self.role = role
         self.school_info = school_info
-        self.schoolInterface = ShowSchoolInterface(self)
+        self.schoolInterface = ShowSchoolInterface(self.role, self.school_info, "ShowSchoolInterface")
         if self.school_info is None:
             self.setWindowTitle('未选择当前教区')
-            self.studentInterface = Widget('请先选择教区', self)
-            self.videoInterface = Widget('请先选择教区.', self)
-            self.libraryInterface = Widget('请先选择教区..', self)
-            self.echoInterface = Widget('请先选择教区...', self)
+            self.addSubInterface(self.schoolInterface, FIF.APPLICATION, '教区')
         else:
-            self.setWindowTitle('当前教区:%s' % self.school_info['school_name'])
+            self.setWindowTitle('当前教区:%s  当前登录角色：%s' % (self.school_info['school_name'] , user_type[self.role['user_type']]))
             # create sub interface
             self.studentInterface = ParishionerMainInterface(self.school_info, self.role, "Parishioner_Main_Interface")
             self.videoInterface = EvenMainTabInterface(self.school_info, self.role, "EvenMainTabInterface")
             self.libraryInterface = UserMainInterface(self.school_info, self.role, "UserMainInterface")
             self.taskCardInterface = TaskCardMainInterFace(self.school_info, "TaskCardMainInterFace")
 
-        self.initNavigation()
+            self.addSubInterface(self.schoolInterface, FIF.APPLICATION, '教区')
+            self.addSubInterface(self.studentInterface, FIF.HOME, '教友')
+            self.addSubInterface(self.videoInterface, FIF.VIDEO, '圣事')
+
+            self.addSubInterface(self.libraryInterface, FIF.BOOK_SHELF, '资料', FIF.LIBRARY_FILL,
+                                 NavigationItemPosition.BOTTOM)
+            self.addSubInterface(self.taskCardInterface, FIF.BOOK_SHELF, '通知', FIF.LIBRARY_FILL,
+                                 NavigationItemPosition.BOTTOM)
+
+            self.navigationInterface.setCurrentItem(self.schoolInterface.objectName())
+
+            self.taskCardInterface.taskcardwaitfinishnumchanged.connect(self.setTaskCardWaitFinishNumber)
+
         self.initWindow()
-
-    def initNavigation(self):
-        self.addSubInterface(self.schoolInterface, FIF.APPLICATION, '教区')
-        self.addSubInterface(self.studentInterface, FIF.HOME, '教友')
-        self.addSubInterface(self.videoInterface, FIF.VIDEO, '圣事')
-
-        self.addSubInterface(self.libraryInterface, FIF.BOOK_SHELF, '资料', FIF.LIBRARY_FILL,
-                             NavigationItemPosition.BOTTOM)
-        self.addSubInterface(self.taskCardInterface, FIF.BOOK_SHELF, '通知', FIF.LIBRARY_FILL,
-                             NavigationItemPosition.BOTTOM)
-
-        self.navigationInterface.setCurrentItem(self.schoolInterface.objectName())
-
-        self.taskCardInterface.taskcardwaitfinishnumchanged.connect(self.setTaskCardWaitFinishNumber)
 
     def initWindow(self):
         self.resize(1500, 1000)

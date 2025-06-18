@@ -47,7 +47,7 @@ class UserMainInterface(QWidget):
 
         self.addSubInterface(self.user_show_interface,
                              'user_show_interface', self.tr('当前用户信息'), ':/gallery/images/MusicNote.png')
-        if self.cur_user["user_type"] == 1:
+        if self.cur_user["user_type"] == 0:
             self.addSubInterface(self.user_modify_interface,
                                  'user_modify_interface', self.tr('修改用户信息'), ':/gallery/images/Dvd.png')
 

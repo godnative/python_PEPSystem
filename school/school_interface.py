@@ -101,10 +101,12 @@ class ModifySchoolInterface(MessageBoxBase):
 
 # 该布局为主界面显示布局，无法继承message类，所有与弹出后修改或添加布局分开，布局内容基本一致，该布局从UI文件加载
 class ShowSchoolInterface(QWidget):
-    def __init__(self, parent):
+    def __init__(self, role, school, object_name):
         super().__init__()
+        self.role = role
+        self.school = school
 
-        self.setObjectName("ShowSchoolInterface")
+        self.setObjectName(object_name)
         self.schoolInterface_temp = BaseSchoolInterface_Temp()
 
         self.main_layout = QVBoxLayout(self)
@@ -126,23 +128,16 @@ class ShowSchoolInterface(QWidget):
         self.tail_pic.setPixmap(pixmap)
         self.main_layout.addWidget(self.tail_pic)
 
-
-
-        if parent is not None:
-            self.school_info = parent.school_info
-        else:
-            self.school_info = None
-
         self.setupUi()
         self.disable_widgets()
 
-        if self.school_info is None:
+        if self.school is None:
             self.schoolInterface_temp.label.setText("请先选择或建立学校")
             self.schoolInterface_temp.label.uploaded_image = False
             self.modifyButton.setDisabled(True)
         else:
             # 将时间戳转换为日期时间格式
-            self.schoolInterface_temp.set_school_info(self.school_info)
+            self.schoolInterface_temp.set_school_info(self.school)
 
     def setupUi(self):
         self.addButton = PushButton('添加', self)

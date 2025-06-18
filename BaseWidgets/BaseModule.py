@@ -5,7 +5,7 @@ from qfluentwidgets import PushButton, SearchLineEdit, TableWidget, LineEdit, Ca
 
 from utils.utils_tool import get_now_date, timestamp_to_date, timestamp_to_times
 
-
+user_type = ["管理员", "录入员", "游客"]
 class BaseMessageBoxWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -208,7 +208,7 @@ class BaseUserInterface(QWidget):
         self.label_type = QLabel("人员类别")
         user_info_box.addWidget(self.label_type, 1, 0)
         self.line_type = ComboBox(self)
-        self.line_type.addItems(["管理员", "录入员", "游客"])
+        self.line_type.addItems(user_type)
         # self.line_type.setMaximumWidth(200)
         user_info_box.addWidget(self.line_type, 1, 1)
         self.label_note = QLabel("备注")

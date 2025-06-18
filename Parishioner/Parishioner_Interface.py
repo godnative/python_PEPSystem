@@ -45,6 +45,8 @@ class Parishioner_MessageBox(MessageBoxBase):
         self.Parishioner_Info_Edit_widgets.inputLine_12.setText("添加家庭")
         self.Parishioner_Info_Edit_widgets.label_13.setText("备注")
 
+        self.Parishioner_Info_Edit_widgets.label_4.hide()
+        self.Parishioner_Info_Edit_widgets.inputLine_4.hide()
         self.Parishioner_Info_Edit_widgets.label_5.hide()
         self.Parishioner_Info_Edit_widgets.inputLine_5.hide()
         self.Parishioner_Info_Edit_widgets.label_6.hide()
