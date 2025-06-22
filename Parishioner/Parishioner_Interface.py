@@ -37,7 +37,7 @@ class Parishioner_MessageBox(MessageBoxBase):
         self.Parishioner_Info_Edit_widgets.label_1.setText("姓名")
         self.Parishioner_Info_Edit_widgets.label_2.setText("圣名")
         self.Parishioner_Info_Edit_widgets.label_3.setText("手机")
-        self.Parishioner_Info_Edit_widgets.label_4.setText("身份证")
+        # self.Parishioner_Info_Edit_widgets.label_4.setText("身份证")
         self.Parishioner_Info_Edit_widgets.label_9.setText("性别")
         self.Parishioner_Info_Edit_widgets.label_10.setText("出生日期")
         self.Parishioner_Info_Edit_widgets.inputLine_10.setDate(QDate(2025, 1, 1))
@@ -180,10 +180,6 @@ class Parishioner_Main_Interface(QWidget):
         self.BaseMainInterface.BaseQuery.ModButton.clicked.connect(self.modify_parishioner)
         self.BaseMainInterface.BaseQuery.searchInput.searchSignal.connect(self.query_parishioner_info_with_like)
         self.BaseMainInterface.BaseQuery.searchInput.returnPressed.connect(self.query_parishioner_info_with_like)
-        self.BaseMainInterface.BaseQuery.exportButton.show()
-        self.BaseMainInterface.BaseQuery.exportButton.clicked.connect(self.export_to_csv)
-        self.BaseMainInterface.BaseQuery.importButton.show()
-        self.BaseMainInterface.BaseQuery.importButton.clicked.connect(self.import_from_csv)
 
         if self.cur_user["user_type"] == 1:
             self.parishioner_tableView_header = [
@@ -282,74 +278,6 @@ class Parishioner_Main_Interface(QWidget):
                 self.Load_Parishioner(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
                 return True
             return False
-
-    def export_to_csv(self):
-        selected_rows = self.BaseMainInterface.BaseQuery.tableWidget.selectionModel().selectedRows()
-        if not selected_rows:
-            InfoBar.warning(title="未选中数据", content="请先选中要导出的数据行", parent=self, duration=1000)
-            return
-
-        import csv
-        from PyQt6.QtWidgets import QFileDialog
-
-        file_path, _ = QFileDialog.getSaveFileName(self, "导出为 CSV", "", "CSV Files (*.csv)")
-        if file_path:
-            with open(file_path, 'w', newline='', encoding='utf-8-sig') as csvfile:
-                writer = csv.writer(csvfile)
-                # 写入表头
-                writer.writerow(self.parishioner_tableView_header)
-                # 写入选中行的数据
-                for row in selected_rows:
-                    row_data = []
-                    for col in range(self.BaseMainInterface.BaseQuery.tableWidget.columnCount()):
-                        item = self.BaseMainInterface.BaseQuery.tableWidget.item(row.row(), col)
-                        if item is not None:
-                            row_data.append(item.text())
-                        else:
-                            row_data.append('')
-                    writer.writerow(row_data)
-            InfoBar.success(title="导出成功", content=f"数据已成功导出到 {file_path}", parent=self, duration=1000)
-
-    def import_from_csv(self):
-        from PyQt6.QtWidgets import QFileDialog
-        file_path, _ = QFileDialog.getOpenFileName(self, "选择 CSV 文件", "", "CSV Files (*.csv)")
-        if file_path:
-            try:
-                import csv
-                with open(file_path, 'r', encoding='utf-8-sig') as csvfile:
-                    reader = csv.reader(csvfile)
-                    headers = next(reader)
-                    # 检查数据表头个数是否符合要求
-                    if len(headers) != len(self.parishioner_tableView_header):
-                        InfoBar.warning(title="表头错误", content="导入的 CSV 文件表头个数与表格不一致", parent=self, duration=1000)
-                        return
-
-                    with StudentDB() as db:
-                        for row in reader:
-                            name = row[0]
-                            phone = row[3]
-                            # 检查姓名和手机号是否已存在
-                            existing_student = db.fetch_student_by_name_and_phone(name, phone)
-                            if existing_student:
-                                continue
-                            # 检查姓名是否存在
-                            if not name:
-                                continue
-                            student_info = {
-                                'student_name': name,
-                                'student_holyname': row[1],
-                                'student_gender': row[2],
-                                'student_phonenum': phone,
-                                'family_name': row[4],
-                                'student_birthday': row[5],
-                                'student_note': row[6],
-                                'student_school_id': self.cur_parish_id
-                            }
-                            db.add_student(student_info)
-                InfoBar.success(title="导入成功", content="数据已成功导入到数据库", parent=self, duration=1000)
-                self.Load_Parishioner(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
-            except Exception as e:
-                InfoBar.error(title="导入失败", content=f"导入过程中出现错误: {str(e)}", parent=self, duration=1000)
 
 if __name__ == "__main__":
     import sys

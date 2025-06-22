@@ -114,12 +114,6 @@ class BaseQueryWidget(QWidget):
 
         self.ModButton = PushButton("修改")
 
-        self.importButton = PushButton("导入")
-        self.importButton.hide()
-
-        self.exportButton = PushButton("导出")
-        self.exportButton.hide()
-
         self.printButton = PushButton("打印")
         self.printButton.hide()
 
@@ -131,8 +125,6 @@ class BaseQueryWidget(QWidget):
         layout.addWidget(self.delButton)
         layout.addWidget(self.ModButton)
         layout.addWidget(self.extendButton_1)
-        layout.addWidget(self.importButton)
-        layout.addWidget(self.exportButton)
         layout.addWidget(self.printButton)
 
         self.tableWidget = TableWidget(self)
