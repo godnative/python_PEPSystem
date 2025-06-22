@@ -6,55 +6,55 @@ from DataBase.base_db import DataBaseManage
 
 
 # 定义一个类 ClassDB，继承自 DatabaseManage
-class SchoolDb(DataBaseManage):
+class ParishDb(DataBaseManage):
     # 定义一个方法 fetch_classes，用于从数据库中获取班级信息
-    def fetch_school(self):
+    def fetch_parish(self):
         # 定义 SQL 查询语句，用于选择 CLASSES 表中的所有数据
         query = """
-        SELECT * FROM school
+        SELECT * FROM parish
         """
         # 使用父类的 fetch_query 方法执行查询，并返回查询结果
         return self.fetch_query(query)
 
-    def add_school(self, school):
+    def add_parish(self, parish):
         query = """
-            INSERT INTO school (school_name, school_date, school_address, school_info, school_pic_path)
+            INSERT INTO parish (parish_name, parish_date, parish_address, parish_info, parish_pic_path)
             VALUES (?, ?, ?, ?, ?)
         """
-        params = (school['school_name'], school['school_date'], school['school_address'],
-                  school['school_info'], school['school_pic_path'])
+        params = (parish['parish_name'], parish['parish_date'], parish['parish_address'],
+                  parish['parish_info'], parish['parish_pic_path'])
         return self.execute_query(query, params)
 
-    def get_school_info(self, school_id):
+    def get_parish_info(self, parish_id):
         # 定义 SQL 查询语句，用于选择 CLASSES 表中的所有数据
         query = """
-        SELECT * FROM school WHERE school_id = ?
+        SELECT * FROM parish WHERE parish_id = ?
         """
-        params = (school_id,)
+        params = (parish_id,)
         # 使用父类的 fetch_query 方法执行查询，并返回查询结果
         return self.fetch_query(query, single=True, params=params)
 
-    def check_school_name(self, school_name):
+    def check_parish_name(self, parish_name):
         # 定义 SQL 查询语句，用于选择 CLASSES 表中的所有数据
         query = """
-        SELECT * FROM school WHERE school_name == ?
+        SELECT * FROM parish WHERE parish_name == ?
         """
-        params = (school_name,)
+        params = (parish_name,)
         # 使用父类的 fetch_query 方法执行查询，并返回查询结果
         return self.fetch_query(query, params=params)
 
-    def modify_school(self, school):
+    def modify_parish(self, parish):
         query = """
-            UPDATE school SET school_date = ?, school_address = ?, school_info = ?, school_pic_path = ?
-            WHERE school_name = ?
+            UPDATE parish SET parish_date = ?, parish_address = ?, parish_info = ?, parish_pic_path = ?
+            WHERE parish_name = ?
         """
-        params = (school['school_date'], school['school_address'], school['school_info'],
-                  school['school_pic_path'], school['school_name'])
+        params = (parish['parish_date'], parish['parish_address'], parish['parish_info'],
+                  parish['parish_pic_path'], parish['parish_name'])
         return self.execute_query(query, params)
 
 
 if __name__ == '__main__':
-    with SchoolDb() as db:
+    with ParishDb() as db:
         for i in range(10):
             family_name = "崇义小学第%d号家庭" % (i + 1)
             family_address = "%d Main Street" % (random.randint(0, 1000))

@@ -22,18 +22,16 @@ class QUERY_TYPE(enum.Enum):
 
 class EventMarriage_MessageBox(MessageBoxBase):
 
-    def __init__(self, cur_parish, cur_user, parent=None):
+    def __init__(self, login_info, parent=None):
         super().__init__(parent)
         self.family_info = None
-        self.cur_parish = cur_parish
-        self.cur_user = cur_user
+        self.login_info = login_info
         self.parishioner_widgets = Parishioner_Main_Interface(
-            self.cur_parish, self.cur_user, "Parishioner_Main_Interface_from_EventMarriage_MessageBox")
+            self.login_info, "Parishioner_Main_Interface_from_EventMarriage_MessageBox")
         self.parishioner_1_id = 1
         self.parishioner_2_id = 1
         self.titleLabel = SubtitleLabel('人员', self)
         self.BaseMessageBoxWidget = BaseMessageBoxWidget(self)
-
 
         self.parishioner_widgets.BaseMainInterface.BaseQuery.extendButton_1.show()
         self.parishioner_widgets.BaseMainInterface.BaseQuery.extendButton_1.setText("添加选中人员")
@@ -112,6 +110,9 @@ class EventMarriage_MessageBox(MessageBoxBase):
             'holyevent_witness': self.BaseMessageBoxWidget.inputLine_5.text(),
             'holyevent_school_id': "",
             'holyevent_date': qdate_to_timestamp(self.BaseMessageBoxWidget.inputLine_10.date),
+            "operator": None,
+            "opera_time": None,
+            "opera_type": None,
             'holyevent_note': self.BaseMessageBoxWidget.inputLine_13.text()
         }
         return even_messageinfo
@@ -162,14 +163,12 @@ class EventMarriage_MessageBox(MessageBoxBase):
 
 
 class EventMarriage_Main_Interface(QWidget):
-    def __init__(self, cur_parish, cur_user, ObjectName, parent=None):
+    def __init__(self, login_info, ObjectName, parent=None):
         super().__init__(parent)
-
+        self.login_info = login_info
         # 创建主布局
         self.setObjectName(ObjectName)
-        self.cur_parish = cur_parish
-        self.cur_user = cur_user
-        self.cur_parish_id = self.cur_parish["school_id"]
+        self.cur_parish_id = self.login_info["parish_id"]
         self.Event_all_info = None
 
         self.evenType = 2
@@ -198,7 +197,7 @@ class EventMarriage_Main_Interface(QWidget):
         self.BaseMainInterface.BaseQuery.printButton.clicked.connect(self.tprint)
         self.BaseMainInterface.BaseQuery.printButton.show()
 
-        if self.cur_user["user_type"] != 1:
+        if self.login_info["user_type"] != 1:
             self.evenBaptism_tableView_header = [
                 "男方姓名", "女方姓名", "施行人", "见证人", "堂区", "日期", "备注"
             ]
@@ -243,14 +242,18 @@ class EventMarriage_Main_Interface(QWidget):
 
     @check_auth_permission(required_permission={"module_data": "event", "permission_data": "add"})
     def add_even(self):
-        w = EventMarriage_MessageBox(self.cur_parish, self.cur_user, self)
+        w = EventMarriage_MessageBox(self.login_info, self)
         w.titleLabel.setText("添加事件")
         if w.exec():
             with HolyEventDB() as db:
                 get_InputEvenBaptismMessageinfo = w.get_InputEvenMessageinfo()
                 get_InputEvenBaptismMessageinfo["holyevent_school_id"] = self.cur_parish_id
                 get_InputEvenBaptismMessageinfo["holyevent_type"] = self.evenType
-                get_InputEvenBaptismMessageinfo["operator"] = self.cur_user["user_name"]
+                get_InputEvenBaptismMessageinfo["operator"] = self.login_info["user_name"]
+                if self.login_info["user_type"] != 0:
+                    get_InputEvenBaptismMessageinfo["opera_type"] = 0
+                else:
+                    get_InputEvenBaptismMessageinfo["opera_type"] = 2
                 get_InputEvenBaptismMessageinfo["opera_time"] = int(time.time())
                 db.add_even(get_InputEvenBaptismMessageinfo)
             self.Load_even(QUERY_TYPE.QUERY_ALL, self.evenType, self.cur_parish_id)
@@ -277,7 +280,7 @@ class EventMarriage_Main_Interface(QWidget):
     def modify_even(self):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
-            w = EventMarriage_MessageBox(self.cur_parish, self.cur_user, self)
+            w = EventMarriage_MessageBox(self.login_info, self)
             w.parishioner_widgets.hide()
             w.titleLabel.setText("修改事件信息")
             w.set_InputEventMessageinfo(self.Event_all_info[idx])
@@ -286,7 +289,7 @@ class EventMarriage_Main_Interface(QWidget):
                     Even_info = w.get_InputEvenMessageinfo()
                     Even_info["holyevent_school_id"] = self.cur_parish_id
                     Even_info["holyevent_id"] = self.Event_all_info[idx]["holyevent_id"]
-                    Even_info["operator"] = self.cur_user["user_name"]
+                    Even_info["operator"] = self.login_info["user_name"]
                     Even_info["opera_time"] = int(time.time())
                     db.update_even(Even_info)
                 self.Load_even(QUERY_TYPE.QUERY_ALL, self.evenType, self.cur_parish_id)

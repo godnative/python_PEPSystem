@@ -22,10 +22,10 @@ class QUERY_TYPE(enum.Enum):
 
 class Parishioner_MessageBox(MessageBoxBase):
 
-    def __init__(self, cur_parish, parent=None):
+    def __init__(self, login_info, parent=None):
         super().__init__(parent)
+        self.login_info = login_info
         self.family_info = None
-        self.cur_parish = cur_parish
         self.titleLabel = SubtitleLabel('人员', self)
         self.Parishioner_Info_Edit_widgets = BaseMessageBoxWidget(self)
 
@@ -89,13 +89,19 @@ class Parishioner_MessageBox(MessageBoxBase):
 
     def add_family(self):
 
-        w = Family_MessageBox(self.cur_parish, 0, self)
+        w = Family_MessageBox(self.login_info, 0, self)
         w.titleLabel.setText("添加家庭")
         w.set_family_name_when_add()
         if w.exec():
             with FamilyDB() as db:
                 get_InputParishionerMessageinfo = w.get_InputFamilyMessageinfo()
-                get_InputParishionerMessageinfo["family_school_id"] = self.cur_parish["school_id"]
+                get_InputParishionerMessageinfo["family_school_id"] = self.login_info["parish_id"]
+                get_InputParishionerMessageinfo["operator"] = self.login_info["user_name"]
+                if self.login_info["user_type"] != 0:
+                    get_InputParishionerMessageinfo["opera_type"] = 0
+                else:
+                    get_InputParishionerMessageinfo["opera_type"] = 2
+                get_InputParishionerMessageinfo["opera_time"] = int(time.time())
                 db.add_family(get_InputParishionerMessageinfo)
             self.load_family()
 
@@ -119,6 +125,9 @@ class Parishioner_MessageBox(MessageBoxBase):
             "student_identity_num": self.Parishioner_Info_Edit_widgets.inputLine_4.text(),  # 语文字段与对应的输入框
             "student_birthday": qdate_to_timestamp(self.Parishioner_Info_Edit_widgets.inputLine_10.getDate()),
             "student_note": self.Parishioner_Info_Edit_widgets.inputLine_13.text(),
+            "operator": None,
+            "opera_time": None,
+            "opera_type": None,
             "student_school_id": None
         }
         return parishioner_messageinfo
@@ -141,7 +150,7 @@ class Parishioner_MessageBox(MessageBoxBase):
         self.Parishioner_Info_Edit_widgets.inputLine_11.clear()  # 清空 classCombo 下拉框中的所有选项
         with FamilyDB() as db:  # 使用上下文管理器创建 ClassDB 的实例，并确保使用后自动关闭数据库连接
             self.family_info = db.fetch_family_with_school_id(
-                self.cur_parish["school_id"])  # 如果没有可管理的班级 ID 列表，则获取所有班级信息
+                self.login_info["parish_id"])  # 如果没有可管理的班级 ID 列表，则获取所有班级信息
         self.Parishioner_Info_Edit_widgets.inputLine_11.addItem('请选择班级',
                                                                 None)  # 在下拉框中添加默认选项 "请选择班级"，并将其关联的数据设为 None
 
@@ -151,15 +160,13 @@ class Parishioner_MessageBox(MessageBoxBase):
 
 
 class Parishioner_Main_Interface(QWidget):
-    def __init__(self, cur_parish, cur_user, ObjectName):
+    def __init__(self, login_info, ObjectName):
         super().__init__()
-
+        self.login_info = login_info
         # 创建主布局
         self.setObjectName(ObjectName)
         self.parishioner_info_all = None
-        self.cur_parish = cur_parish
-        self.cur_user = cur_user
-        self.cur_parish_id = self.cur_parish['school_id']
+        self.cur_parish_id = self.login_info['parish_id']
         main_layout = QVBoxLayout(self)
         self.setMinimumSize(500, 500)
 
@@ -181,7 +188,7 @@ class Parishioner_Main_Interface(QWidget):
         self.BaseMainInterface.BaseQuery.searchInput.searchSignal.connect(self.query_parishioner_info_with_like)
         self.BaseMainInterface.BaseQuery.searchInput.returnPressed.connect(self.query_parishioner_info_with_like)
 
-        if self.cur_user["user_type"] == 1:
+        if self.login_info["user_type"] == 1:
             self.parishioner_tableView_header = [
                 "姓名", "圣名", "性别", "手机", "家庭名称", "生日", "备注", "操作人员", "操作时间"
             ]
@@ -233,14 +240,18 @@ class Parishioner_Main_Interface(QWidget):
 
     @check_auth_permission(required_permission={"module_data": "parishioner", "permission_data": "add"})
     def add_parishioner(self):
-        w = Parishioner_MessageBox(self.cur_parish, self)
+        w = Parishioner_MessageBox(self.login_info, self)
         w.titleLabel.setText("添加人员")
         if w.exec():
             with StudentDB() as db:
                 get_InputParishionerMessageinfo = w.get_InputParishionerMessageinfo()
                 get_InputParishionerMessageinfo["student_school_id"] = self.cur_parish_id
-                get_InputParishionerMessageinfo["operator"] = self.cur_user["user_name"]
+                get_InputParishionerMessageinfo["operator"] = self.login_info["user_name"]
                 get_InputParishionerMessageinfo["opera_time"] = int(time.time())
+                if self.login_info["user_type"] != 0:
+                    get_InputParishionerMessageinfo["opera_type"] = 0
+                else:
+                    get_InputParishionerMessageinfo["opera_type"] = 2
                 db.add_student(get_InputParishionerMessageinfo)
             self.Load_Parishioner(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
             return True
@@ -250,7 +261,7 @@ class Parishioner_Main_Interface(QWidget):
     def delete_parishioner(self):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
-            w = Parishioner_MessageBox(self.cur_parish, self)
+            w = Parishioner_MessageBox(self.login_info, self)
             w.titleLabel.setText("删除人员")
             w.set_InputParishionerMessageinfo(self.parishioner_info_all[idx])
             if w.exec():
@@ -264,7 +275,7 @@ class Parishioner_Main_Interface(QWidget):
     def modify_parishioner(self):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
-            w = Parishioner_MessageBox(self.cur_parish, self)
+            w = Parishioner_MessageBox(self.login_info, self)
             w.titleLabel.setText("修改人员信息")
             w.set_InputParishionerMessageinfo(self.parishioner_info_all[idx])
             if w.exec():
@@ -272,7 +283,7 @@ class Parishioner_Main_Interface(QWidget):
                     parishioner_info = w.get_InputParishionerMessageinfo()
                     parishioner_info["student_id"] = self.parishioner_info_all[idx]["student_id"]
                     parishioner_info["student_school_id"] = self.cur_parish_id
-                    parishioner_info["operator"] = self.cur_user["user_name"]
+                    parishioner_info["operator"] = self.login_info["user_name"]
                     parishioner_info["opera_time"] = int(time.time())
                     db.update_student(parishioner_info)
                 self.Load_Parishioner(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)

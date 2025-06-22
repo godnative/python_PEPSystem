@@ -3,28 +3,9 @@ import sqlite3
 from sqlite3 import Error
 
 from DataBase.user_db import UserDB
-from DataBase.base_db import db_path
 
 
-def create_connection(db_file):
-    """ 创建数据库连接 """
-    conn = None
-    try:
-        conn = sqlite3.connect(db_file)
-        print(f"成功连接到SQLite数据库")
-        return conn
-    except Error as e:
-        print(e)
-    return conn
 
-def create_table(conn, create_table_sql):
-    """ 从SQL语句创建表 """
-    try:
-        c = conn.cursor()
-        c.execute(create_table_sql)
-        print("表创建成功")
-    except Error as e:
-        print(e)
 
 def creat_all_database():
     # 创建users表的SQL语句
@@ -65,21 +46,21 @@ def creat_all_database():
                                     opera_type            integer  not null
                                 ); """
 
-    sql_create_school_table = """ CREATE TABLE IF NOT EXISTS school
+    sql_create_parish_table = """ CREATE TABLE IF NOT EXISTS parish
                                 (
-                                    school_id       integer not null
-                                        constraint school_pk
+                                    parish_id       integer not null
+                                        constraint parish_pk
                                             primary key autoincrement
-                                        constraint school_pk_2
+                                        constraint parish_pk_2
                                             unique,
-                                    school_name     TEXT    not null
-                                        constraint school_pk_3
+                                    parish_name     TEXT    not null
+                                        constraint parish_pk_3
                                             unique,
-                                    school_date     DATE    not null,
-                                    school_address  TEXT    not null,
-                                    school_info     TEXT,
-                                    school_pic_path TEXT,
-                                    school_curadmin TEXT
+                                    parish_date     DATE    not null,
+                                    parish_address  TEXT    not null,
+                                    parish_info     TEXT,
+                                    parish_pic_path TEXT,
+                                    parish_curadmin TEXT
                                 ); """
 
     sql_create_student_table = """ CREATE TABLE IF NOT EXISTS student
@@ -130,8 +111,7 @@ def creat_all_database():
                                     user_log_info TEXT
                                 ); """
     # 创建数据库连接
-    if os.path.exists(db_path):
-        return
+
     conn = create_connection(db_path)
 
     # 创建表
@@ -139,7 +119,7 @@ def creat_all_database():
         # 创建users表
         create_table(conn, sql_create_family_table)
         create_table(conn, sql_create_holyevent_table)
-        create_table(conn, sql_create_school_table)
+        create_table(conn, sql_create_parish_table)
         create_table(conn, sql_create_student_table)
         create_table(conn, sql_create_user_table)
         create_table(conn, sql_create_user_log_table)

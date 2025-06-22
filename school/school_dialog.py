@@ -77,28 +77,28 @@ class BaseSchoolInterface_Temp:
         self.horizontalLayout.addLayout(self.verticalLayout)
         self.BaseSchoolInterface_layout.addLayout(self.horizontalLayout)
 
-    def get_InputSchoolDialoginfo(self):
+    def get_InputParishDialoginfo(self):
         # 获取输入框中的数据并返回
-        school_info = {
-            'school_name': self.lineEdit_2.text(),
-            'school_address': self.lineEdit_4.text(),
-            'school_info': self.lineEdit_5.text(),
-            'school_date': qdate_to_timestamp(self.calendarPicker.date),
-            'school_pic_path': self.label.image_path
+        parish_info = {
+            'parish_name': self.lineEdit_2.text(),
+            'parish_address': self.lineEdit_4.text(),
+            'parish_info': self.lineEdit_5.text(),
+            'parish_date': qdate_to_timestamp(self.calendarPicker.date),
+            'parish_pic_path': self.label.image_path
         }
-        return school_info
+        return parish_info
 
-    def set_school_info(self, school_info):
+    def set_parish_info(self, parish_info):
         # 设置学生信息
-        self.lineEdit_2.setText(school_info['school_name'])
-        self.lineEdit_4.setText(school_info['school_address'])
-        self.lineEdit_5.setText(school_info['school_info'])
-        qDate = timestamp_to_date(school_info["school_date"])
+        self.lineEdit_2.setText(parish_info['parish_name'])
+        self.lineEdit_4.setText(parish_info['parish_address'])
+        self.lineEdit_5.setText(parish_info['parish_info'])
+        qDate = timestamp_to_date(parish_info["parish_date"])
         # 设置文本框的文本为格式化后的日期时间
         self.calendarPicker.setDate(qDate)
-        if school_info["school_pic_path"] is not None:
-            if os.path.exists(school_info["school_pic_path"]):
-                pixmap = QPixmap(school_info["school_pic_path"]).scaled(
+        if parish_info["parish_pic_path"] is not None:
+            if os.path.exists(parish_info["parish_pic_path"]):
+                pixmap = QPixmap(parish_info["parish_pic_path"]).scaled(
                     self.label.size(),
                     Qt.AspectRatioMode.KeepAspectRatioByExpanding,
                     Qt.TransformationMode.SmoothTransformation

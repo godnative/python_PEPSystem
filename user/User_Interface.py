@@ -42,7 +42,7 @@ def check_auth_permission(required_permission):
         def wrapper(*args, **kwargs):
             # 检查用户是否有操作权限
             self = args[0]
-            authnum = self.cur_user["user_authnum"]
+            authnum = self.login_info["user_authnum"]
             check_pos = (check_module_data[required_permission["module_data"]] * 3 +
                          check_permission_data[required_permission["permission_data"]])
             current_time = datetime.now()
@@ -57,15 +57,9 @@ def check_auth_permission(required_permission):
                             formatted_time,
                             required_permission["module_data"],
                             required_permission["permission_data"])
-                        db.add_user_log({"user_id": self.cur_user["user_id"], "user_log_info": exec_log})
+                        db.add_user_log({"user_id": self.login_info["user_id"], "user_log_info": exec_log})
                         InfoBar.success(title="操作成功", content=exec_log, parent=self,
                                         duration=3000)  # 使用 InfoBar 显示错误提示，设置标题、内容、父窗口和持续时间
-                    else:
-                        exec_log = "[%s] 取消 %s %s 操作 " % (
-                            formatted_time,
-                            required_permission["module_data"],
-                            required_permission["permission_data"])
-                        print(exec_log)
                 return
             else:
                 # 如果没有操作权限，打印失败消息并退出
@@ -171,16 +165,14 @@ class User_MessageBox(MessageBoxBase):
 
 
 class User_Show_Interface(QWidget):
-    def __init__(self, cur_parish, cur_user, ObjectName):
+    def __init__(self, login_info, ObjectName):
         super().__init__()
-
+        self.login_info = login_info
         # 创建主布局
         self.user_log_all = None
         self.setObjectName(ObjectName)
         self.parishioner_info_all = None
-        self.cur_parish = cur_parish
-        self.cur_user = cur_user
-        self.cur_parish_id = self.cur_parish['school_id']
+        self.cur_parish_id = self.login_info['parish_id']
         main_layout = QVBoxLayout(self)
         self.setMinimumSize(500, 500)
 
@@ -208,8 +200,10 @@ class User_Show_Interface(QWidget):
         ]
         self.BaseUserInterface.BaseQuery.tableWidget.setColumnCount(len(self.user_log_tableView_header))
         self.BaseUserInterface.BaseQuery.tableWidget.setHorizontalHeaderLabels(self.user_log_tableView_header)
-        self.Load_User_Log(self.cur_user["user_id"])
-        self.BaseUserInterface.set_user_info(self.cur_user)
+        self.Load_User_Log(self.login_info["user_id"])
+        with UserDB() as db:
+            user_info = db.fetch_users_from_id(self.login_info["user_id"])
+        self.BaseUserInterface.set_user_info(user_info)
 
     def Load_User_Log(self, user_id):
         with UserDB() as db:

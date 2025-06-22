@@ -6,15 +6,15 @@ from Parishioner.family_interface import Family_Main_Interface
 from utils.custom_style import StyleSheet
 
 
+# 该文件是人员信息主界面，此处添加和管理两个子界面，包括教友信息和家庭信息
+
 class ParishionerMainInterface(QWidget):
 
-    def __init__(self, cur_parish, cur_user, ObjectName):
+    def __init__(self, login_info, ObjectName):
         super().__init__()
-
+        self.login_info = login_info
         # 创建主布局
         self.setObjectName(ObjectName)
-        self.cur_parish = cur_parish
-        self.cur_user = cur_user
 
         self.tabCount = 1
         self.setObjectName(ObjectName)
@@ -32,10 +32,10 @@ class ParishionerMainInterface(QWidget):
         self.main_vBoxLayout = QVBoxLayout(self)
         self.vBoxLayout = QVBoxLayout(self.tabView)
 
-        self.parishioner_interface = Parishioner_Main_Interface(self.cur_parish, self.cur_user,
+        self.parishioner_interface = Parishioner_Main_Interface(self.login_info,
                                                                 "Parishioner_Main_Interface_from_Main_Even")
 
-        self.family_interface = Family_Main_Interface(self.cur_parish, self.cur_user,
+        self.family_interface = Family_Main_Interface(self.login_info,
                                                       "Family_Main_Interface_from_Main_Even")
 
         # add items to pivot

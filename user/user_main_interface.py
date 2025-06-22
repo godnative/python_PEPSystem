@@ -7,13 +7,11 @@ from utils.custom_style import StyleSheet
 
 class UserMainInterface(QWidget):
 
-    def __init__(self, cur_parish, cur_user, ObjectName):
+    def __init__(self, login_info, ObjectName):
         super().__init__()
-
+        self.login_info = login_info
         # 创建主布局
         self.setObjectName(ObjectName)
-        self.cur_parish = cur_parish
-        self.cur_user = cur_user
 
         self.tabCount = 1
         self.setObjectName(ObjectName)
@@ -31,8 +29,8 @@ class UserMainInterface(QWidget):
         self.main_vBoxLayout = QVBoxLayout(self)
         self.vBoxLayout = QVBoxLayout(self.tabView)
 
-        self.user_show_interface = User_Show_Interface(self.cur_parish, self.cur_user,
-                                                       "User_Show_Interface_from_Main_Even")
+        self.user_show_interface = User_Show_Interface(
+            self.login_info, "User_Show_Interface_from_Main_Even")
 
         self.user_modify_interface = User_Modify_Interface("User_Modify_Interface_from_Main_Even")
 
@@ -45,11 +43,11 @@ class UserMainInterface(QWidget):
         self.vBoxLayout.addWidget(self.tabBar)
         self.vBoxLayout.addWidget(self.stackedWidget)
 
-        self.addSubInterface(self.user_show_interface,
-                             'user_show_interface', self.tr('当前用户信息'), ':/gallery/images/MusicNote.png')
-        if self.cur_user["user_type"] == 0:
-            self.addSubInterface(self.user_modify_interface,
-                                 'user_modify_interface', self.tr('修改用户信息'), ':/gallery/images/Dvd.png')
+        self.addSubInterface(
+            self.user_show_interface, 'user_show_interface', self.tr('当前用户信息'), ':/gallery/images/MusicNote.png')
+        if self.login_info["user_type"] == 0:
+            self.addSubInterface(
+                self.user_modify_interface, 'user_modify_interface', self.tr('修改用户信息'), ':/gallery/images/Dvd.png')
 
         StyleSheet.NAVIGATION_VIEW_INTERFACE.apply(self)
 

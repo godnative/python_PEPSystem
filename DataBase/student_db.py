@@ -25,13 +25,13 @@ class StudentDB(DataBaseManage):
         query = """
             INSERT INTO student (student_name, student_gender, student_phonenum, student_holyname, 
                                     student_family_id, student_school_id, student_identity_num,
-                                    student_birthday, student_note, operator, opera_time)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                                    student_birthday, student_note, operator, opera_time, opera_type)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """
         params = (student["student_name"], student["student_gender"], student["student_phonenum"],
                   student["student_holyname"], student["student_family_id"], student["student_school_id"],
                   student["student_identity_num"], student["student_birthday"], student["student_note"],
-                  student["operator"], student["opera_time"])
+                  student["operator"], student["opera_time"], student["opera_type"])
         return self.execute_query_return_id(query, params)
 
     def fetch_students_with_school_id(self, school_id):
@@ -96,7 +96,7 @@ class StudentDB(DataBaseManage):
         params = (student["student_gender"], student["student_phonenum"], student["student_holyname"],
                   student["student_family_id"], student["student_school_id"], student["student_name"],
                   student["student_identity_num"], student["student_birthday"], student["student_note"],
-                  student["student_id"], student["operator"], student["opera_time"])
+                  student["operator"], student["opera_time"], student["student_id"])
         return self.execute_query(query, params)
 
     def delete_student(self, student_id):

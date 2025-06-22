@@ -36,13 +36,13 @@ class HolyEventDB(DataBaseManage):
         INSERT INTO holyevent ( holyevent_type, holyevent_date, holyevent_witness, 
         holyevent_implementer, holyevent_p1_id, holyevent_p2_id, 
         holyevent_note, holyevent_school_id,
-        operator, opera_time)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        operator, opera_time, opera_type)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """
         params = (event_info["holyevent_type"], event_info["holyevent_date"], event_info["holyevent_witness"],
                   event_info["holyevent_implementer"], event_info["holyevent_p1_id"], event_info["holyevent_p2_id"],
                   event_info["holyevent_note"], event_info["holyevent_school_id"],
-                  event_info["operator"], event_info["opera_time"])
+                  event_info["operator"], event_info["opera_time"], event_info["opera_type"])
         return self.execute_query(query, params)
 
     def fetch_even_with_like(self, even_type, like_str, school_id):
@@ -85,26 +85,29 @@ class HolyEventDB(DataBaseManage):
             holyevent_p2_id = ?, 
             holyevent_note = ?, 
             holyevent_school_id = ?,
-            operator =?,
-            opera_time =?
+            operator = ?,
+            opera_time = ?
         WHERE holyevent_id = ?;
         """
         params = (event_info["holyevent_date"], event_info["holyevent_witness"],
                   event_info["holyevent_implementer"], event_info["holyevent_p1_id"], event_info["holyevent_p2_id"],
-                  event_info["holyevent_note"], event_info["holyevent_school_id"], event_info["holyevent_id"],
-                  event_info["operator"], event_info["opera_time"])
+                  event_info["holyevent_note"], event_info["holyevent_school_id"],
+                  event_info["operator"], event_info["opera_time"], event_info["holyevent_id"])
         return self.execute_query(query, params)
 
 if __name__ == '__main__':
     with HolyEventDB() as db:
-        # for i in range(100):
-        #     family_name = "崇义小学第%d号家庭" % (i + 1)
-        #     family_address = "%d Main Street" % (random.randint(0, 1000))
-        #     family_info = {
-        #         "family_name": family_name,
-        #         "family_address": family_address,
-        #         "family_school_id": 1,
-        #         "family_notes": "无备注"
-        #     }
-        #     db.add_family(family_info)
-        print(db.fetch_all_event_by_type(0))
+        exd = {'holyevent_p1_id': 1,
+               'holyevent_p2_id': 1,
+               'holyevent_implementer': '123',
+               'holyevent_witness': '456',
+               'holyevent_school_id': 1,
+               'holyevent_date': 1750550400,
+               'operator': 'admin',
+               'opera_time': 1750586967,
+               'opera_type': None,
+               'holyevent_note': '123',
+               'holyevent_id': 1}
+
+        db.update_even(exd)
+        print(db.fetch_all_event_by_type(0, 1))

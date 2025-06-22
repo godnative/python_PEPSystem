@@ -31,6 +31,19 @@ class UserDB(DataBaseManage):
         # 调用父类的 fetch_query 方法执行查询，并返回查询结果
         return self.fetch_query(query)
 
+    def fetch_users_from_id(self, user_id):
+        """
+        从 user 表中获取所有用户的信息
+        :return: 查询结果，包含所有用户的信息
+        """
+        # 定义查询语句，从 user 表中获取所有记录
+        query = """
+                SELECT * FROM user WHERE user_id = ?;
+                """
+        params = (user_id, )
+        # 调用父类的 fetch_query 方法执行查询，并返回查询结果
+        return self.fetch_query(query, params=params, single=True)
+
     def fetch_user_with_likestr(self, like_str):
         """
         根据模糊匹配字符串从 user 表中获取用户信息

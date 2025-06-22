@@ -180,12 +180,11 @@ class TaskCardMain(CardWidget):
     # 添加信号量
     taskCountsChanged = pyqtSignal(int, int, int, int)
 
-    def __init__(self, cur_parish, parent=None):
+    def __init__(self, login_info, parent=None):
         super().__init__(parent)
-
+        self.login_info = login_info
         self.task_card_parishioner_info = None
         self.setMinimumWidth(400)
-        self.cur_parish = cur_parish
         self.overTimeCnt = 0
         self.finishTimeCnt = 0
         self.waitTimeCnt = 0
@@ -328,7 +327,7 @@ class TaskCardMain(CardWidget):
     def RefreshTaskCard(self):
         with StudentDB() as db:
             self.delete_all_tasks()
-            self.task_card_parishioner_info = db.fetch_students_with_birthday(self.cur_parish["school_id"])
+            self.task_card_parishioner_info = db.fetch_students_with_birthday(self.login_info["parish_id"])
             if self.task_card_parishioner_info:
                 for i in self.task_card_parishioner_info:
                     self.add_task_with_info(i)
@@ -342,7 +341,8 @@ class TaskCardMain(CardWidget):
         )
 
         # add button to view
-        button = PushButton('Action')
+        button = PushButton()
+        button.setText("同步")
         button.clicked.connect(self.RefreshTaskCard)
         button.setFixedWidth(120)
         view.addWidget(button, align=Qt.AlignmentFlag.AlignRight)
@@ -359,25 +359,27 @@ class TaskCardMain(CardWidget):
 class TaskCardMainInterFace(QWidget):
     taskcardwaitfinishnumchanged = pyqtSignal(int)
 
-    def __init__(self, cur_parish, objectname, parent=None):
+    def __init__(self, login_info, objectname, parent=None):
         super().__init__(parent)
+        self.login_info = login_info
         self.task_card_parishioner_info = None
         self.setObjectName(objectname)
-        self.cur_parish = cur_parish
 
         layout = QHBoxLayout(self)
 
         # 实际功能界面
         self.process_card = ProcessCard(self)
         # self.process_card.setFixedSize(400, 400)
-        self.task_card_main = TaskCardMain(self.cur_parish, self)
+        self.task_card_main = TaskCardMain(self.login_info, self)
         self.task_card_main.setFixedSize(800, 600)
         layout.addWidget(self.process_card)
         layout.addWidget(self.task_card_main)
 
         # 连接信号量
+        # noinspection PyUnresolvedReferences
         self.task_card_main.taskCountsChanged.connect(self.setOFWValue)
 
     def setOFWValue(self, overTime, finishTime, waitTime, percentage):
         self.process_card.setOFWValue(overTime, finishTime, waitTime, percentage)
+        # noinspection PyUnresolvedReferences
         self.taskcardwaitfinishnumchanged.emit(waitTime)

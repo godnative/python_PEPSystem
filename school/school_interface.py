@@ -9,7 +9,7 @@ from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QApplication, QGr
 from qfluentwidgets import PushButton, setCustomStyleSheet, MessageBoxBase, InfoBar, IconWidget, InfoBarIcon, \
     StrongBodyLabel, TransparentToolButton, FluentIcon, CardWidget
 
-from DataBase.school_db import SchoolDb
+from DataBase.parish_db import ParishDb
 from school.school_dialog import BaseSchoolInterface_Temp
 from utils.custom_style import ADD_BUTTON_STYLE, DELETE_BUTTON_STYLE, UPDATE_BUTTON_STYLE
 
@@ -27,23 +27,22 @@ class AddSchoolInterface(MessageBoxBase):
     def _validateInput(self):
         errors = []  # 初始化错误信息列表
         # 验证学校名称
-        school_name = self.schoolInterface_temp.lineEdit_2.text()
-        if not school_name:
-            errors.append("学校名称不能为空")
-        elif len(school_name) > 20:
-            errors.append("学校名称不能超过20个字符")
+        parish_name = self.schoolInterface_temp.lineEdit_2.text()
+        if not parish_name:
+            errors.append("教区名称不能为空")
+        elif len(parish_name) > 20:
+            errors.append("教区名称不能超过20个字符")
         else:
-            with SchoolDb() as db:
-                if db.check_school_name(school_name):
-                    errors.append("学校名称已存在")
-        # 验证学校地址
-        school_address = self.schoolInterface_temp.lineEdit_4.text()
-        if not school_address:
-            errors.append("学校地址不能为空")
+            with ParishDb() as db:
+                if db.check_parish_name(parish_name):
+                    errors.append("教区名称已存在")
 
-        # 验证学校简介
-        school_info = self.schoolInterface_temp.lineEdit_5.text()
-        if not school_info:
+        parish_address = self.schoolInterface_temp.lineEdit_4.text()
+        if not parish_address:
+            errors.append("教区地址不能为空")
+
+        parish_info = self.schoolInterface_temp.lineEdit_5.text()
+        if not parish_info:
             errors.append("当前主保不能为空")
         # 返回错误信息列表，如果为空则表示验证通过
         return errors
@@ -61,28 +60,27 @@ class AddSchoolInterface(MessageBoxBase):
 
 
 class ModifySchoolInterface(MessageBoxBase):
-    def __init__(self, school_info, parent=None):
+    def __init__(self, parish_info, parent=None):
         super().__init__(parent)
         self.schoolInterface_temp = BaseSchoolInterface_Temp()
         self.viewLayout.addLayout(self.schoolInterface_temp.BaseSchoolInterface_layout)
         self.schoolInterface_temp.label.uploaded_image = True
         self.setObjectName("ModifySchoolInterface")
-        self.school_id = None  # 初始化学生 ID 属性，默认为 None，表示新建学生时不需要指定 ID
+        self.parish_id = None  # 初始化学生 ID 属性，默认为 None，表示新建学生时不需要指定 ID
         self.yesButton.setText('修改')  # 设置确认按钮的文本为“添加”，以明确功能
 
-        self.schoolInterface_temp.set_school_info(school_info)
+        self.schoolInterface_temp.set_parish_info(parish_info)
         #self.schoolInterface_temp.lineEdit_2.setReadOnly(True)
 
     def _validateInput(self):
         errors = []  # 初始化错误信息列表
-        # 验证学校地址
-        school_address = self.schoolInterface_temp.lineEdit_4.text()
-        if not school_address:
-            errors.append("学校地址不能为空")
+        parish_address = self.schoolInterface_temp.lineEdit_4.text()
+        if not parish_address:
+            errors.append("教区地址不能为空")
 
         # 验证学校简介
-        school_info = self.schoolInterface_temp.lineEdit_5.text()
-        if not school_info:
+        parish_info = self.schoolInterface_temp.lineEdit_5.text()
+        if not parish_info:
             errors.append("当前主保不能为空")
         # 返回错误信息列表，如果为空则表示验证通过
         return errors
@@ -101,10 +99,9 @@ class ModifySchoolInterface(MessageBoxBase):
 
 # 该布局为主界面显示布局，无法继承message类，所有与弹出后修改或添加布局分开，布局内容基本一致，该布局从UI文件加载
 class ShowSchoolInterface(QWidget):
-    def __init__(self, role, school, object_name):
+    def __init__(self, login_info, object_name):
         super().__init__()
-        self.role = role
-        self.school = school
+        self.login_info = login_info
 
         self.setObjectName(object_name)
         self.schoolInterface_temp = BaseSchoolInterface_Temp()
@@ -131,13 +128,16 @@ class ShowSchoolInterface(QWidget):
         self.setupUi()
         self.disable_widgets()
 
-        if self.school is None:
-            self.schoolInterface_temp.label.setText("请先选择或建立学校")
+        if self.login_info["parish_id"] is None:
+            self.schoolInterface_temp.label.setText("请先选择或建立教区")
             self.schoolInterface_temp.label.uploaded_image = False
             self.modifyButton.setDisabled(True)
         else:
             # 将时间戳转换为日期时间格式
-            self.schoolInterface_temp.set_school_info(self.school)
+            from DataBase.parish_db import ParishDb
+            with ParishDb() as db:
+                parish_info = db.get_parish_info(self.login_info["parish_id"])
+                self.schoolInterface_temp.set_parish_info(parish_info)
 
     def setupUi(self):
         self.addButton = PushButton('添加', self)
@@ -148,36 +148,11 @@ class ShowSchoolInterface(QWidget):
         setCustomStyleSheet(self.modifyButton, DELETE_BUTTON_STYLE, DELETE_BUTTON_STYLE)
         self.modifyButton.clicked.connect(self.modifySchoolInfo)
 
-        # self.setButton = PushButton('设置默认教堂', self)
-        # setCustomStyleSheet(self.modifyButton, IMPORT_BUTTON_STYLE, IMPORT_BUTTON_STYLE)
-        # self.setButton.clicked.connect(self.show_setschool_Flyout1)
-
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.addWidget(self.addButton)
         self.horizontalLayout.addWidget(self.modifyButton)
         # self.horizontalLayout.addWidget(self.setButton)
         self.schoolInterface_temp.BaseSchoolInterface_layout.addLayout(self.horizontalLayout)
-
-    # def show_setschool_Flyout1(self):
-    #     print(self.curSchool)
-    #     if self.curSchool is not None:
-    #         content = "成功设置：%s 为默认教堂" % self.curSchool["school_name"]
-    #         icon = InfoBarIcon.SUCCESS
-    #         with open("./schoolsetting.pkl", 'wb') as f:
-    #             pickle.dump(self.curSchool, f)
-    #     else:
-    #         content = "设置失败"
-    #         icon = InfoBarIcon.ERROR
-    #
-    #     Flyout.create(
-    #         icon=icon,
-    #         title='设置默认教堂',
-    #         content=content,
-    #         target=self.setButton,
-    #         parent=self,
-    #         isClosable=True
-    #     )
-
     def disable_widgets(self):
         self.schoolInterface_temp.lineEdit_4.setReadOnly(True)
         self.schoolInterface_temp.lineEdit_2.setReadOnly(True)
@@ -186,19 +161,19 @@ class ShowSchoolInterface(QWidget):
     def addSchoolInfo(self):
         w = AddSchoolInterface(self)
         if w.exec():
-            with SchoolDb() as db:
-                db.add_school(w.schoolInterface_temp.get_InputSchoolDialoginfo())
-                self.restartButton = PushButton('重启以重新选择学校', self)
+            with ParishDb() as db:
+                db.add_parish(w.schoolInterface_temp.get_InputParishDialoginfo())
+                self.restartButton = PushButton('重启以重新选择教区', self)
                 setCustomStyleSheet(self.restartButton, UPDATE_BUTTON_STYLE, UPDATE_BUTTON_STYLE)
                 self.horizontalLayout.addWidget(self.restartButton)
                 # self.restartButton.clicked.connect(self.parent.on_back_to_login)
 
     def modifySchoolInfo(self):
-        w = ModifySchoolInterface(self.schoolInterface_temp.get_InputSchoolDialoginfo(), self)
+        w = ModifySchoolInterface(self.schoolInterface_temp.get_InputParishDialoginfo(), self)
         if w.exec():
-            with SchoolDb() as db:
-                db.modify_school(w.schoolInterface_temp.get_InputSchoolDialoginfo())
-                self.schoolInterface_temp.set_school_info(w.schoolInterface_temp.get_InputSchoolDialoginfo())
+            with ParishDb() as db:
+                db.modify_parish(w.schoolInterface_temp.get_InputParishDialoginfo())
+                self.schoolInterface_temp.set_parish_info(w.schoolInterface_temp.get_InputParishDialoginfo())
 
 
 class GenderShowInfo(CardWidget):

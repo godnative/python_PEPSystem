@@ -15,8 +15,7 @@ from qfluentwidgets import setThemeColor, SplitTitleBar
 from qframelesswindow import AcrylicWindow as Window
 
 from BaseWidgets.BaseModule import user_type
-from DataBase.database_init import creat_all_database
-from DataBase.school_db import SchoolDb
+from DataBase.parish_db import ParishDb
 from DataBase.user_db import UserDB
 from Event.EvenMainTabInterface import EvenMainTabInterface
 from LoginWindow import Ui_Form
@@ -40,6 +39,10 @@ class LoginWindow(Window, Ui_Form):
         self.setWindowTitle('PyQt-Fluent-Widget')
         self.setWindowIcon(QIcon("./login/resource/images/logo.png"))
         self.resize(1000, 650)
+
+        self.cur_login_parish_info = None
+        self.comboBox.currentIndexChanged.connect(self.set_cur_login_parish_info)
+        self.last_login_info_path = "./login_info.pkl"
 
         # self.windowEffect.setMicaEffect(self.winId(), isDarkMode=isDarkTheme())
 
@@ -65,8 +68,8 @@ class LoginWindow(Window, Ui_Form):
         # self.lineEdit_3.setText("admin")
         # self.lineEdit_5.setText("admin123")
         self.pushButton.clicked.connect(self.login)
-        creat_all_database()
-        self.load_schools_and_user()
+        self.load_all_parish()
+        self.load_last_login_info()
 
     def systemTitleBarRect(self, size):
         """ Returns the system title bar rect, only works for macOS """
@@ -82,6 +85,24 @@ class LoginWindow(Window, Ui_Form):
         self.label.setPixmap(pixmap)
         self.label_2.setPixmap(QPixmap("./login/resource/images/logo.png"))
 
+    def load_all_parish(self):
+        self.comboBox.clear()  # 清空 classCombo 下拉框中的所有选项
+        with ParishDb() as db:  # 使用上下文管理器创建 ClassDB 的实例，并确保使用后自动关闭数据库连接
+            load_parish_info = db.fetch_parish()
+        self.comboBox.addItem('请选择教区', None)
+
+        if load_parish_info is not None:
+            for parish_info in load_parish_info:
+                self.comboBox.addItem(parish_info['parish_name'],
+                                      userData=parish_info)
+
+    def set_cur_login_parish_info(self):
+        self.cur_login_parish_info = self.comboBox.currentData()
+
+    def save_last_login_info(self, login_info):
+        with open(self.last_login_info_path, 'wb') as f:
+            pickle.dump(login_info, f)
+
     def login(self):
         username = self.lineEdit_3.text()
         password = self.lineEdit_5.text()
@@ -90,47 +111,57 @@ class LoginWindow(Window, Ui_Form):
             user_info = db.user_login_check(username, password)
 
         if user_info is not None:
+            login_info = {
+                "parish_id": None,
+                "parish_name": None,
+                "user_id": None,
+                "user_name": None,
+                "user_type": None,
+                "user_authnum": None
+            }
+            if self.cur_login_parish_info is not None:
+                login_info["parish_id"] = self.cur_login_parish_info["parish_id"]
+                login_info["parish_name"] = self.cur_login_parish_info["parish_name"]
+            login_info["user_id"] = user_info["user_id"]
+            login_info["user_name"] = user_info["user_name"]
+            login_info["user_type"] = user_info["user_type"]
+            login_info["user_authnum"] = user_info["user_authnum"]
+
             if self.checkBox.isChecked():
-                with open("./schoolsetting.pkl", 'wb') as f:
-                    save_data = {
-                        'school': self.comboBox.currentData(),
-                        'user': user_info
+                with open(self.last_login_info_path, 'wb') as f:
+                    save_login_info = {
+                        "parish_id": login_info["parish_id"],
+                        "user_name": username,
+                        "user_password": password
                     }
-                    pickle.dump(save_data, f)
+                    pickle.dump(save_login_info, f)
             else:
-                if os.path.exists('./schoolsetting.pkl'):
-                    os.remove('./schoolsetting.pkl')
+                if os.path.exists(self.last_login_info_path):
+                    os.remove(self.last_login_info_path)
             self.close()
-            mainwindow = MainWindow(user_info, self.comboBox.currentData())
+
+            mainwindow = MainWindow(login_info)
             mainwindow.show()
         else:
             QMessageBox.warning(self, 'Login Failed', 'Invalid username or password')
 
-    def load_schools_and_user(self):
-        self.comboBox.clear()  # 清空 classCombo 下拉框中的所有选项
-        with SchoolDb() as db:  # 使用上下文管理器创建 ClassDB 的实例，并确保使用后自动关闭数据库连接
-            schools = db.fetch_school()  # 如果没有可管理的班级 ID 列表，则获取所有班级信息
-        self.comboBox.addItem('请选择教区', None)  # 在下拉框中添加默认选项 "请选择班级"，并将其关联的数据设为 None
-
-        if schools is not None:
-            for school_info in schools:  # 遍历获取到的班级信息列表
-                self.comboBox.addItem(school_info['school_name'],
-                                      userData=school_info)  # 将每个班级的名称和对应的 ID 添加到下拉框中
-
-        if os.path.exists('./schoolsetting.pkl'):
-            with open('./schoolsetting.pkl', 'rb') as f:
+    def load_last_login_info(self):
+        if os.path.exists(self.last_login_info_path):
+            with open(self.last_login_info_path, 'rb') as f:
                 data = pickle.load(f)
                 if data is not None:
-                    schoolinfo = data['school']
-                    if schoolinfo is not None and schools is not None:
-                        for school_info in schools:
-                            if school_info['school_id'] == schoolinfo['school_id']:
-                                self.comboBox.setCurrentIndex(self.comboBox.findData(school_info))
+                    all_parish_id = data['parish_id']
+                    if all_parish_id is not None and self.comboBox.count() > 1:
+                        for i in range(self.comboBox.count()):
+                            parish_info = self.comboBox.itemData(i)
+                            if parish_info is None:
+                                continue
+                            if all_parish_id == parish_info["parish_id"]:
+                                self.comboBox.setCurrentIndex(i)
                                 break
-                    userinfo = data['user']
-                    if userinfo['user_name'] is not None:
-                        self.lineEdit_3.setText(userinfo['user_name'])
-                        self.lineEdit_5.setText(userinfo['user_password'])
+                    if data.get('user_name') is not None and data.get('user_password') is not None:
+                        self.lineEdit_3.setText(data['user_name'])
+                        self.lineEdit_5.setText(data['user_password'])
 
 
 class Widget(QFrame):
@@ -146,22 +177,21 @@ class Widget(QFrame):
 
 
 class MainWindow(MSFluentWindow):
-
-    def __init__(self, role, school_info):
+    def __init__(self, login_info):
         super().__init__()
-        self.role = role
-        self.school_info = school_info
-        self.schoolInterface = ShowSchoolInterface(self.role, self.school_info, "ShowSchoolInterface")
-        if self.school_info is None:
+        self.login_info = login_info
+        self.schoolInterface = ShowSchoolInterface(self.login_info, "ShowSchoolInterface")
+        if self.login_info["parish_id"] is None:
             self.setWindowTitle('未选择当前教区')
             self.addSubInterface(self.schoolInterface, FIF.APPLICATION, '教区')
         else:
-            self.setWindowTitle('当前教区:%s  当前登录角色：%s' % (self.school_info['school_name'] , user_type[self.role['user_type']]))
+            self.setWindowTitle(
+                '当前教区:%s  当前登录角色：%s' % (self.login_info['parish_name'] , user_type[self.login_info['user_type']]))
             # create sub interface
-            self.studentInterface = ParishionerMainInterface(self.school_info, self.role, "Parishioner_Main_Interface")
-            self.videoInterface = EvenMainTabInterface(self.school_info, self.role, "EvenMainTabInterface")
-            self.libraryInterface = UserMainInterface(self.school_info, self.role, "UserMainInterface")
-            self.taskCardInterface = TaskCardMainInterFace(self.school_info, "TaskCardMainInterFace")
+            self.studentInterface = ParishionerMainInterface(self.login_info, "Parishioner_Main_Interface")
+            self.videoInterface = EvenMainTabInterface(self.login_info, "EvenMainTabInterface")
+            self.libraryInterface = UserMainInterface(self.login_info, "UserMainInterface")
+            self.taskCardInterface = TaskCardMainInterFace(self.login_info, "TaskCardMainInterFace")
 
             self.addSubInterface(self.schoolInterface, FIF.APPLICATION, '教区')
             self.addSubInterface(self.studentInterface, FIF.HOME, '教友')

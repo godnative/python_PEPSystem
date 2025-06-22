@@ -21,14 +21,13 @@ class QUERY_TYPE(enum.Enum):
 
 class EventConfirmation_MessageBox(MessageBoxBase):
 
-    def __init__(self, cur_parish, cur_user, parent=None):
+    def __init__(self, login_info, parent=None):
         super().__init__(parent)
+        self.login_info = login_info
         self.family_info = None
         self.setMinimumWidth(800)
-        self.cur_parish = cur_parish
-        self.cur_user = cur_user
-        self.parishioner_widgets = Parishioner_Main_Interface(self.cur_parish, self.cur_user,
-                                                              "Parishioner_Main_Interface_from_EventConfirmation_MessageBox")
+        self.parishioner_widgets = Parishioner_Main_Interface(
+            self.login_info, "Parishioner_Main_Interface_from_EventConfirmation_MessageBox")
         self.parishioner_1_id = 1
         self.parishioner_2_id = 1
         self.titleLabel = SubtitleLabel('人员', self)
@@ -113,6 +112,9 @@ class EventConfirmation_MessageBox(MessageBoxBase):
             'holyevent_witness': self.BaseMessageBoxWidget.inputLine_3.text(),
             'holyevent_school_id': "",
             'holyevent_date': qdate_to_timestamp(self.BaseMessageBoxWidget.inputLine_10.date),
+            "operator": None,
+            "opera_time": None,
+            "opera_type": None,
             'holyevent_note': self.BaseMessageBoxWidget.inputLine_13.text()
         }
         return evenBaptism_messageinfo
@@ -150,14 +152,12 @@ class EventConfirmation_MessageBox(MessageBoxBase):
 
 
 class EventConfirmation_Main_Interface(QWidget):
-    def __init__(self, cur_parish, cur_user, ObjectName, parent=None):
+    def __init__(self, login_info, ObjectName, parent=None):
         super().__init__(parent)
-
+        self.login_info = login_info
         # 创建主布局
         self.setObjectName(ObjectName)
-        self.cur_parish = cur_parish
-        self.cur_user = cur_user
-        self.cur_parish_id = self.cur_parish["school_id"]
+        self.cur_parish_id = self.login_info["parish_id"]
         self.Event_all_info = None
 
         self.evenType = 0
@@ -175,14 +175,13 @@ class EventConfirmation_Main_Interface(QWidget):
         self.BaseMainInterface.label_2.setText("坚振圣事")
         main_layout.addWidget(self.BaseMainInterface)  # 正确地将 ReusableWidget 作为一个整体添加到布局中
 
-
         self.BaseMainInterface.BaseQuery.addButton.clicked.connect(self.add_even)
         self.BaseMainInterface.BaseQuery.delButton.clicked.connect(self.delete_even)
         self.BaseMainInterface.BaseQuery.ModButton.clicked.connect(self.modify_even)
         self.BaseMainInterface.BaseQuery.searchInput.searchSignal.connect(self.query_evenBaptism_info_with_like)
         self.BaseMainInterface.BaseQuery.searchInput.returnPressed.connect(self.query_evenBaptism_info_with_like)
 
-        if self.cur_user["user_type"] != 1:
+        if self.login_info["user_type"] != 1:
             self.evenBaptism_tableView_header = [
                 "姓名", "圣名", "施行人", "见证人", "堂区", "日期", "备注"
             ]
@@ -227,14 +226,18 @@ class EventConfirmation_Main_Interface(QWidget):
 
     @check_auth_permission(required_permission={"module_data": "event", "permission_data": "add"})
     def add_even(self):
-        w = EventConfirmation_MessageBox(self.cur_parish, self.cur_user, self)
+        w = EventConfirmation_MessageBox(self.login_info, self)
         w.titleLabel.setText("添加事件")
         if w.exec():
             with HolyEventDB() as db:
                 get_InputEvenBaptismMessageinfo = w.get_InputEvenBaptismMessageinfo()
                 get_InputEvenBaptismMessageinfo["holyevent_school_id"] = self.cur_parish_id
                 get_InputEvenBaptismMessageinfo["holyevent_type"] = self.evenType
-                get_InputEvenBaptismMessageinfo["operator"] = self.cur_user["user_name"]
+                get_InputEvenBaptismMessageinfo["operator"] = self.login_info["user_name"]
+                if self.login_info["user_type"] != 0:
+                    get_InputEvenBaptismMessageinfo["opera_type"] = 0
+                else:
+                    get_InputEvenBaptismMessageinfo["opera_type"] = 2
                 get_InputEvenBaptismMessageinfo["opera_time"] = int(time.time())
                 db.add_even(get_InputEvenBaptismMessageinfo)
             self.Load_even(QUERY_TYPE.QUERY_ALL, self.evenType, self.cur_parish_id)
@@ -245,7 +248,7 @@ class EventConfirmation_Main_Interface(QWidget):
     def delete_even(self):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
-            w = EventConfirmation_MessageBox(self.cur_parish, self.cur_user, self)
+            w = EventConfirmation_MessageBox(self.login_info, self)
             w.parishioner_widgets.hide()
             w.titleLabel.setText("删除事件")
             w.set_lineedit_uneditable()
@@ -261,7 +264,7 @@ class EventConfirmation_Main_Interface(QWidget):
     def modify_even(self):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
-            w = EventConfirmation_MessageBox(self.cur_parish, self.cur_user, self)
+            w = EventConfirmation_MessageBox(self.login_info, self)
             w.parishioner_widgets.hide()
             w.titleLabel.setText("修改事件信息")
             w.set_InputEventMessageinfo(self.Event_all_info[idx])
@@ -270,7 +273,7 @@ class EventConfirmation_Main_Interface(QWidget):
                     Even_info = w.get_InputEvenBaptismMessageinfo()
                     Even_info["holyevent_school_id"] = self.cur_parish_id
                     Even_info["holyevent_id"] = self.Event_all_info[idx]["holyevent_id"]
-                    Even_info["operator"] = self.cur_user["user_name"]
+                    Even_info["operator"] = self.login_info["user_name"]
                     Even_info["opera_time"] = int(time.time())
                     db.update_even(Even_info)
                 self.Load_even(QUERY_TYPE.QUERY_ALL, self.evenType, self.cur_parish_id)
@@ -281,8 +284,16 @@ if __name__ == "__main__":
     import sys
 
     app = QApplication(sys.argv)
-
-    main_window = Parishioner_Main_Interface()
+    login_info = {
+        "parish_id": 1,
+        "parish_name": "崇义教区",
+        "user_id": 1,
+        "user_name": "admin",
+        "user_type": 0,
+        "user_authnum": 32767
+    }
+    main_window = EventConfirmation_Main_Interface(login_info, "testParishioner_Main_Interface")
     main_window.show()
+    main_window.resize(1000, 800)
 
     sys.exit(app.exec())

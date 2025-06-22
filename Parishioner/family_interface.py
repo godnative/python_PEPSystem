@@ -20,10 +20,10 @@ class QUERY_TYPE(enum.Enum):
 
 class Family_MessageBox(MessageBoxBase):
 
-    def __init__(self, cur_parish, massage_type, parent=None):
+    def __init__(self, login_info, massage_type, parent=None):
         super().__init__(parent)
         self.family_info = None
-        self.cur_parish = cur_parish
+        self.login_info = login_info
         self.massage_type = massage_type
         self.titleLabel = SubtitleLabel('人员', self)
         self.family_Info_Edit_widgets = BaseMessageBoxWidget(self)
@@ -88,7 +88,7 @@ class Family_MessageBox(MessageBoxBase):
         self.family_Info_Edit_widgets.inputLine_3.setMinimumWidth(200)
 
         with FamilyDB() as db:
-            self.cur_family_cnt = db.get_family_cnt_with_parish_id(self.cur_parish["school_id"]) + 1
+            self.cur_family_cnt = db.get_family_cnt_with_parish_id(self.login_info["parish_id"]) + 1
 
     def _validateInput(self):
         errors = []  # 初始化错误信息列表
@@ -123,6 +123,9 @@ class Family_MessageBox(MessageBoxBase):
             "family_name": self.family_Info_Edit_widgets.inputLine_1.text(),
             "family_address": self.family_Info_Edit_widgets.inputLine_3.text(),  # 性别字段与对应的下拉框
             "family_notes": self.family_Info_Edit_widgets.inputLine_13.text(),  # 班级字段与对应的下拉框
+            "operator": None,
+            "opera_time": None,
+            "opera_type": None,
             "family_school_id": None
         }
         return family_messageinfo
@@ -134,22 +137,20 @@ class Family_MessageBox(MessageBoxBase):
         return
 
     def set_family_name_when_add(self):
-        family_name = "%s第%d号家庭" % (self.cur_parish["school_name"], self.cur_family_cnt)
+        family_name = "%s第%d号家庭" % (self.login_info["parish_name"], self.cur_family_cnt)
         self.family_Info_Edit_widgets.inputLine_1.setText(family_name)
         self.BaseQueryWidget.hide()
 
 
 class Family_Main_Interface(QWidget):
-    def __init__(self, cur_parish, cur_user, ObjectName):
+    def __init__(self, login_info, ObjectName):
         super().__init__()
-
+        self.login_info = login_info
         # 创建主布局
         self.family_info_all = None
-        self.cur_parish = cur_parish
-        self.cur_user = cur_user
         self.setObjectName(ObjectName)
         self.parishioner_info_all = None
-        self.cur_parish_id = self.cur_parish["school_id"]
+        self.cur_parish_id = self.login_info["parish_id"]
         main_layout = QVBoxLayout(self)
 
         self.BaseMainInterface = BaseMainInterface(self)
@@ -169,7 +170,7 @@ class Family_Main_Interface(QWidget):
         self.BaseMainInterface.BaseQuery.searchInput.searchSignal.connect(self.query_family_info_with_like)
         self.BaseMainInterface.BaseQuery.searchInput.returnPressed.connect(self.query_family_info_with_like)
 
-        if self.cur_user["user_type"] == 1:
+        if self.login_info["user_type"] == 1:
             self.family_viewTable_header_info = [
                 "家庭名称", "地址", "备注", "操作人员", "操作时间"
             ]
@@ -214,14 +215,18 @@ class Family_Main_Interface(QWidget):
 
     @check_auth_permission(required_permission={"module_data": "family", "permission_data": "add"})
     def add_family(self):
-        w = Family_MessageBox(self.cur_parish, 0, self)
+        w = Family_MessageBox(self.login_info, 0, self)
         w.titleLabel.setText("添加家庭")
         w.set_family_name_when_add()
         if w.exec():
             with FamilyDB() as db:
                 get_InputParishionerMessageinfo = w.get_InputFamilyMessageinfo()
                 get_InputParishionerMessageinfo["family_school_id"] = self.cur_parish_id
-                get_InputParishionerMessageinfo["operator"] = self.cur_user["user_name"]
+                get_InputParishionerMessageinfo["operator"] = self.login_info["user_name"]
+                if self.login_info["user_type"] != 0:
+                    get_InputParishionerMessageinfo["opera_type"] = 0
+                else:
+                    get_InputParishionerMessageinfo["opera_type"] = 2
                 get_InputParishionerMessageinfo["opera_time"] = int(time.time())
                 db.add_family(get_InputParishionerMessageinfo)
             self.Load_family(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
@@ -232,7 +237,7 @@ class Family_Main_Interface(QWidget):
     def delete_family(self):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
-            w = Family_MessageBox(self.cur_parish, 1, self)
+            w = Family_MessageBox(self.login_info, 1, self)
             del_family_id = self.family_info_all[idx]["family_id"]
             w.titleLabel.setText("删除家庭")
             with StudentDB() as db:
@@ -251,7 +256,7 @@ class Family_Main_Interface(QWidget):
     def modify_family(self):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
-            w = Family_MessageBox(self.cur_parish, 2, self)
+            w = Family_MessageBox(self.login_info, 2, self)
             del_family_id = self.family_info_all[idx]["family_id"]
             w.titleLabel.setText("修改家庭")
             with StudentDB() as db:
@@ -264,7 +269,7 @@ class Family_Main_Interface(QWidget):
                     family = w.get_InputFamilyMessageinfo()
                     family["family_id"] = self.family_info_all[idx]["family_id"]
                     family["family_school_id"] = self.cur_parish_id
-                    family["operator"] = self.cur_user["user_name"]
+                    family["operator"] = self.login_info["user_name"]
                     family["opera_time"] = int(time.time())
                     db.update_family(family)
                 self.Load_family(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)

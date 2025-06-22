@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QWidget, QStackedWidget, QVBoxLayout
+from PyQt6.QtWidgets import QWidget, QStackedWidget, QVBoxLayout, QApplication
 from qfluentwidgets import (qrouter, TabBar, TabCloseButtonDisplayMode)
 
 from Event.EvenConfirmationInterface import EventConfirmation_Main_Interface
@@ -7,15 +7,16 @@ from Event.EventBaptismInterFace import EventBaptism_Main_Interface
 from utils.custom_style import StyleSheet
 
 
+# 该文件是事件主界面，此处添加和管理三个子界面
+
 class EvenMainTabInterface(QWidget):
 
-    def __init__(self, cur_parish, cur_user, ObjectName):
+    def __init__(self, login_info, ObjectName):
         super().__init__()
+        self.login_info = login_info
 
         # 创建主布局
         self.setObjectName(ObjectName)
-        self.cur_parish = cur_parish
-        self.cur_user = cur_user
 
         self.tabCount = 1
         self.setObjectName(ObjectName)
@@ -33,13 +34,12 @@ class EvenMainTabInterface(QWidget):
         self.main_vBoxLayout = QVBoxLayout(self)
         self.vBoxLayout = QVBoxLayout(self.tabView)
 
-        self.baptism_interface = EventBaptism_Main_Interface(self.cur_parish, self.cur_user,
-                                                             "EventBaptism_Main_Interface_from_Main_Even", self)
-
+        self.baptism_interface = EventBaptism_Main_Interface(
+            self.login_info, "EventBaptism_Main_Interface_from_Main_Even", self)
         self.confirmation_interface = EventConfirmation_Main_Interface(
-            self.cur_parish, self.cur_user, "EventConfirmation_Main_Interface_from_Main_Even", self)
-        self.marriage_interface = EventMarriage_Main_Interface(self.cur_parish, self.cur_user,
-                                                               "EventMarriage_Main_Interface_from_Main_Even")
+            self.login_info, "EventConfirmation_Main_Interface_from_Main_Even", self)
+        self.marriage_interface = EventMarriage_Main_Interface(
+            self.login_info, "EventMarriage_Main_Interface_from_Main_Even", self)
 
         # add items to pivot
         self.__initWidget()
@@ -80,3 +80,21 @@ class EvenMainTabInterface(QWidget):
 
         self.tabBar.setCurrentTab(widget.objectName())
         qrouter.push(self.stackedWidget, widget.objectName())
+
+if __name__ == "__main__":
+    import sys
+
+    app = QApplication(sys.argv)
+    login_info = {
+        "parish_id": 1,
+        "parish_name": "崇义教区",
+        "user_id": 1,
+        "user_name": "admin",
+        "user_type": 0,
+        "user_authnum": 32767
+    }
+    main_window = EvenMainTabInterface(login_info, "testParishioner_Main_Interface")
+    main_window.show()
+    main_window.resize(1000, 800)
+
+    sys.exit(app.exec())
