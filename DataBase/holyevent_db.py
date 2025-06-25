@@ -101,7 +101,7 @@ class HolyEventDB(DataBaseManage):
                 SET opera_type = ?
                 where holyevent_id = ?;
         """
-        params = (holyevent_id, opera_type)
+        params = (opera_type, holyevent_id)
         return self.execute_query(query, params)
 
 if __name__ == '__main__':

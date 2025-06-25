@@ -133,7 +133,7 @@ class StudentDB(DataBaseManage):
                 SET opera_type = ?
                 where student_id = ?;
         """
-        params = (student_id, opera_type)
+        params = (opera_type, student_id)
         return self.execute_query(query, params)
 
 if __name__ == '__main__':
