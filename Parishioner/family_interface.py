@@ -3,7 +3,7 @@ import time
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPixmap
-from PyQt6.QtWidgets import QVBoxLayout, QWidget, QHeaderView
+from PyQt6.QtWidgets import QVBoxLayout, QWidget, QHeaderView, QApplication
 from qfluentwidgets import MessageBoxBase, SubtitleLabel, InfoBar
 
 from BaseWidgets.BaseModule import BaseMainInterface, BaseMessageBoxWidget, BaseQueryWidget
@@ -23,12 +23,17 @@ class Family_MessageBox(MessageBoxBase):
     def __init__(self, login_info, massage_type, parent=None):
         super().__init__(parent)
         self.family_info = None
+        self.readOnly_flag = False
+        self.set_reject_flag = False
         self.login_info = login_info
         self.massage_type = massage_type
         self.titleLabel = SubtitleLabel('人员', self)
         self.family_Info_Edit_widgets = BaseMessageBoxWidget(self)
+        self.parishioner_tableView_header = [
+            "姓名", "圣名", "性别", "手机", ""
+        ]
         self.header_info = [
-            'student_name', 'student_holyname', 'student_gender', 'student_phonenum', 'family_name'
+            'student_name', 'student_holyname', 'student_gender', 'student_phonenum'
         ]
 
         # add widget to view layout
@@ -37,11 +42,8 @@ class Family_MessageBox(MessageBoxBase):
 
         self.BaseQueryWidget = BaseQueryWidget(self)
 
-        parishioner_tableView_header = [
-            "姓名", "圣名", "性别", "手机", "家庭名称"
-        ]
-        self.BaseQueryWidget.tableWidget.setColumnCount(len(parishioner_tableView_header))
-        self.BaseQueryWidget.tableWidget.setHorizontalHeaderLabels(parishioner_tableView_header)
+        self.BaseQueryWidget.tableWidget.setColumnCount(len(self.parishioner_tableView_header))
+        self.BaseQueryWidget.tableWidget.setHorizontalHeaderLabels(self.parishioner_tableView_header)
         self.viewLayout.addWidget(self.BaseQueryWidget)
 
         # 设置UI
@@ -73,7 +75,14 @@ class Family_MessageBox(MessageBoxBase):
         self.BaseQueryWidget.addButton.hide()
         self.BaseQueryWidget.delButton.hide()
         self.BaseQueryWidget.ModButton.hide()
+        self.BaseQueryWidget.ReviewButton.hide()
         self.BaseQueryWidget.searchInput.hide()
+
+        if self.login_info["user_type"] == 0:
+            from qfluentwidgets import PushButton
+            self.rejectButton = PushButton("重新录入")
+            self.buttonLayout.addWidget(self.rejectButton, 1)
+            self.rejectButton.clicked.connect(self.setRejected)
 
         self.family_Info_Edit_widgets.pic.setMaximumSize(100, 100)
         pixmap = QPixmap("./resource/pic/4.png").scaled(
@@ -87,8 +96,13 @@ class Family_MessageBox(MessageBoxBase):
         self.family_Info_Edit_widgets.inputLine_1.setMinimumWidth(200)
         self.family_Info_Edit_widgets.inputLine_3.setMinimumWidth(200)
 
+
         with FamilyDB() as db:
             self.cur_family_cnt = db.get_family_cnt_with_parish_id(self.login_info["parish_id"]) + 1
+
+    def setRejected(self):
+        self.set_reject_flag = True
+        self.accept()
 
     def _validateInput(self):
         errors = []  # 初始化错误信息列表
@@ -134,6 +148,22 @@ class Family_MessageBox(MessageBoxBase):
         self.family_Info_Edit_widgets.inputLine_1.setText(family_messageinfo["family_name"])
         self.family_Info_Edit_widgets.inputLine_3.setText(family_messageinfo["family_address"])
         self.family_Info_Edit_widgets.inputLine_13.setText(family_messageinfo["family_notes"])
+        if login_info["user_type"] == 1 and family_messageinfo["opera_type"] != 0:
+            self.family_Info_Edit_widgets.inputLine_1.setReadOnly(True)
+            self.family_Info_Edit_widgets.inputLine_3.setReadOnly(True)
+            self.family_Info_Edit_widgets.inputLine_13.setReadOnly(True)
+            self.readOnly_flag = True
+            exec_log = "非录入状态下仅支持查看"
+            InfoBar.warning(title="警告", content=exec_log, parent=self,
+                            duration=3000)  # 使用 InfoBar 显示错误提示，设置标题、内容、父窗口和持续时间
+        elif login_info["user_type"] == 2:
+            self.family_Info_Edit_widgets.inputLine_1.setReadOnly(True)
+            self.family_Info_Edit_widgets.inputLine_3.setReadOnly(True)
+            self.family_Info_Edit_widgets.inputLine_13.setReadOnly(True)
+            self.readOnly_flag = True
+            exec_log = "游客仅支持查看"
+            InfoBar.warning(title="警告", content=exec_log, parent=self,
+                            duration=3000)  # 使用 InfoBar 显示错误提示，设置标题、内容、父窗口和持续时间
         return
 
     def set_family_name_when_add(self):
@@ -169,20 +199,22 @@ class Family_Main_Interface(QWidget):
         self.BaseMainInterface.BaseQuery.ModButton.clicked.connect(self.modify_family)
         self.BaseMainInterface.BaseQuery.searchInput.searchSignal.connect(self.query_family_info_with_like)
         self.BaseMainInterface.BaseQuery.searchInput.returnPressed.connect(self.query_family_info_with_like)
+        self.BaseMainInterface.BaseQuery.ReviewButton.clicked.connect(self.review_data)
 
-        if self.login_info["user_type"] == 1:
+        if self.login_info["user_type"] == 0:
             self.family_viewTable_header_info = [
-                "家庭名称", "地址", "备注", "操作人员", "操作时间"
+                "家庭名称", "地址", "备注", "操作人员", "操作时间", "状态", "归档"
             ]
             self.header_info = [
-                'family_name', 'family_address', 'family_notes', 'operator', 'opera_time'
+                'family_name', 'family_address', 'family_notes', 'operator', 'opera_time', 'opera_type'
             ]
         else:
+            self.BaseMainInterface.BaseQuery.ReviewButton.setText("提交审阅")
             self.family_viewTable_header_info = [
-                "家庭名称", "地址", "备注"
+                "家庭名称", "地址", "备注", "状态", "提交审阅"
             ]
             self.header_info = [
-                'family_name', 'family_address', 'family_notes'
+                'family_name', 'family_address', 'family_notes', 'opera_type'
             ]
 
         self.BaseMainInterface.BaseQuery.tableWidget.setColumnCount(len(self.family_viewTable_header_info))
@@ -213,6 +245,22 @@ class Family_Main_Interface(QWidget):
 
         self.BaseMainInterface.BaseQuery.set_viewWidget_data(self.header_info, self.family_info_all)
 
+    def review_data(self):
+        if login_info["user_type"] == 0:
+            opera_type = 2
+        else:
+            opera_type = 1
+        update_flag = False
+        with FamilyDB() as db:
+            for idx in range(self.BaseMainInterface.BaseQuery.tableWidget.rowCount()):
+                if self.BaseMainInterface.BaseQuery.tableWidget.cellWidget(idx, len(self.header_info)).isChecked():
+                    family_info = self.family_info_all[idx]
+                    db.set_data_opera_type(family_info["family_id"], opera_type)
+                    update_flag = True
+        if update_flag:
+            self.Load_family(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
+
+
     @check_auth_permission(required_permission={"module_data": "family", "permission_data": "add"})
     def add_family(self):
         w = Family_MessageBox(self.login_info, 0, self)
@@ -237,6 +285,11 @@ class Family_Main_Interface(QWidget):
     def delete_family(self):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
+            if login_info["user_type"] != 0 and self.family_info_all[idx]["opera_type"] > 0:
+                exec_log = "审阅或归档模式下禁止删除数据"
+                InfoBar.error(title="错误", content=exec_log, parent=self,
+                                duration=3000)  # 使用 InfoBar 显示错误提示，设置标题、内容、父窗口和持续时间
+                return False
             w = Family_MessageBox(self.login_info, 1, self)
             del_family_id = self.family_info_all[idx]["family_id"]
             w.titleLabel.setText("删除家庭")
@@ -258,14 +311,19 @@ class Family_Main_Interface(QWidget):
         if idx != -1:
             w = Family_MessageBox(self.login_info, 2, self)
             del_family_id = self.family_info_all[idx]["family_id"]
-            w.titleLabel.setText("修改家庭")
+            w.titleLabel.setText("查看/修改家庭")
             with StudentDB() as db:
                 parishioner_info_all = db.fetch_students_with_school_id_and_family_id(del_family_id)
                 if parishioner_info_all is not None:
                     w.BaseQueryWidget.set_viewWidget_data(w.header_info, parishioner_info_all)
             w.set_InputfFamilyMessageinfo(self.family_info_all[idx])
             if w.exec():
+                if w.readOnly_flag is True:
+                    return False
                 with FamilyDB() as db:
+                    if w.set_reject_flag is True and login_info["user_type"] == 0:
+                        db.set_data_opera_type(self.family_info_all[idx]["family_id"], 0)
+                        return True
                     family = w.get_InputFamilyMessageinfo()
                     family["family_id"] = self.family_info_all[idx]["family_id"]
                     family["family_school_id"] = self.cur_parish_id
@@ -275,3 +333,22 @@ class Family_Main_Interface(QWidget):
                 self.Load_family(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
                 return True
             return False
+
+if __name__ == "__main__":
+    import sys
+
+    app = QApplication(sys.argv)
+    login_info = {
+        "parish_id": 1,
+        "parish_name": "崇义教区",
+        "user_id": 1,
+        "user_name": "admin",
+        "user_type": 0,
+        "user_authnum": 32767
+    }
+    main_window = Family_Main_Interface(login_info, 'testParishioner_Main_Interface')
+    main_window.resize(1000, 800)
+    main_window.show()
+
+
+    sys.exit(app.exec())

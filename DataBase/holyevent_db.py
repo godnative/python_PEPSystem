@@ -95,6 +95,15 @@ class HolyEventDB(DataBaseManage):
                   event_info["operator"], event_info["opera_time"], event_info["holyevent_id"])
         return self.execute_query(query, params)
 
+    def set_data_opera_type(self, holyevent_id, opera_type):
+        query = """
+                UPDATE holyevent
+                SET opera_type = ?
+                where holyevent_id = ?;
+        """
+        params = (holyevent_id, opera_type)
+        return self.execute_query(query, params)
+
 if __name__ == '__main__':
     with HolyEventDB() as db:
         exd = {'holyevent_p1_id': 1,

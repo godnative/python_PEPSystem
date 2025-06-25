@@ -127,6 +127,14 @@ class StudentDB(DataBaseManage):
         params = (school_id,)
         return self.fetch_query(query, params=params)
 
+    def set_data_opera_type(self, student_id, opera_type):
+        query = """
+                UPDATE student
+                SET opera_type = ?
+                where student_id = ?;
+        """
+        params = (student_id, opera_type)
+        return self.execute_query(query, params)
 
 if __name__ == '__main__':
     with StudentDB() as db:

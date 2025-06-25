@@ -294,8 +294,17 @@ if __name__ == "__main__":
     import sys
 
     app = QApplication(sys.argv)
-
-    main_window = Parishioner_Main_Interface()
+    login_info = {
+        "parish_id": 1,
+        "parish_name": "崇义教区",
+        "user_id": 1,
+        "user_name": "admin",
+        "user_type": 0,
+        "user_authnum": 32767
+    }
+    main_window = Parishioner_Main_Interface(login_info, 'testParishioner_Main_Interface')
+    main_window.resize(1000, 800)
     main_window.show()
+
 
     sys.exit(app.exec())

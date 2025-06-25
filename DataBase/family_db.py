@@ -93,6 +93,15 @@ class FamilyDB(DataBaseManage):
         params = (family_id,)
         return self.execute_query(query, params)
 
+    def set_data_opera_type(self, family_id, opera_type):
+        query = """
+                UPDATE family
+                SET opera_type = ?
+                where family_id = ?;
+        """
+        params = (opera_type, family_id)
+        return self.execute_query(query, params)
+
 
 if __name__ == '__main__':
     with FamilyDB() as db:

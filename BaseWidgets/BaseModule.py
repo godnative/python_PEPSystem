@@ -1,11 +1,12 @@
 from PyQt6 import QtWidgets
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout, \
-    QAbstractItemView, QHeaderView, QTableWidgetItem, QApplication, QGridLayout
+    QAbstractItemView, QHeaderView, QTableWidgetItem, QApplication, QGridLayout, QCheckBox
 from qfluentwidgets import PushButton, SearchLineEdit, TableWidget, LineEdit, CalendarPicker, ComboBox, CheckBox
 
 from utils.utils_tool import get_now_date, timestamp_to_date, timestamp_to_times
 
 user_type = ["管理员", "录入员", "游客"]
+opera_type = ["录入", "待审阅", "归档"]
 class BaseMessageBoxWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -114,8 +115,8 @@ class BaseQueryWidget(QWidget):
 
         self.ModButton = PushButton("修改")
 
-        self.printButton = PushButton("打印")
-        self.printButton.hide()
+        self.ReviewButton = PushButton("归档")
+        #self.ReviewButton.hide()
 
         self.extendButton_1 = PushButton("Mod")
         self.extendButton_1.hide()
@@ -125,7 +126,7 @@ class BaseQueryWidget(QWidget):
         layout.addWidget(self.delButton)
         layout.addWidget(self.ModButton)
         layout.addWidget(self.extendButton_1)
-        layout.addWidget(self.printButton)
+        layout.addWidget(self.ReviewButton)
 
         self.tableWidget = TableWidget(self)
         self.tableWidget.setBorderVisible(True)
@@ -141,9 +142,13 @@ class BaseQueryWidget(QWidget):
     def set_viewWidget_data(self, header_info, datas):
         self.tableWidget.clearContents()
         self.tableWidget.setRowCount(len(datas))
+        if self.tableWidget.horizontalHeaderItem(len(header_info)).text() == "归档":
+            user_type_table = 0
+        else:
+            user_type_table = 1
         for row, data in enumerate(datas):
-            # checkBox = QCheckBox()
-            # self.tableWidget.setCellWidget(row, 0, checkBox)
+            review_filed_checkBox = QCheckBox()
+            self.tableWidget.setCellWidget(row, len(header_info), review_filed_checkBox)
             for column, key in enumerate(header_info):
                 if key == "student_gender":
                     value = "男" if data.get(key, "") == 0 else "女"
@@ -151,6 +156,13 @@ class BaseQueryWidget(QWidget):
                     value = timestamp_to_date(data.get(key, "")).toString("yyyy-MM-dd")
                 elif key == "opera_time":
                     value = timestamp_to_times(data.get(key, ""))
+                elif key == "opera_type":
+                    value = data.get(key, "")
+                    if user_type_table == 0 and value != 1:
+                        review_filed_checkBox.setDisabled(True)
+                    elif user_type_table == 1 and value != 0:
+                        review_filed_checkBox.setDisabled(True)
+                    value = opera_type[data.get(key, "")]
                 else:
                     value = data.get(key, "")
                 item = QTableWidgetItem(str(value))
