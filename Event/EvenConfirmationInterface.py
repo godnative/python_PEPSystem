@@ -25,6 +25,8 @@ class EventConfirmation_MessageBox(MessageBoxBase):
         super().__init__(parent)
         self.login_info = login_info
         self.family_info = None
+        self.readOnly_flag = False
+        self.set_reject_flag = False
         self.setMinimumWidth(800)
         self.parishioner_widgets = Parishioner_Main_Interface(
             self.login_info, "Parishioner_Main_Interface_from_EventConfirmation_MessageBox")
@@ -81,7 +83,17 @@ class EventConfirmation_MessageBox(MessageBoxBase):
         )
         self.BaseMessageBoxWidget.pic.setPixmap(pixmap)
 
+        if self.login_info["user_type"] == 0:
+            from qfluentwidgets import PushButton
+            self.rejectButton = PushButton("重新录入")
+            self.buttonLayout.addWidget(self.rejectButton, 1)
+            self.rejectButton.clicked.connect(self.setRejected)
+
         self.widget.setMinimumWidth(350)
+
+    def setRejected(self):
+        self.set_reject_flag = True
+        self.accept()
 
     def _validateInput(self):
         errors = []  # 初始化错误信息列表
@@ -129,6 +141,31 @@ class EventConfirmation_MessageBox(MessageBoxBase):
         self.BaseMessageBoxWidget.inputLine_9.setCurrentIndex(evenBaptism_messageinfo["holyevent_p1_gender"])
         self.BaseMessageBoxWidget.inputLine_10.setDate(timestamp_to_date(evenBaptism_messageinfo["holyevent_date"]))
         self.BaseMessageBoxWidget.inputLine_13.setText(evenBaptism_messageinfo["holyevent_note"])
+
+        if login_info["user_type"] == 1 and evenBaptism_messageinfo["opera_type"] != 0:
+            self.BaseMessageBoxWidget.inputLine_1.setReadOnly(True)
+            self.BaseMessageBoxWidget.inputLine_2.setReadOnly(True)
+            self.BaseMessageBoxWidget.inputLine_3.setReadOnly(True)
+            self.BaseMessageBoxWidget.inputLine_4.setReadOnly(True)
+            self.BaseMessageBoxWidget.inputLine_9.setDisabled(True)
+            self.BaseMessageBoxWidget.inputLine_10.setDisabled(True)
+            self.BaseMessageBoxWidget.inputLine_13.setReadOnly(True)
+            self.readOnly_flag = True
+            exec_log = "非录入状态下仅支持查看"
+            InfoBar.warning(title="警告", content=exec_log, parent=self,
+                            duration=3000)  # 使用 InfoBar 显示错误提示，设置标题、内容、父窗口和持续时间
+        elif login_info["user_type"] == 2:
+            self.BaseMessageBoxWidget.inputLine_1.setReadOnly(True)
+            self.BaseMessageBoxWidget.inputLine_2.setReadOnly(True)
+            self.BaseMessageBoxWidget.inputLine_3.setReadOnly(True)
+            self.BaseMessageBoxWidget.inputLine_4.setReadOnly(True)
+            self.BaseMessageBoxWidget.inputLine_9.setDisabled(True)
+            self.BaseMessageBoxWidget.inputLine_10.setDisabled(True)
+            self.BaseMessageBoxWidget.inputLine_13.setReadOnly(True)
+            self.readOnly_flag = True
+            exec_log = "游客仅支持查看"
+            InfoBar.warning(title="警告", content=exec_log, parent=self,
+                            duration=3000)  # 使用 InfoBar 显示错误提示，设置标题、内容、父窗口和持续时间
         return
 
     def set_lineedit_uneditable(self):  # 定义一个方法，用于设置输入框不可编辑
@@ -180,23 +217,25 @@ class EventConfirmation_Main_Interface(QWidget):
         self.BaseMainInterface.BaseQuery.ModButton.clicked.connect(self.modify_even)
         self.BaseMainInterface.BaseQuery.searchInput.searchSignal.connect(self.query_evenBaptism_info_with_like)
         self.BaseMainInterface.BaseQuery.searchInput.returnPressed.connect(self.query_evenBaptism_info_with_like)
+        self.BaseMainInterface.BaseQuery.ReviewButton.clicked.connect(self.review_data)
 
-        if self.login_info["user_type"] != 1:
+        if self.login_info["user_type"] == 0:
             self.evenBaptism_tableView_header = [
-                "姓名", "圣名", "施行人", "见证人", "堂区", "日期", "备注"
-            ]
-            self.header_info = [
-                'holyevent_p1_name', 'holyevent_p1_holyname', 'holyevent_implementer',
-                'holyevent_witness', 'holyevent_school_id', 'holyevent_date', 'holyevent_note'
-            ]
-        else:
-            self.evenBaptism_tableView_header = [
-                "姓名", "圣名", "施行人", "见证人", "堂区", "日期", "备注", "操作人员", "操作时间"
+                "姓名", "圣名", "施行人", "见证人", "堂区", "日期", "备注", "操作人员", "操作时间", "状态", "归档"
             ]
             self.header_info = [
                 'holyevent_p1_name', 'holyevent_p1_holyname', 'holyevent_implementer',
                 'holyevent_witness', 'holyevent_school_id', 'holyevent_date', 'holyevent_note',
-                'operator', 'opera_time'
+                'operator', 'opera_time', 'opera_type'
+            ]
+        else:
+            self.BaseMainInterface.BaseQuery.ReviewButton.setText("提交审阅")
+            self.evenBaptism_tableView_header = [
+                "姓名", "圣名", "施行人", "见证人", "堂区", "日期", "备注", "状态", "提交审阅"
+            ]
+            self.header_info = [
+                'holyevent_p1_name', 'holyevent_p1_holyname', 'holyevent_implementer',
+                'holyevent_witness', 'holyevent_school_id', 'holyevent_date', 'holyevent_note', 'opera_type'
             ]
 
         self.BaseMainInterface.BaseQuery.tableWidget.setColumnCount(len(self.evenBaptism_tableView_header))
@@ -224,6 +263,21 @@ class EventConfirmation_Main_Interface(QWidget):
 
         self.BaseMainInterface.BaseQuery.set_viewWidget_data(self.header_info, self.Event_all_info)
 
+    def review_data(self):
+        if login_info["user_type"] == 0:
+            opera_type = 2
+        else:
+            opera_type = 1
+        update_flag = False
+        with HolyEventDB() as db:
+            for idx in range(self.BaseMainInterface.BaseQuery.tableWidget.rowCount()):
+                if self.BaseMainInterface.BaseQuery.tableWidget.cellWidget(idx, len(self.header_info)).isChecked():
+                    data_info = self.Event_all_info[idx]
+                    db.set_data_opera_type(data_info["holyevent_id"], opera_type)
+                    update_flag = True
+        if update_flag:
+            self.Load_even(QUERY_TYPE.QUERY_ALL, self.evenType, self.cur_parish_id)
+
     @check_auth_permission(required_permission={"module_data": "event", "permission_data": "add"})
     def add_even(self):
         w = EventConfirmation_MessageBox(self.login_info, self)
@@ -248,6 +302,11 @@ class EventConfirmation_Main_Interface(QWidget):
     def delete_even(self):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
+            if login_info["user_type"] != 0 and self.Event_all_info[idx]["opera_type"] > 0:
+                exec_log = "审阅或归档模式下禁止删除数据"
+                InfoBar.error(title="错误", content=exec_log, parent=self,
+                              duration=3000)  # 使用 InfoBar 显示错误提示，设置标题、内容、父窗口和持续时间
+                return False
             w = EventConfirmation_MessageBox(self.login_info, self)
             w.parishioner_widgets.hide()
             w.titleLabel.setText("删除事件")
@@ -269,7 +328,12 @@ class EventConfirmation_Main_Interface(QWidget):
             w.titleLabel.setText("修改事件信息")
             w.set_InputEventMessageinfo(self.Event_all_info[idx])
             if w.exec():
+                if w.readOnly_flag is True:
+                    return False
                 with HolyEventDB() as db:
+                    if w.set_reject_flag is True and login_info["user_type"] == 0:
+                        db.set_data_opera_type(self.Event_all_info[idx]["holyevent_id"], 0)
+                        return True
                     Even_info = w.get_InputEvenBaptismMessageinfo()
                     Even_info["holyevent_school_id"] = self.cur_parish_id
                     Even_info["holyevent_id"] = self.Event_all_info[idx]["holyevent_id"]
@@ -289,7 +353,7 @@ if __name__ == "__main__":
         "parish_name": "崇义教区",
         "user_id": 1,
         "user_name": "admin",
-        "user_type": 0,
+        "user_type": 1,
         "user_authnum": 32767
     }
     main_window = EventConfirmation_Main_Interface(login_info, "testParishioner_Main_Interface")
