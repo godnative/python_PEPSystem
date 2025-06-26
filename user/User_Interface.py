@@ -196,7 +196,7 @@ class User_Show_Interface(QWidget):
         self.BaseUserInterface.line_note.setReadOnly(True)
 
         self.user_log_tableView_header = [
-            "用户名称", "用户类型", "用户操作"
+            "用户名称", "用户类型", "用户操作", ""
         ]
         self.BaseUserInterface.BaseQuery.tableWidget.setColumnCount(len(self.user_log_tableView_header))
         self.BaseUserInterface.BaseQuery.tableWidget.setHorizontalHeaderLabels(self.user_log_tableView_header)
@@ -253,7 +253,7 @@ class User_Modify_Interface(QWidget):
         self.BaseMainInterface.BaseQuery.searchInput.returnPressed.connect(self.query_user_info_with_like)
 
         self.user_tableView_header = [
-            "用户名称", "用户类型", "简介"
+            "用户名称", "用户类型", "简介"," "
         ]
         self.BaseMainInterface.BaseQuery.tableWidget.setColumnCount(len(self.user_tableView_header))
         self.BaseMainInterface.BaseQuery.tableWidget.setHorizontalHeaderLabels(self.user_tableView_header)

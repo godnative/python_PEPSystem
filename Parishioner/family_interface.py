@@ -148,7 +148,7 @@ class Family_MessageBox(MessageBoxBase):
         self.family_Info_Edit_widgets.inputLine_1.setText(family_messageinfo["family_name"])
         self.family_Info_Edit_widgets.inputLine_3.setText(family_messageinfo["family_address"])
         self.family_Info_Edit_widgets.inputLine_13.setText(family_messageinfo["family_notes"])
-        if login_info["user_type"] == 1 and family_messageinfo["opera_type"] != 0:
+        if self.login_info["user_type"] == 1 and family_messageinfo["opera_type"] != 0:
             self.family_Info_Edit_widgets.inputLine_1.setReadOnly(True)
             self.family_Info_Edit_widgets.inputLine_3.setReadOnly(True)
             self.family_Info_Edit_widgets.inputLine_13.setReadOnly(True)
@@ -156,7 +156,7 @@ class Family_MessageBox(MessageBoxBase):
             exec_log = "非录入状态下仅支持查看"
             InfoBar.warning(title="警告", content=exec_log, parent=self,
                             duration=3000)  # 使用 InfoBar 显示错误提示，设置标题、内容、父窗口和持续时间
-        elif login_info["user_type"] == 2:
+        elif self.login_info["user_type"] == 2:
             self.family_Info_Edit_widgets.inputLine_1.setReadOnly(True)
             self.family_Info_Edit_widgets.inputLine_3.setReadOnly(True)
             self.family_Info_Edit_widgets.inputLine_13.setReadOnly(True)
@@ -246,7 +246,7 @@ class Family_Main_Interface(QWidget):
         self.BaseMainInterface.BaseQuery.set_viewWidget_data(self.header_info, self.family_info_all)
 
     def review_data(self):
-        if login_info["user_type"] == 0:
+        if self.login_info["user_type"] == 0:
             opera_type = 2
         else:
             opera_type = 1
@@ -285,7 +285,7 @@ class Family_Main_Interface(QWidget):
     def delete_family(self):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
-            if login_info["user_type"] != 0 and self.family_info_all[idx]["opera_type"] > 0:
+            if self.login_info["user_type"] != 0 and self.family_info_all[idx]["opera_type"] > 0:
                 exec_log = "审阅或归档模式下禁止删除数据"
                 InfoBar.error(title="错误", content=exec_log, parent=self,
                                 duration=3000)  # 使用 InfoBar 显示错误提示，设置标题、内容、父窗口和持续时间
@@ -321,7 +321,7 @@ class Family_Main_Interface(QWidget):
                 if w.readOnly_flag is True:
                     return False
                 with FamilyDB() as db:
-                    if w.set_reject_flag is True and login_info["user_type"] == 0:
+                    if w.set_reject_flag is True and self.login_info["user_type"] == 0:
                         db.set_data_opera_type(self.family_info_all[idx]["family_id"], 0)
                         return True
                     family = w.get_InputFamilyMessageinfo()
@@ -338,15 +338,15 @@ if __name__ == "__main__":
     import sys
 
     app = QApplication(sys.argv)
-    login_info = {
+    login_info_1 = {
         "parish_id": 1,
         "parish_name": "崇义教区",
         "user_id": 1,
         "user_name": "admin",
-        "user_type": 0,
+        "user_type": 1,
         "user_authnum": 32767
     }
-    main_window = Family_Main_Interface(login_info, 'testParishioner_Main_Interface')
+    main_window = Family_Main_Interface(login_info_1, 'testParishioner_Main_Interface')
     main_window.resize(1000, 800)
     main_window.show()
 

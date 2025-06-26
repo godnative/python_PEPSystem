@@ -90,7 +90,7 @@ if __name__ == "__main__":
         "parish_name": "崇义教区",
         "user_id": 1,
         "user_name": "admin",
-        "user_type": 0,
+        "user_type": 1,
         "user_authnum": 32767
     }
     main_window = EvenMainTabInterface(login_info, "testParishioner_Main_Interface")
