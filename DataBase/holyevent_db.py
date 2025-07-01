@@ -25,7 +25,7 @@ class HolyEventDB(DataBaseManage):
             FROM holyevent h           -- 从 student 表中查询数据，给表取别名为 s
             JOIN student s1 ON h.holyevent_p1_id = s1.student_id
             JOIN student s2 ON h.holyevent_p2_id = s2.student_id
-            where h.holyevent_type = ? and h.holyevent_school_id =?;
+            where h.holyevent_type = %s and h.holyevent_school_id =%s;
         """
         params = (event_type, school_id)
         # 使用父类的 fetch_query 方法执行查询，并返回查询结果
@@ -37,7 +37,7 @@ class HolyEventDB(DataBaseManage):
         holyevent_implementer, holyevent_p1_id, holyevent_p2_id, 
         holyevent_note, holyevent_school_id,
         operator, opera_time, opera_type)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
         params = (event_info["holyevent_type"], event_info["holyevent_date"], event_info["holyevent_witness"],
                   event_info["holyevent_implementer"], event_info["holyevent_p1_id"], event_info["holyevent_p2_id"],
@@ -60,8 +60,8 @@ class HolyEventDB(DataBaseManage):
                 FROM holyevent h           -- 从 student 表中查询数据，给表取别名为 s
                 JOIN student s1 ON h.holyevent_p1_id = s1.student_id
                 JOIN student s2 ON h.holyevent_p2_id = s2.student_id
-                where h.holyevent_type = ? and h.holyevent_school_id =?
-                and (holyevent_witness LIKE ? or holyevent_implementer LIKE ?)
+                where h.holyevent_type = %s and h.holyevent_school_id =%s
+                and (holyevent_witness LIKE %s or holyevent_implementer LIKE %s)
                 """
         params = (even_type, school_id, f"%{like_str}%", f"%{like_str}%")
         return self.fetch_query(query, params=params)
@@ -70,7 +70,7 @@ class HolyEventDB(DataBaseManage):
         query = """
                 DELETE
                 FROM holyevent
-                WHERE holyevent_id = ?;
+                WHERE holyevent_id = %s;
         """
         params = (event_id,)
         return self.execute_query(query, params)
@@ -78,16 +78,16 @@ class HolyEventDB(DataBaseManage):
     def update_even(self, event_info):
         query = """
         UPDATE holyevent
-        set holyevent_date = ?, 
-            holyevent_witness = ?, 
-            holyevent_implementer = ?, 
-            holyevent_p1_id  = ?, 
-            holyevent_p2_id = ?, 
-            holyevent_note = ?, 
-            holyevent_school_id = ?,
-            operator = ?,
-            opera_time = ?
-        WHERE holyevent_id = ?;
+        set holyevent_date = %s, 
+            holyevent_witness = %s, 
+            holyevent_implementer = %s, 
+            holyevent_p1_id  = %s, 
+            holyevent_p2_id = %s, 
+            holyevent_note = %s, 
+            holyevent_school_id = %s,
+            operator = %s,
+            opera_time = %s
+        WHERE holyevent_id = %s;
         """
         params = (event_info["holyevent_date"], event_info["holyevent_witness"],
                   event_info["holyevent_implementer"], event_info["holyevent_p1_id"], event_info["holyevent_p2_id"],
@@ -98,8 +98,8 @@ class HolyEventDB(DataBaseManage):
     def set_data_opera_type(self, holyevent_id, opera_type):
         query = """
                 UPDATE holyevent
-                SET opera_type = ?
-                where holyevent_id = ?;
+                SET opera_type = %s
+                where holyevent_id = %s;
         """
         params = (opera_type, holyevent_id)
         return self.execute_query(query, params)

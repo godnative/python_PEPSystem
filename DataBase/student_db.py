@@ -26,7 +26,7 @@ class StudentDB(DataBaseManage):
             INSERT INTO student (student_name, student_gender, student_phonenum, student_holyname, 
                                     student_family_id, student_school_id, student_identity_num,
                                     student_birthday, student_note, operator, opera_time, opera_type)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
         params = (student["student_name"], student["student_gender"], student["student_phonenum"],
                   student["student_holyname"], student["student_family_id"], student["student_school_id"],
@@ -44,7 +44,7 @@ class StudentDB(DataBaseManage):
                 
                 JOIN family c
                 ON s.student_family_id = c.family_id
-                where s.student_school_id = ?
+                where s.student_school_id = %s
                """
         params = (school_id,)
         # 调用父类的 fetch_query 方法执行查询，并返回查询结果
@@ -59,7 +59,7 @@ class StudentDB(DataBaseManage):
                 FROM student s           -- 从 student 表中查询数据，给表取别名为 s
                 JOIN family c
                 ON s.student_family_id = c.family_id
-                where s.student_family_id = ? -- 通过 student 表的 class_id 字段与 classes 表的 class_id 字段进行匹配
+                where s.student_family_id = %s -- 通过 student 表的 class_id 字段与 classes 表的 class_id 字段进行匹配
                """
         params = (family_id,)
         # 调用父类的 fetch_query 方法执行查询，并返回查询结果
@@ -72,7 +72,7 @@ class StudentDB(DataBaseManage):
                 FROM student s
                 JOIN family c
                 ON s.student_family_id = c.family_id
-                WHERE student_school_id = ? and ( student_name LIKE ? or student_phonenum LIKE ? )
+                WHERE student_school_id = %s and ( student_name LIKE %s or student_phonenum LIKE %s )
                 """
         params = (school_id, f"%{like_str}%", f"%{like_str}%")
         return self.fetch_query(query, params=params)
@@ -80,18 +80,18 @@ class StudentDB(DataBaseManage):
     def update_student(self, student):
         query = """
                 UPDATE student
-                SET student_gender    = ?,
-                    student_phonenum  = ?,
-                    student_holyname  = ?,
-                    student_family_id = ?,
-                    student_school_id = ?,
-                    student_name      = ?,
-                    student_identity_num =?,
-                    student_birthday  =?,
-                    student_note      =?,
-                    operator  =?,
-                    opera_time=?
-                WHERE student_id = ?;
+                SET student_gender    = %s,
+                    student_phonenum  = %s,
+                    student_holyname  = %s,
+                    student_family_id = %s,
+                    student_school_id = %s,
+                    student_name      = %s,
+                    student_identity_num =%s,
+                    student_birthday  =%s,
+                    student_note      =%s,
+                    operator  =%s,
+                    opera_time=%s
+                WHERE student_id = %s;
         """
         params = (student["student_gender"], student["student_phonenum"], student["student_holyname"],
                   student["student_family_id"], student["student_school_id"], student["student_name"],
@@ -103,7 +103,7 @@ class StudentDB(DataBaseManage):
         query = """
                 DELETE
                 FROM student
-                WHERE student_id = ?;
+                WHERE student_id = %s;
         """
         params = (student_id,)
         return self.execute_query(query, params)
@@ -111,8 +111,8 @@ class StudentDB(DataBaseManage):
     def update_student_holyname(self, student_id, student_holyname):
         query = """
                 UPDATE student
-                SET student_holyname  = ?
-                WHERE student_id = ?;
+                SET student_holyname  = %s
+                WHERE student_id = %s;
         """
         params = (student_holyname, student_id)
         return self.execute_query(query, params)
@@ -122,7 +122,7 @@ class StudentDB(DataBaseManage):
             SELECT *
             FROM student
             -- 将 student_birthday 时间戳转换为日期格式，然后提取月份
-            WHERE strftime('%m', datetime(student_birthday, 'unixepoch')) = strftime('%m', 'now') and student_school_id = ?;
+            WHERE strftime('%m', datetime(student_birthday, 'unixepoch')) = strftime('%m', 'now') and student_school_id = %s;
         """
         params = (school_id,)
         return self.fetch_query(query, params=params)
@@ -130,8 +130,8 @@ class StudentDB(DataBaseManage):
     def set_data_opera_type(self, student_id, opera_type):
         query = """
                 UPDATE student
-                SET opera_type = ?
-                where student_id = ?;
+                SET opera_type = %s
+                where student_id = %s;
         """
         params = (opera_type, student_id)
         return self.execute_query(query, params)

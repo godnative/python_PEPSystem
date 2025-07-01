@@ -3,7 +3,7 @@ import os
 from PyQt6 import QtWidgets
 from PyQt6.QtCore import QSize, QDate, Qt
 from PyQt6.QtGui import QFont, QPixmap
-from PyQt6.QtWidgets import QVBoxLayout, QHBoxLayout, QLabel, QSizePolicy
+from PyQt6.QtWidgets import QVBoxLayout, QHBoxLayout, QLabel, QSizePolicy, QDateEdit
 from qfluentwidgets import CalendarPicker, LineEdit
 
 from utils.utils_tool import ImageLabel, qdate_to_timestamp, timestamp_to_date
@@ -47,7 +47,7 @@ class BaseSchoolInterface_Temp:
         self.label_3.setText("建立日期")
         self.verticalLayout.addWidget(self.label_3)
 
-        self.calendarPicker = CalendarPicker()
+        self.calendarPicker = QDateEdit()
         self.calendarPicker.setMinimumSize(QSize(0, 40))
         # self.lineEdit_3.setMinimumSize(QSize(0, 40))
         self.verticalLayout.addWidget(self.calendarPicker)
@@ -79,11 +79,12 @@ class BaseSchoolInterface_Temp:
 
     def get_InputParishDialoginfo(self):
         # 获取输入框中的数据并返回
+        print(self.calendarPicker.date)
         parish_info = {
             'parish_name': self.lineEdit_2.text(),
             'parish_address': self.lineEdit_4.text(),
             'parish_info': self.lineEdit_5.text(),
-            'parish_date': qdate_to_timestamp(self.calendarPicker.date),
+            'parish_date': self.calendarPicker.date().toString("yyyy-MM-dd"),
             'parish_pic_path': self.label.image_path
         }
         return parish_info
@@ -93,9 +94,8 @@ class BaseSchoolInterface_Temp:
         self.lineEdit_2.setText(parish_info['parish_name'])
         self.lineEdit_4.setText(parish_info['parish_address'])
         self.lineEdit_5.setText(parish_info['parish_info'])
-        qDate = timestamp_to_date(parish_info["parish_date"])
         # 设置文本框的文本为格式化后的日期时间
-        self.calendarPicker.setDate(qDate)
+        self.calendarPicker.setDate(parish_info["parish_date"])
         if parish_info["parish_pic_path"] is not None:
             if os.path.exists(parish_info["parish_pic_path"]):
                 pixmap = QPixmap(parish_info["parish_pic_path"]).scaled(

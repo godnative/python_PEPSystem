@@ -12,7 +12,7 @@ class UserDB(DataBaseManage):
         """
         # 定义查询语句，从 user 表中查找用户名和密码匹配的记录
         query = """
-                SELECT * FROM user WHERE user_name = ? AND user_password = ?
+                SELECT * FROM user WHERE user_name = %s AND user_password = %s
                """
         # 准备查询参数
         params = (username, password)
@@ -38,7 +38,7 @@ class UserDB(DataBaseManage):
         """
         # 定义查询语句，从 user 表中获取所有记录
         query = """
-                SELECT * FROM user WHERE user_id = ?;
+                SELECT * FROM user WHERE user_id = %s;
                 """
         params = (user_id, )
         # 调用父类的 fetch_query 方法执行查询，并返回查询结果
@@ -52,7 +52,7 @@ class UserDB(DataBaseManage):
         """
         # 定义查询语句，从 user 表中获取匹配的用户信息
         query = """
-                SELECT * FROM user WHERE user_name LIKE ? OR user_note LIKE ?
+                SELECT * FROM user WHERE user_name LIKE %s OR user_note LIKE %s
                 """
         # 准备查询参数，使用 % 通配符将模糊匹配字符串前后包裹起来
         params = (f"%{like_str}%", f"%{like_str}%")
@@ -69,7 +69,7 @@ class UserDB(DataBaseManage):
         query = """
                 INSERT INTO user (
                 user_name, user_password, user_type, user_authnum, user_note)
-                VALUES (?, ?, ?, ?, ?)
+                VALUES (%s, %s, %s, %s, %s)
                 """
         # 从 user_info 字典中提取各字段的值作为查询参数
         params = (user_info["user_name"],
@@ -89,7 +89,7 @@ class UserDB(DataBaseManage):
         """
         # 定义查询语句，从 user 表中查找指定用户 ID 的权限编号
         query = """
-                SELECT user_authnum FROM user WHERE user_id =?
+                SELECT user_authnum FROM user WHERE user_id = %s
                 """
         # 准备查询参数
         params = (user_id,)
@@ -106,7 +106,7 @@ class UserDB(DataBaseManage):
         query = """
                 DELETE
                 FROM user
-                WHERE user_id =?;
+                WHERE user_id = %s;
         """
         # 准备查询参数
         params = (user_id,)
@@ -122,12 +122,12 @@ class UserDB(DataBaseManage):
         # 定义更新语句，更新 user 表中指定用户 ID 的各字段信息
         query = """
                 UPDATE user
-                SET user_name    =?,
-                    user_password  =?,
-                    user_type  =?,
-                    user_authnum =?,
-                    user_note =?
-                WHERE user_id =?;       
+                SET user_name    = %s,
+                    user_password  =%s,
+                    user_type  =%s,
+                    user_authnum =%s,
+                    user_note =%s
+                WHERE user_id =%s;       
         """
         # 从 user 字典中提取各字段的值作为查询参数
         params = (user["user_name"],
@@ -148,8 +148,8 @@ class UserDB(DataBaseManage):
         # 定义更新语句，更新 user 表中指定用户 ID 的密码
         query = """
                 UPDATE user
-                SET user_password  =?
-                WHERE user_id =?;
+                SET user_password  =%s
+                WHERE user_id =%s;
         """
         # 从 user_info 字典中提取密码和用户 ID 作为查询参数
         params = (user_info["user_password"], user_info["user_id"])
@@ -166,7 +166,7 @@ class UserDB(DataBaseManage):
         query = """
                 INSERT INTO user_log (
                 user_id, user_log_info)
-                VALUES (?,?)
+                VALUES (%s,%s)
                 """
         # 从 user_log_info 字典中提取用户 ID 和日志信息作为查询参数
         params = (user_log_info["user_id"],
@@ -190,10 +190,10 @@ class UserDB(DataBaseManage):
                  FROM user_log ul
                  JOIN user u
                  ON ul.user_id = u.user_id
-                 WHERE ul.user_id = ?
+                 WHERE ul.user_id = %s
         """
         if limit is not None:
-            query = base_query + " LIMIT ?"
+            query = base_query + " LIMIT %s"
             params = (user_id, limit)
         else:
             query = base_query
@@ -207,7 +207,7 @@ class UserDB(DataBaseManage):
         :param user_name: 要检查的用户名
         :return: 如果存在返回 True，不存在返回 False
         """
-        query = "SELECT * FROM user WHERE user_name = ? LIMIT 1"
+        query = "SELECT * FROM user WHERE user_name = %s LIMIT 1"
         print(user_name)
         params = (user_name,)
         result = self.fetch_query(query, params=params)
@@ -218,6 +218,6 @@ if __name__ == '__main__':
     # 使用上下文管理器创建 UserDB 类的实例
     with UserDB() as db:
         # 调用 user_login_check 方法检查用户登录信息
-        result = db.user_login_check("admin", "password1")
+        result = db.user_login_check("admin", "admin123")
         # 打印查询结果
         print(result)

@@ -19,7 +19,7 @@ class ParishDb(DataBaseManage):
     def add_parish(self, parish):
         query = """
             INSERT INTO parish (parish_name, parish_date, parish_address, parish_info, parish_pic_path)
-            VALUES (?, ?, ?, ?, ?)
+            VALUES (%s, %s, %s, %s, %s)
         """
         params = (parish['parish_name'], parish['parish_date'], parish['parish_address'],
                   parish['parish_info'], parish['parish_pic_path'])
@@ -28,7 +28,7 @@ class ParishDb(DataBaseManage):
     def get_parish_info(self, parish_id):
         # 定义 SQL 查询语句，用于选择 CLASSES 表中的所有数据
         query = """
-        SELECT * FROM parish WHERE parish_id = ?
+        SELECT * FROM parish WHERE parish_id = %s
         """
         params = (parish_id,)
         # 使用父类的 fetch_query 方法执行查询，并返回查询结果
@@ -37,7 +37,7 @@ class ParishDb(DataBaseManage):
     def check_parish_name(self, parish_name):
         # 定义 SQL 查询语句，用于选择 CLASSES 表中的所有数据
         query = """
-        SELECT * FROM parish WHERE parish_name == ?
+        SELECT * FROM parish WHERE parish_name = %s
         """
         params = (parish_name,)
         # 使用父类的 fetch_query 方法执行查询，并返回查询结果
@@ -45,8 +45,8 @@ class ParishDb(DataBaseManage):
 
     def modify_parish(self, parish):
         query = """
-            UPDATE parish SET parish_date = ?, parish_address = ?, parish_info = ?, parish_pic_path = ?
-            WHERE parish_name = ?
+            UPDATE parish SET parish_date = %s, parish_address = %s, parish_info = %s, parish_pic_path = %s
+            WHERE parish_name = %s
         """
         params = (parish['parish_date'], parish['parish_address'], parish['parish_info'],
                   parish['parish_pic_path'], parish['parish_name'])
@@ -55,13 +55,12 @@ class ParishDb(DataBaseManage):
 
 if __name__ == '__main__':
     with ParishDb() as db:
-        for i in range(10):
-            family_name = "崇义小学第%d号家庭" % (i + 1)
-            family_address = "%d Main Street" % (random.randint(0, 1000))
-            school_info = {
-                "family_name": family_name,
-                "family_address": family_address,
-                "family_school_id": 1,
-                "family_notes": "无备注"
-            }
-            db.add_family(school_info)
+        parish_info = {
+            'parish_name': "崇义教区",
+            'parish_address': "四川成都",
+            'parish_info': "123",
+            'parish_date': "1920-10-1",
+            'parish_pic_path': "self.label.image_path"
+        }
+        date = db.get_parish_info(1)['parish_date']
+        print(date)

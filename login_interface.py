@@ -87,6 +87,9 @@ class LoginWindow(Window, Ui_Form):
 
     def load_all_parish(self):
         self.comboBox.clear()  # 清空 classCombo 下拉框中的所有选项
+        test = ParishDb()
+        test.connect_to_mysql_and_create_db()
+        test.creat_all_database()
         with ParishDb() as db:  # 使用上下文管理器创建 ClassDB 的实例，并确保使用后自动关闭数据库连接
             load_parish_info = db.fetch_parish()
         self.comboBox.addItem('请选择教区', None)

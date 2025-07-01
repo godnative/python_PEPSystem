@@ -264,6 +264,14 @@ class GenderShowInfo(CardWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    window = ShowSchoolInterface(None)
+    login_info_1 = {
+        "parish_id": None,
+        "parish_name": "崇义教区",
+        "user_id": 1,
+        "user_name": "admin",
+        "user_type": 1,
+        "user_authnum": 32767
+    }
+    window = ShowSchoolInterface(login_info_1, "testShowSchoolInterface")
     window.show()
     sys.exit(app.exec())
