@@ -83,6 +83,7 @@ class Family_MessageBox(MessageBoxBase):
             self.rejectButton = PushButton("重新录入")
             self.buttonLayout.addWidget(self.rejectButton, 1)
             self.rejectButton.clicked.connect(self.setRejected)
+            self.rejectButton.hide()
 
         self.family_Info_Edit_widgets.pic.setMaximumSize(100, 100)
         pixmap = QPixmap("./resource/pic/4.png").scaled(
@@ -310,6 +311,7 @@ class Family_Main_Interface(QWidget):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
             w = Family_MessageBox(self.login_info, 2, self)
+            w.rejectButton.show()
             del_family_id = self.family_info_all[idx]["family_id"]
             w.titleLabel.setText("查看/修改家庭")
             with StudentDB() as db:

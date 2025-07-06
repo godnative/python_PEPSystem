@@ -75,6 +75,7 @@ class Parishioner_MessageBox(MessageBoxBase):
             self.rejectButton = PushButton("重新录入")
             self.buttonLayout.addWidget(self.rejectButton, 1)
             self.rejectButton.clicked.connect(self.setRejected)
+            self.rejectButton.hide()
 
         self.Parishioner_Info_Edit_widgets.pic.setPixmap(pixmap)
 
@@ -189,7 +190,7 @@ class Parishioner_MessageBox(MessageBoxBase):
         with FamilyDB() as db:  # 使用上下文管理器创建 ClassDB 的实例，并确保使用后自动关闭数据库连接
             self.family_info = db.fetch_family_with_school_id(
                 self.login_info["parish_id"])  # 如果没有可管理的班级 ID 列表，则获取所有班级信息
-        self.Parishioner_Info_Edit_widgets.inputLine_11.addItem('请选择班级',
+        self.Parishioner_Info_Edit_widgets.inputLine_11.addItem('请选择家庭',
                                                                 None)  # 在下拉框中添加默认选项 "请选择班级"，并将其关联的数据设为 None
 
         for family_info in self.family_info:  # 遍历获取到的班级信息列表
@@ -335,6 +336,7 @@ class Parishioner_Main_Interface(QWidget):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
             w = Parishioner_MessageBox(self.login_info, self)
+            w.rejectButton.show()
             w.titleLabel.setText("修改人员信息")
             w.set_InputParishionerMessageinfo(self.parishioner_info_all[idx])
             if w.exec():

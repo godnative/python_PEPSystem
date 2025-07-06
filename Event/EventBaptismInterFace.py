@@ -28,8 +28,10 @@ class EventBaptism_MessageBox(MessageBoxBase):
         self.readOnly_flag = False
         self.set_reject_flag = False
         self.family_info = None
+        temp_login_info = self.login_info
+        temp_login_info["user_type"] = 1
         self.parishioner_widgets = Parishioner_Main_Interface(
-            self.login_info, "Parishioner_Main_Interface_from_EventBaptism_MessageBox")
+            temp_login_info, "Parishioner_Main_Interface_from_EventBaptism_MessageBox")
         self.parishioner_1_id = 1
         self.parishioner_2_id = 1
         self.titleLabel = SubtitleLabel('人员', self)
@@ -89,6 +91,7 @@ class EventBaptism_MessageBox(MessageBoxBase):
             self.rejectButton = PushButton("重新录入")
             self.buttonLayout.addWidget(self.rejectButton, 1)
             self.rejectButton.clicked.connect(self.setRejected)
+            self.rejectButton.hide()
 
         self.widget.setMinimumWidth(350)
 
@@ -329,6 +332,7 @@ class EventBaptism_Main_Interface(QWidget):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
             w = EventBaptism_MessageBox(self.login_info, self)
+            w.rejectButton.show()
             w.parishioner_widgets.hide()
             w.titleLabel.setText("修改事件信息")
             w.set_InputEventMessageinfo(self.Event_all_info[idx])

@@ -1,3 +1,6 @@
 *.pyc
 .idea/
-/PyQt-Fluent-Widgets-PyQt6/
+/MySQL5.7/bin
+/MySQL5.7/data
+/MySQL5.7/lib
+/MySQL5.7/share
