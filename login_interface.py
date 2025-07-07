@@ -22,6 +22,7 @@ from LoginWindow import Ui_Form
 from Parishioner.Parishioner_main_interface import ParishionerMainInterface
 from TaskCard.TaskCardMainInterface import TaskCardMainInterFace
 from school.school_interface import ShowSchoolInterface
+from setting.settingMainInterFace import SettingMainInterFace
 from user.user_main_interface import UserMainInterface
 
 
@@ -197,14 +198,19 @@ class MainWindow(MSFluentWindow):
             self.addSubInterface(self.studentInterface, FIF.HOME, '教友')
             self.addSubInterface(self.videoInterface, FIF.VIDEO, '圣事')
 
-            self.addSubInterface(self.libraryInterface, FIF.BOOK_SHELF, '资料', FIF.LIBRARY_FILL,
-                                 NavigationItemPosition.BOTTOM)
-            self.addSubInterface(self.taskCardInterface, FIF.BOOK_SHELF, '通知', FIF.LIBRARY_FILL,
-                                 NavigationItemPosition.BOTTOM)
+            self.addSubInterface(self.libraryInterface, FIF.BOOK_SHELF, '资料')
+            self.addSubInterface(self.taskCardInterface, FIF.BOOK_SHELF, '通知')
+
+            if self.login_info["user_type"] == 0:
+                self.settingInterface = SettingMainInterFace("SettingMainInterFace")
+                self.addSubInterface(self.settingInterface, FIF.SETTING, '设置', FIF.LIBRARY_FILL,
+                                     NavigationItemPosition.BOTTOM)
 
             self.navigationInterface.setCurrentItem(self.schoolInterface.objectName())
 
             self.taskCardInterface.taskcardwaitfinishnumchanged.connect(self.setTaskCardWaitFinishNumber)
+
+
 
         self.initWindow()
 
@@ -234,6 +240,14 @@ class MainWindow(MSFluentWindow):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+    login_info_1 = {
+        "parish_id": 1,
+        "parish_name": "崇义教区",
+        "user_id": 1,
+        "user_name": "admin",
+        "user_type": 0,
+        "user_authnum": 32767
+    }
     w = LoginWindow()
     w.show()
     app.exec()

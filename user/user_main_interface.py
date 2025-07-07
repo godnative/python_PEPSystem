@@ -14,8 +14,6 @@ class UserMainInterface(QWidget):
         self.setObjectName(ObjectName)
 
         self.tabCount = 1
-        self.setObjectName(ObjectName)
-
         self.tabBar = TabBar(self)
         self.stackedWidget = QStackedWidget(self)
         self.tabView = QWidget(self)
