@@ -4,7 +4,7 @@ import time
 from PyQt6.QtCore import Qt, QDate
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import QApplication, QVBoxLayout, QWidget, QHeaderView
-from qfluentwidgets import MessageBoxBase, SubtitleLabel, InfoBar
+from qfluentwidgets import MessageBoxBase, SubtitleLabel, InfoBar, PushButton
 
 from BaseWidgets.BaseModule import BaseMainInterface, BaseMessageBoxWidget
 from DataBase.family_db import FamilyDB
@@ -70,11 +70,13 @@ class Parishioner_MessageBox(MessageBoxBase):
             Qt.TransformationMode.SmoothTransformation
         )
 
+        self.rejectButton = PushButton("重新录入")
+        self.buttonLayout.addWidget(self.rejectButton, 1)
+        self.rejectButton.clicked.connect(self.setRejected)
+
         if self.login_info["user_type"] == 0:
-            from qfluentwidgets import PushButton
-            self.rejectButton = PushButton("重新录入")
-            self.buttonLayout.addWidget(self.rejectButton, 1)
-            self.rejectButton.clicked.connect(self.setRejected)
+            self.rejectButton.show()
+        else:
             self.rejectButton.hide()
 
         self.Parishioner_Info_Edit_widgets.pic.setPixmap(pixmap)
@@ -336,7 +338,6 @@ class Parishioner_Main_Interface(QWidget):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
             w = Parishioner_MessageBox(self.login_info, self)
-            w.rejectButton.show()
             w.titleLabel.setText("修改人员信息")
             w.set_InputParishionerMessageinfo(self.parishioner_info_all[idx])
             if w.exec():

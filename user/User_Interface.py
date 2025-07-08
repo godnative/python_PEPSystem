@@ -64,7 +64,7 @@ def check_auth_permission(required_permission):
             else:
                 # 如果没有操作权限，打印失败消息并退出
                 exec_log = "[%s] 用户：%s 执行 %s %s 操作 失败[权限不足]" % (
-                    self.cur_user["user_name"],
+                    self.login_info["user_name"],
                     formatted_time,
                     required_permission["module_data"],
                     required_permission["permission_data"])
@@ -73,7 +73,7 @@ def check_auth_permission(required_permission):
                 exec_log = "[%s] 执行 %s 操作 失败[权限不足]" % (formatted_time, required_permission)
                 print(exec_log)
                 with UserDB() as db:
-                    db.add_user_log({"user_id": self.cur_user["user_id"], "user_log_info": exec_log})
+                    db.add_user_log({"user_id": self.login_info["user_id"], "user_log_info": exec_log})
             return None
 
         return wrapper

@@ -1,9 +1,7 @@
 from PyQt6.QtWidgets import QWidget, QStackedWidget, QVBoxLayout, QApplication
 from qfluentwidgets import (qrouter, TabBar, TabCloseButtonDisplayMode)
 
-from Event.EvenConfirmationInterface import EventConfirmation_Main_Interface
-from Event.EvenMarriageInterface import EventMarriage_Main_Interface
-from Event.EventBaptismInterFace import EventBaptism_Main_Interface
+from Event.ComEventMessageBoxBase import Event_Main_Interface
 from utils.custom_style import StyleSheet
 
 
@@ -34,12 +32,12 @@ class EvenMainTabInterface(QWidget):
         self.main_vBoxLayout = QVBoxLayout(self)
         self.vBoxLayout = QVBoxLayout(self.tabView)
 
-        self.baptism_interface = EventBaptism_Main_Interface(
-            self.login_info, "EventBaptism_Main_Interface_from_Main_Even", self)
-        self.confirmation_interface = EventConfirmation_Main_Interface(
-            self.login_info, "EventConfirmation_Main_Interface_from_Main_Even", self)
-        self.marriage_interface = EventMarriage_Main_Interface(
-            self.login_info, "EventMarriage_Main_Interface_from_Main_Even", self)
+        self.baptism_interface = Event_Main_Interface(
+            self.login_info, "EventBaptism_Main_Interface_from_Main_Even", 1, self)
+        self.confirmation_interface = Event_Main_Interface(
+            self.login_info, "EventConfirmation_Main_Interface_from_Main_Even", 0, self)
+        self.marriage_interface = Event_Main_Interface(
+            self.login_info, "EventMarriage_Main_Interface_from_Main_Even", 2, self)
 
         # add items to pivot
         self.__initWidget()

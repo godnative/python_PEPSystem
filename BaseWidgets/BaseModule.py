@@ -7,12 +7,12 @@ from utils.utils_tool import get_now_date, timestamp_to_date, timestamp_to_times
 
 user_type = ["管理员", "录入员", "游客"]
 opera_type = ["录入", "待审阅", "归档"]
+
+
 class BaseMessageBoxWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.initUI()
 
-    def initUI(self):
         hbox = QHBoxLayout(self)
         self.pic = QLabel("inc pic")
         hbox.addWidget(self.pic)
@@ -99,26 +99,29 @@ class BaseMessageBoxWidget(QWidget):
 class BaseQueryWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.initUI()
 
-    def initUI(self):
         vbox = QVBoxLayout(self)
         layout = QHBoxLayout()  # 这里直接将 QVBoxLayout 设置为 self 的布局
 
-        self.addButton = PushButton("添加")
+        self.addButton = PushButton()
+        self.addButton.setText("添加")
 
         self.searchInput = SearchLineEdit(self)
         self.searchInput.setPlaceholderText('Search')
         self.searchInput.setFixedWidth(500)
 
-        self.delButton = PushButton("删除")
+        self.delButton = PushButton()
+        self.delButton.setText("删除")
 
-        self.ModButton = PushButton("修改")
+        self.ModButton = PushButton()
+        self.ModButton.setText("修改")
 
-        self.ReviewButton = PushButton("归档")
-        #self.ReviewButton.hide()
+        self.ReviewButton = PushButton()
+        self.ReviewButton.setText("归档")
+        # self.ReviewButton.hide()
 
-        self.extendButton_1 = PushButton("Mod")
+        self.extendButton_1 = PushButton()
+        self.extendButton_1.setText("Mod")
         self.extendButton_1.hide()
 
         layout.addWidget(self.addButton)
@@ -172,9 +175,7 @@ class BaseQueryWidget(QWidget):
 class BaseMainInterface(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.initUI()
 
-    def initUI(self):
         vbox = QVBoxLayout(self)
         title_info_box = QHBoxLayout()
         self.label = QLabel(self)
@@ -193,9 +194,7 @@ class BaseUserInterface(QWidget):
         super().__init__(parent)
         self.checkBox_maxtir = None
         self.user_type = ["管理员", "录入员", "游客"]
-        self.initUI()
 
-    def initUI(self):
         vbox = QVBoxLayout(self)
         title_info_box = QHBoxLayout()
         spacerItem = QtWidgets.QSpacerItem(100, 20)

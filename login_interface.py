@@ -25,6 +25,41 @@ from school.school_interface import ShowSchoolInterface
 from setting.settingMainInterFace import SettingMainInterFace
 from user.user_main_interface import UserMainInterface
 
+import traceback
+import logging
+from PyQt6.QtCore import QtMsgType, qInstallMessageHandler
+
+
+# 1. 设置日志
+def setup_logging():
+    logging.basicConfig(
+        level=logging.DEBUG,
+        format='%(asctime)s - %(levelname)s - %(message)s',
+        handlers=[
+            logging.FileHandler('app.log'),
+            logging.StreamHandler()
+        ]
+    )
+
+
+# 2. 全局异常处理
+def handle_exception(exc_type, exc_value, exc_traceback):
+    error = "".join(traceback.format_exception(exc_type, exc_value, exc_traceback))
+    logging.error(f"未捕获异常:\n{error}")
+    if QApplication.instance():
+        QMessageBox.critical(None, "错误", "程序崩溃，请查看日志文件。")
+    sys.exit(1)
+
+
+# 3. Qt 消息处理
+def qt_message_handler(mode, context, message):
+    if mode == QtMsgType.QtDebugMsg:
+        logging.debug(f"Qt: {message}")
+    elif mode == QtMsgType.QtWarningMsg:
+        logging.warning(f"Qt: {message}")
+    else:
+        logging.error(f"Qt: {message}")
+
 
 class LoginWindow(Window, Ui_Form):
     def __init__(self):
@@ -187,7 +222,8 @@ class MainWindow(MSFluentWindow):
             self.addSubInterface(self.schoolInterface, FIF.APPLICATION, '教区')
         else:
             self.setWindowTitle(
-                '当前教区:%s  当前登录角色：%s' % (self.login_info['parish_name'] , user_type[self.login_info['user_type']]))
+                '当前教区:%s  当前登录角色：%s' % (
+                self.login_info['parish_name'], user_type[self.login_info['user_type']]))
             # create sub interface
             self.studentInterface = ParishionerMainInterface(self.login_info, "Parishioner_Main_Interface")
             self.videoInterface = EvenMainTabInterface(self.login_info, "EvenMainTabInterface")
@@ -209,8 +245,6 @@ class MainWindow(MSFluentWindow):
             self.navigationInterface.setCurrentItem(self.schoolInterface.objectName())
 
             self.taskCardInterface.taskcardwaitfinishnumchanged.connect(self.setTaskCardWaitFinishNumber)
-
-
 
         self.initWindow()
 
@@ -239,15 +273,21 @@ class MainWindow(MSFluentWindow):
 
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    login_info_1 = {
-        "parish_id": 1,
-        "parish_name": "崇义教区",
-        "user_id": 1,
-        "user_name": "admin",
-        "user_type": 0,
-        "user_authnum": 32767
-    }
-    w = LoginWindow()
-    w.show()
-    app.exec()
+    # 设置异常处理
+    sys.excepthook = handle_exception
+
+    # 设置日志
+    setup_logging()
+
+    # 设置Qt消息处理
+    qInstallMessageHandler(qt_message_handler)
+
+    try:
+        app = QApplication(sys.argv)
+        window = LoginWindow()
+        window.show()
+        sys.exit(app.exec())
+    except Exception as e:
+        logging.error("主程序异常", exc_info=True)
+        QMessageBox.critical(None, "启动失败", f"程序启动失败: {str(e)}")
+        sys.exit(1)
