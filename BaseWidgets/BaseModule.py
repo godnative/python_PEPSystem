@@ -120,16 +120,16 @@ class BaseQueryWidget(QWidget):
         self.ReviewButton.setText("归档")
         # self.ReviewButton.hide()
 
-        self.extendButton_1 = PushButton()
-        self.extendButton_1.setText("Mod")
-        self.extendButton_1.hide()
+        self.printButton = PushButton()
+        self.printButton.setText("打印")
+        self.printButton.hide()
 
         layout.addWidget(self.addButton)
         layout.addWidget(self.searchInput)
         layout.addWidget(self.delButton)
         layout.addWidget(self.ModButton)
-        layout.addWidget(self.extendButton_1)
         layout.addWidget(self.ReviewButton)
+        layout.addWidget(self.printButton)
 
         self.tableWidget = TableWidget(self)
         self.tableWidget.setBorderVisible(True)
@@ -256,7 +256,6 @@ class BaseUserInterface(QWidget):
         self.BaseQuery.delButton.hide()
         self.BaseQuery.addButton.hide()
         self.BaseQuery.searchInput.hide()
-        self.BaseQuery.extendButton_1.hide()
         self.BaseQuery.ModButton.hide()
         vbox.addWidget(self.BaseQuery)
 

@@ -18,11 +18,17 @@ class ParishDb(DataBaseManage):
 
     def add_parish(self, parish):
         query = """
-            INSERT INTO parish (parish_name, parish_date, parish_address, parish_info, parish_pic_path)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO parish (parish_name, 
+                                parish_date, 
+                                parish_address, 
+                                parish_info, 
+                                parish_pic_path, 
+                                parish_priest,
+                                parish_phonenum)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
         """
         params = (parish['parish_name'], parish['parish_date'], parish['parish_address'],
-                  parish['parish_info'], parish['parish_pic_path'])
+                  parish['parish_info'], parish['parish_pic_path'], parish['parish_priest'], parish['parish_phonenum'])
         return self.execute_query(query, params)
 
     def get_parish_info(self, parish_id):
@@ -45,11 +51,17 @@ class ParishDb(DataBaseManage):
 
     def modify_parish(self, parish):
         query = """
-            UPDATE parish SET parish_date = ?, parish_address = ?, parish_info = ?, parish_pic_path = ?
+            UPDATE parish SET parish_date = ?, 
+                            parish_address = ?, 
+                            parish_info = ?, 
+                            parish_pic_path = ?,
+                            parish_priest = ?,
+                            parish_phonenum = ?
             WHERE parish_name = ?
         """
         params = (parish['parish_date'], parish['parish_address'], parish['parish_info'],
-                  parish['parish_pic_path'], parish['parish_name'])
+                  parish['parish_pic_path'],parish['parish_priest'], parish['parish_phonenum'],
+                  parish['parish_name'])
         return self.execute_query(query, params)
 
 

@@ -10,7 +10,7 @@ from qfluentwidgets import PushButton, setCustomStyleSheet, MessageBoxBase, Info
     StrongBodyLabel, TransparentToolButton, FluentIcon, CardWidget
 
 from DataBase.parish_db import ParishDb
-from school.school_dialog import BaseSchoolInterface_Temp
+from parish.parish_dialog import BaseSchoolInterface_Temp
 from utils.custom_style import ADD_BUTTON_STYLE, DELETE_BUTTON_STYLE, UPDATE_BUTTON_STYLE
 
 
@@ -44,6 +44,13 @@ class AddSchoolInterface(MessageBoxBase):
         parish_info = self.schoolInterface_temp.lineEdit_5.text()
         if not parish_info:
             errors.append("当前主保不能为空")
+
+        parish_info = self.schoolInterface_temp.lineEdit_6.text()
+        if not parish_info:
+            errors.append("本堂神父不能为空")
+        parish_info = self.schoolInterface_temp.lineEdit_7.text()
+        if not parish_info:
+            errors.append("联系电话不能为空")
         # 返回错误信息列表，如果为空则表示验证通过
         return errors
 
@@ -59,14 +66,14 @@ class AddSchoolInterface(MessageBoxBase):
         super().accept()
 
 
-class ModifySchoolInterface(MessageBoxBase):
+class ModifyParishInterface(MessageBoxBase):
     def __init__(self, parish_info, parent=None):
         super().__init__(parent)
         self.schoolInterface_temp = BaseSchoolInterface_Temp()
         self.viewLayout.addLayout(self.schoolInterface_temp.BaseSchoolInterface_layout)
         self.schoolInterface_temp.label.uploaded_image = True
-        self.setObjectName("ModifySchoolInterface")
-        self.parish_id = None  # 初始化学生 ID 属性，默认为 None，表示新建学生时不需要指定 ID
+        self.setObjectName("ModifyParishInterface")
+        self.parish_id = None  #
         self.yesButton.setText('修改')  # 设置确认按钮的文本为“添加”，以明确功能
 
         self.schoolInterface_temp.set_parish_info(parish_info)
@@ -74,14 +81,21 @@ class ModifySchoolInterface(MessageBoxBase):
 
     def _validateInput(self):
         errors = []  # 初始化错误信息列表
+
         parish_address = self.schoolInterface_temp.lineEdit_4.text()
         if not parish_address:
             errors.append("教区地址不能为空")
 
-        # 验证学校简介
         parish_info = self.schoolInterface_temp.lineEdit_5.text()
         if not parish_info:
             errors.append("当前主保不能为空")
+
+        parish_info = self.schoolInterface_temp.lineEdit_6.text()
+        if not parish_info:
+            errors.append("本堂神父不能为空")
+        parish_info = self.schoolInterface_temp.lineEdit_7.text()
+        if not parish_info:
+            errors.append("联系电话不能为空")
         # 返回错误信息列表，如果为空则表示验证通过
         return errors
 
@@ -169,7 +183,7 @@ class ShowSchoolInterface(QWidget):
                 # self.restartButton.clicked.connect(self.parent.on_back_to_login)
 
     def modifySchoolInfo(self):
-        w = ModifySchoolInterface(self.schoolInterface_temp.get_InputParishDialoginfo(), self)
+        w = ModifyParishInterface(self.schoolInterface_temp.get_InputParishDialoginfo(), self)
         if w.exec():
             with ParishDb() as db:
                 db.modify_parish(w.schoolInterface_temp.get_InputParishDialoginfo())

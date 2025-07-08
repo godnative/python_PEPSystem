@@ -45,15 +45,15 @@ class EventMessageBoxBase(MessageBoxBase):
         self.titleLabel = SubtitleLabel('人员', self)
         self.BaseMessageBoxWidget = BaseMessageBoxWidget(self)
 
-        self.parishioner_widgets.BaseMainInterface.BaseQuery.extendButton_1.show()
-        self.parishioner_widgets.BaseMainInterface.BaseQuery.extendButton_1.setText("添加选中人员")
+        self.parishioner_widgets.BaseMainInterface.BaseQuery.printButton.show()
+        self.parishioner_widgets.BaseMainInterface.BaseQuery.printButton.setText("添加选中人员")
         self.parishioner_widgets.BaseMainInterface.BaseQuery.delButton.hide()
         self.parishioner_widgets.BaseMainInterface.BaseQuery.ModButton.hide()
         if self.even_type == 2:
-            self.parishioner_widgets.BaseMainInterface.BaseQuery.extendButton_1.clicked.connect(
+            self.parishioner_widgets.BaseMainInterface.BaseQuery.printButton.clicked.connect(
                 self.set_marriage_parish_info)
         else:
-            self.parishioner_widgets.BaseMainInterface.BaseQuery.extendButton_1.clicked.connect(self.set_parish_info)
+            self.parishioner_widgets.BaseMainInterface.BaseQuery.printButton.clicked.connect(self.set_parish_info)
 
         # add widget to view layout
         self.viewLayout.addWidget(self.titleLabel)
@@ -227,7 +227,7 @@ class EventMessageBoxBase(MessageBoxBase):
             if self.BaseMessageBoxWidget.inputLine_3.text().strip():
                 select = 2
                 self.yesButton.setDisabled(False)
-            self.parishioner_widgets.BaseMainInterface.BaseQuery.extendButton_1.setText("已选中(%d / 2) 人" % select)
+            self.parishioner_widgets.BaseMainInterface.BaseQuery.printButton.setText("已选中(%d / 2) 人" % select)
 
 
 class Event_Main_Interface(QWidget):
@@ -263,6 +263,8 @@ class Event_Main_Interface(QWidget):
         self.BaseMainInterface.BaseQuery.searchInput.searchSignal.connect(self.query_even_info_with_like)
         self.BaseMainInterface.BaseQuery.searchInput.returnPressed.connect(self.query_even_info_with_like)
         self.BaseMainInterface.BaseQuery.ReviewButton.clicked.connect(self.review_data)
+        self.BaseMainInterface.BaseQuery.printButton.clicked.connect(self.tprint)
+        self.BaseMainInterface.BaseQuery.printButton.show()
 
         if self.login_info["user_type"] == 0:
 
@@ -415,12 +417,22 @@ class Event_Main_Interface(QWidget):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
             p1_name = self.Event_all_info[idx]["holyevent_p1_name"]
+            p1_holyname = self.Event_all_info[idx]["holyevent_p1_holyname"]
             p2_name = self.Event_all_info[idx]["holyevent_p2_name"]
             date = timestamp_to_date(self.Event_all_info[idx]["holyevent_date"]).toString("yyyy-MM-dd")
-            parish = self.cur_parish["school_name"]
+            parish = self.login_info["parish_name"]
             implementer = self.Event_all_info[idx]["holyevent_implementer"]
             witness = self.Event_all_info[idx]["holyevent_witness"]
-            data_str = f"""<center><font size=5>证明</font></center>\n\n***\n\n  兹证明 _{p1_name}_ 先生和 _{p2_name}_ 女士于 _{date}_ 在 _{parish}_ 举行仪式\n\n***\n\n施行人 _{implementer}_ \n\n见证人：_{witness}_ """
+            if self.evenType == 0:
+                data_str = f"""<center><font size=9>证明</font></center>\n\n***\n\n  <font size=9>
+                兹证明 _{p1_name}_ 圣名: _{p1_holyname}_ 于 _{date}_ 在 _{parish}_ 举行坚振圣事\n\n
+                施行人 _{implementer}_ \n\n
+                见证人:_{witness}_ \n\n
+                堂区神父:
+                堂区地址:
+                堂区联系电话:</font>
+                \n\n***\n\n"""
+            #data_str = f"""<center><font size=9>证明</font></center>\n\n***\n\n  兹证明 _{p1_name}_ 先生和 _{p2_name}_ 女士于 _{date}_ 在 _{parish}_ 举行仪式\n\n施行人 _{implementer}_ \n\n见证人：_{witness}_ \n\n***\n\n"""
             # self.textEdit.setHtml(data)
             self.textEdit.setMarkdown(data_str)
             self.printer = QPrinter()

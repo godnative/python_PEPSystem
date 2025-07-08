@@ -72,6 +72,25 @@ class BaseSchoolInterface_Temp:
         self.lineEdit_4.setMinimumSize(QSize(0, 40))
         self.verticalLayout.addWidget(self.lineEdit_4)
 
+        self.label_6 = QLabel()
+        self.label_6.setMaximumSize(QSize(16777215, 20))
+        self.label_6.setFont(font)
+        self.label_6.setText("本堂神父")
+        self.verticalLayout.addWidget(self.label_6)
+
+        self.lineEdit_6 = LineEdit()
+        self.lineEdit_6.setMinimumSize(QSize(0, 40))
+        self.verticalLayout.addWidget(self.lineEdit_6)
+
+        self.label_7 = QLabel()
+        self.label_7.setMaximumSize(QSize(16777215, 20))
+        self.label_7.setFont(font)
+        self.label_7.setText("联系电话")
+        self.verticalLayout.addWidget(self.label_7)
+
+        self.lineEdit_7 = LineEdit()
+        self.lineEdit_7.setMinimumSize(QSize(0, 40))
+        self.verticalLayout.addWidget(self.lineEdit_7)
 
         self.verticalLayout.addItem(spacerItem)
         self.horizontalLayout.addLayout(self.verticalLayout)
@@ -84,7 +103,9 @@ class BaseSchoolInterface_Temp:
             'parish_address': self.lineEdit_4.text(),
             'parish_info': self.lineEdit_5.text(),
             'parish_date': qdate_to_timestamp(self.calendarPicker.date),
-            'parish_pic_path': self.label.image_path
+            'parish_pic_path': self.label.image_path,
+            'parish_priest': self.lineEdit_6.text(),
+            'parish_phonenum': self.lineEdit_7.text()
         }
         return parish_info
 
@@ -104,3 +125,5 @@ class BaseSchoolInterface_Temp:
                     Qt.TransformationMode.SmoothTransformation
                 )
                 self.label.setPixmap(pixmap)
+        self.lineEdit_6.setText(parish_info['parish_priest'])
+        self.lineEdit_7.setText(str(parish_info['parish_phonenum']))

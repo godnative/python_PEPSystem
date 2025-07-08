@@ -21,7 +21,7 @@ from Event.EvenMainTabInterface import EvenMainTabInterface
 from LoginWindow import Ui_Form
 from Parishioner.Parishioner_main_interface import ParishionerMainInterface
 from TaskCard.TaskCardMainInterface import TaskCardMainInterFace
-from school.school_interface import ShowSchoolInterface
+from parish.parish_interface import ShowSchoolInterface
 from setting.settingMainInterFace import SettingMainInterFace
 from user.user_main_interface import UserMainInterface
 
@@ -104,6 +104,8 @@ class LoginWindow(Window, Ui_Form):
         # self.lineEdit_3.setText("admin")
         # self.lineEdit_5.setText("admin123")
         self.pushButton.clicked.connect(self.login)
+        db = ParishDb()
+        db.creat_all_database()
         self.load_all_parish()
         self.load_last_login_info()
 

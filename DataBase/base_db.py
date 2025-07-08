@@ -7,16 +7,7 @@ from sqlite3 import Error
 class DataBaseManage:
     def __init__(self, ):
         self.connection = None
-        if os.path.exists("./DataBase/data.db"):
-            self.db_path = "./DataBase/data.db"
-        elif os.path.exists("../DataBase/data.db"):
-            self.db_path = "../DataBase/data.db"
-        elif os.path.exists("./data.db"):
-            self.db_path = "./data.db"
-        else:
-            self.db_path = "./data.db"
-
-        self.creat_all_database()
+        self.db_path = "./DataBase/data.db"
 
     def __enter__(self):
         self.connection = self.create_connection()
@@ -80,7 +71,9 @@ class DataBaseManage:
                                         parish_address  TEXT    not null,
                                         parish_info     TEXT,
                                         parish_pic_path TEXT,
-                                        parish_curadmin TEXT
+                                        parish_curadmin TEXT,
+                                        parish_priest   TEXT    not null,
+                                        parish_phonenum integer not null
                                     ); """
 
         sql_create_student_table = """ CREATE TABLE IF NOT EXISTS student
@@ -160,12 +153,15 @@ class DataBaseManage:
                       32767,
                       '管理员'
                       )
+
             # 调用父类的 execute_query 方法执行插入操作
             self.execute_query(query, params=params)
             conn.close()
+            print('close')
 
         else:
             print("无法创建数据库连接")
+
     def create_table(self, create_table_sql):
         """ 从SQL语句创建表 """
         try:
