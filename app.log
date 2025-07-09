@@ -1,0 +1,76 @@
+2025-07-08 21:36:54,290 - ERROR - 未捕获异常:
+Traceback (most recent call last):
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\user\User_Interface.py", line 67, in wrapper
+    self.cur_user["user_name"],
+    ^^^^^^^^^^^^^
+AttributeError: 'EventBaptism_Main_Interface' object has no attribute 'cur_user'
+
+2025-07-08 21:37:43,808 - ERROR - 未捕获异常:
+Traceback (most recent call last):
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\user\User_Interface.py", line 76, in wrapper
+    db.add_user_log({"user_id": self.cur_user["user_id"], "user_log_info": exec_log})
+                                ^^^^^^^^^^^^^
+AttributeError: 'EventBaptism_Main_Interface' object has no attribute 'cur_user'
+
+2025-07-08 21:38:25,257 - ERROR - 未捕获异常:
+Traceback (most recent call last):
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\user\User_Interface.py", line 54, in wrapper
+    ret = func(self)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\Parishioner\Parishioner_Interface.py", line 339, in modify_parishioner
+    w.rejectButton.show()
+    ^^^^^^^^^^^^^^
+AttributeError: 'Parishioner_MessageBox' object has no attribute 'rejectButton'
+
+2025-07-08 23:53:46,229 - ERROR - 未捕获异常:
+Traceback (most recent call last):
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\Event\ComEventMessageBoxBase.py", line 422, in tprint
+    parish = self.cur_parish["school_name"]
+             ^^^^^^^^^^^^^^^
+AttributeError: 'Event_Main_Interface' object has no attribute 'cur_parish'. Did you mean: 'cur_parish_id'?
+
+2025-07-08 23:54:11,246 - ERROR - 未捕获异常:
+Traceback (most recent call last):
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\Event\ComEventMessageBoxBase.py", line 422, in tprint
+    parish = self.login_info["school_name"]
+             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+KeyError: 'school_name'
+
+2025-07-09 00:23:46,648 - ERROR - 主程序异常
+Traceback (most recent call last):
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 287, in <module>
+    window = LoginWindow()
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 107, in __init__
+    self.load_all_parish()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 126, in load_all_parish
+    with ParishDb() as db:  # 使用上下文管理器创建 ClassDB 的实例，并确保使用后自动关闭数据库连接
+         ~~~~~~~~^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\DataBase\base_db.py", line 13, in __init__
+    self.creat_all_database()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\DataBase\base_db.py", line 24, in creat_all_database
+    if os.path.exists(self.db_path):
+                      ^^^^^^^^^^^^
+AttributeError: 'ParishDb' object has no attribute 'db_path'
+2025-07-09 00:31:37,762 - ERROR - 未捕获异常:
+Traceback (most recent call last):
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 181, in login
+    mainwindow = MainWindow(login_info)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 221, in __init__
+    self.schoolInterface = ShowSchoolInterface(self.login_info, "ShowSchoolInterface")
+                           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_interface.py", line 154, in __init__
+    self.schoolInterface_temp.set_parish_info(parish_info)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_dialog.py", line 129, in set_parish_info
+    self.lineEdit_7.setText(parish_info['parish_phonenum'])
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: setText(self, a0: Optional[str]): argument 1 has unexpected type 'int'
+
+2025-07-09 21:18:16,986 - ERROR - 未捕获异常:
+Traceback (most recent call last):
+  File "C:\Users\97895\.conda\envs\py131\Lib\site-packages\qfluentwidgets\components\widgets\frameless_window.py", line 24, in nativeEvent
+    def nativeEvent(self, eventType, message):
+    
+KeyboardInterrupt
+

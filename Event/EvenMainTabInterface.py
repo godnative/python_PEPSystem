@@ -48,10 +48,10 @@ class EvenMainTabInterface(QWidget):
         self.vBoxLayout.addWidget(self.tabBar)
         self.vBoxLayout.addWidget(self.stackedWidget)
 
-        self.addSubInterface(self.baptism_interface,
-                             'baptismInterface', self.tr('圣洗圣事'), ':/gallery/images/MusicNote.png')
         self.addSubInterface(self.confirmation_interface,
                              'ConfirmationInterface', self.tr('坚振圣事'), ':/gallery/images/Dvd.png')
+        self.addSubInterface(self.baptism_interface,
+                             'baptismInterface', self.tr('圣洗圣事'), ':/gallery/images/MusicNote.png')
         self.addSubInterface(self.marriage_interface,
                              'marriageInterface', self.tr('婚姻圣事'), ':/gallery/images/Singer.png')
 
