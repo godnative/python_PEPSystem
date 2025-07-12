@@ -321,7 +321,7 @@ class Event_Main_Interface(QWidget):
                            self.BaseMainInterface.BaseQuery.searchInput.text())
 
     def Load_even(self, query_type, even_type, school_id, query_param=None):
-        with HolyEventDB() as db:
+        with HolyEventDB(self) as db:
             if QUERY_TYPE.QUERY_ALL == query_type:
                 self.Event_all_info = db.fetch_all_event_by_type(even_type, school_id)
             elif QUERY_TYPE.QUERY_LIKE == query_type:
@@ -340,7 +340,7 @@ class Event_Main_Interface(QWidget):
         else:
             opera_type = 1
         update_flag = False
-        with HolyEventDB() as db:
+        with HolyEventDB(self) as db:
             for idx in range(self.BaseMainInterface.BaseQuery.tableWidget.rowCount()):
                 if self.BaseMainInterface.BaseQuery.tableWidget.cellWidget(idx, len(self.header_info)).isChecked():
                     data_info = self.Event_all_info[idx]
@@ -354,21 +354,21 @@ class Event_Main_Interface(QWidget):
         w = EventMessageBoxBase(self.login_info, self.evenType, self)
         w.titleLabel.setText("添加事件")
         if w.exec():
-            with HolyEventDB() as db:
-                get_InputEvenMessageinfo = w.get_InputEvenMessAgeInfo()
-                get_InputEvenMessageinfo["holyevent_school_id"] = self.cur_parish_id
-                get_InputEvenMessageinfo["holyevent_type"] = self.evenType
-                get_InputEvenMessageinfo["operator"] = self.login_info["user_name"]
+            with HolyEventDB(self) as db:
+                get_input_even_messageinfo = w.get_InputEvenMessAgeInfo()
+                get_input_even_messageinfo["holyevent_school_id"] = self.cur_parish_id
+                get_input_even_messageinfo["holyevent_type"] = self.evenType
+                get_input_even_messageinfo["operator"] = self.login_info["user_name"]
                 if self.login_info["user_type"] != 0:
-                    get_InputEvenMessageinfo["opera_type"] = 0
+                    get_input_even_messageinfo["opera_type"] = 0
                 else:
-                    get_InputEvenMessageinfo["opera_type"] = 2
-                get_InputEvenMessageinfo["opera_time"] = int(time.time())
-                db.add_even(get_InputEvenMessageinfo)
+                    get_input_even_messageinfo["opera_type"] = 2
+                get_input_even_messageinfo["opera_time"] = int(time.time())
+                db.add_even(get_input_even_messageinfo)
             if self.evenType == 1:
-                with StudentDB() as db:
-                    db.update_student_holyname(get_InputEvenMessageinfo["holyevent_p1_id"],
-                                               get_InputEvenMessageinfo["holyevent_p1_holyname"])
+                with StudentDB(self) as db:
+                    db.update_student_holyname(get_input_even_messageinfo["holyevent_p1_id"],
+                                               get_input_even_messageinfo["holyevent_p1_holyname"])
             self.Load_even(QUERY_TYPE.QUERY_ALL, self.evenType, self.cur_parish_id)
             return True
         return False
@@ -386,7 +386,7 @@ class Event_Main_Interface(QWidget):
             w.titleLabel.setText("删除事件")
             w.set_InputEventMessAgeInfo(self.Event_all_info[idx])
             if w.exec():
-                with HolyEventDB() as db:
+                with HolyEventDB(self) as db:
                     db.delete_event(self.Event_all_info[idx]["holyevent_id"])
                     self.Load_even(QUERY_TYPE.QUERY_ALL, self.evenType, self.cur_parish_id)
                 return True
@@ -405,7 +405,7 @@ class Event_Main_Interface(QWidget):
             if w.exec():
                 if w.readOnly_flag is True:
                     return False
-                with HolyEventDB() as db:
+                with HolyEventDB(self) as db:
                     if w.set_reject_flag is True and self.login_info["user_type"] == 0:
                         db.set_data_opera_type(self.Event_all_info[idx]["holyevent_id"], 0)
                         return True
@@ -416,7 +416,7 @@ class Event_Main_Interface(QWidget):
                     get_InputEvenMessageinfo["opera_time"] = int(time.time())
                     db.update_even(get_InputEvenMessageinfo)
                 if self.evenType == 1:
-                    with StudentDB() as db:
+                    with StudentDB(self) as db:
                         db.update_student_holyname(get_InputEvenMessageinfo["holyevent_p1_id"],
                                                    get_InputEvenMessageinfo["holyevent_p1_holyname"])
                 self.Load_even(QUERY_TYPE.QUERY_ALL, self.evenType, self.cur_parish_id)
@@ -432,7 +432,7 @@ class Event_Main_Interface(QWidget):
             p2_holyname = self.Event_all_info[idx]["holyevent_p2_holyname"]
             date = timestamp_to_date(self.Event_all_info[idx]["holyevent_date"]).toString("yyyy-MM-dd")
             parish_id = self.Event_all_info[idx]["holyevent_school_id"]
-            with ParishDb() as db:
+            with ParishDb(self) as db:
                 parish_info = db.get_parish_info(parish_id)
             parish_name = parish_info["parish_name"]
             parish_priest = parish_info["parish_priest"]
@@ -448,11 +448,12 @@ class Event_Main_Interface(QWidget):
                 data_str = f"""<center><font size=9>证明</font></center>\n\n***\n\n  兹证明 _{p1_name}_ 圣名: _{p1_holyname}_ 于 _{date}_ 在 _{parish_name}_ 举行圣洗圣事\n\n施行人:_{implementer}_ \n\n见证人:_{witness}_ \n\n堂区神父:_{parish_priest}_ \n\n堂区地址:_{parish_address}_ \n\n堂区联系电话:_{parish_phonenum}_\n\n***\n\n"""
             elif self.evenType == 2:
                 data_str = f"""<center><font size=9>证明</font></center>\n\n***\n\n  兹证明 _{p1_name}_ 与: _{p2_name}_ 于 _{date}_ 在 _{parish_name}_ 举行婚姻圣事\n\n  施行人:_{implementer}_ \n\n见证人:_{witness}_ \n\n堂区神父:_{parish_priest}_ \n\n堂区地址:_{parish_address}_ \n\n堂区联系电话:_{parish_phonenum}_\n\n***\n\n"""
-            #data_str = f"""<center><font size=9>证明</font></center>\n\n***\n\n  兹证明 _{p1_name}_ 先生和 _{p2_name}_ 女士于 _{date}_ 在 _{parish}_ 举行仪式\n\n施行人 _{implementer}_ \n\n见证人：_{witness}_ \n\n***\n\n"""
+            # data_str = f"""<center><font size=9>证明</font></center>\n\n***\n\n  兹证明 _{p1_name}_ 先生和 _{p2_name}_ 女士于 _{date}_ 在 _{parish}_ 举行仪式\n\n施行人 _{implementer}_ \n\n见证人：_{witness}_ \n\n***\n\n"""
             # self.textEdit.setHtml(data)
             self.textEdit.setMarkdown(data_str)
             self.printer = QPrinter()
             preview = QPrintPreviewDialog(self.printer)
+            # noinspection PyUnresolvedReferences
             preview.paintRequested.connect(self.table2print)
             preview.exec()
 

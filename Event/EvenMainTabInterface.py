@@ -9,9 +9,9 @@ from utils.custom_style import StyleSheet
 
 class EvenMainTabInterface(QWidget):
 
-    def __init__(self, login_info, ObjectName):
+    def __init__(self, login_info_, ObjectName):
         super().__init__()
-        self.login_info = login_info
+        self.login_info = login_info_
 
         # 创建主布局
         self.setObjectName(ObjectName)
@@ -59,6 +59,7 @@ class EvenMainTabInterface(QWidget):
 
         qrouter.setDefaultRouteKey(self.stackedWidget, self.baptism_interface.objectName())
 
+        # noinspection PyUnresolvedReferences
         self.stackedWidget.currentChanged.connect(self.onCurrentIndexChanged)
 
     def addSubInterface(self, widget, objectName, text, icon):

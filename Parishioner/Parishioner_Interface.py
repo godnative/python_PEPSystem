@@ -70,8 +70,10 @@ class Parishioner_MessageBox(MessageBoxBase):
             Qt.TransformationMode.SmoothTransformation
         )
 
-        self.rejectButton = PushButton("重新录入")
+        self.rejectButton = PushButton()
+        self.rejectButton.setText("重新录入")
         self.buttonLayout.addWidget(self.rejectButton, 1)
+        # noinspection PyUnresolvedReferences
         self.rejectButton.clicked.connect(self.setRejected)
 
         if self.login_info["user_type"] == 0:
@@ -107,7 +109,7 @@ class Parishioner_MessageBox(MessageBoxBase):
         w.titleLabel.setText("添加家庭")
         w.set_family_name_when_add()
         if w.exec():
-            with FamilyDB() as db:
+            with FamilyDB(self) as db:
                 get_InputParishionerMessageinfo = w.get_InputFamilyMessageinfo()
                 get_InputParishionerMessageinfo["family_school_id"] = self.login_info["parish_id"]
                 get_InputParishionerMessageinfo["operator"] = self.login_info["user_name"]
@@ -189,7 +191,7 @@ class Parishioner_MessageBox(MessageBoxBase):
 
     def load_family(self):
         self.Parishioner_Info_Edit_widgets.inputLine_11.clear()  # 清空 classCombo 下拉框中的所有选项
-        with FamilyDB() as db:  # 使用上下文管理器创建 ClassDB 的实例，并确保使用后自动关闭数据库连接
+        with FamilyDB(self) as db:  # 使用上下文管理器创建 ClassDB 的实例，并确保使用后自动关闭数据库连接
             self.family_info = db.fetch_family_with_school_id(
                 self.login_info["parish_id"])  # 如果没有可管理的班级 ID 列表，则获取所有班级信息
         self.Parishioner_Info_Edit_widgets.inputLine_11.addItem('请选择家庭',
@@ -268,7 +270,7 @@ class Parishioner_Main_Interface(QWidget):
                                   self.BaseMainInterface.BaseQuery.searchInput.text())
 
     def Load_Parishioner(self, query_type, school_id, query_param=None):
-        with StudentDB() as db:
+        with StudentDB(self) as db:
             if query_type == QUERY_TYPE.QUERY_ALL:
                 self.parishioner_info_all = db.fetch_students_with_school_id(school_id)
             elif query_type == QUERY_TYPE.QUERY_LIKE:
@@ -287,7 +289,7 @@ class Parishioner_Main_Interface(QWidget):
         else:
             opera_type = 1
         update_flag = False
-        with StudentDB() as db:
+        with StudentDB(self) as db:
             for idx in range(self.BaseMainInterface.BaseQuery.tableWidget.rowCount()):
                 if self.BaseMainInterface.BaseQuery.tableWidget.cellWidget(idx, len(self.header_info)).isChecked():
                     family_info = self.parishioner_info_all[idx]
@@ -300,7 +302,7 @@ class Parishioner_Main_Interface(QWidget):
         w = Parishioner_MessageBox(self.login_info, self)
         w.titleLabel.setText("添加人员")
         if w.exec():
-            with StudentDB() as db:
+            with StudentDB(self) as db:
                 get_InputParishionerMessageinfo = w.get_InputParishionerMessageinfo()
                 get_InputParishionerMessageinfo["student_school_id"] = self.cur_parish_id
                 get_InputParishionerMessageinfo["operator"] = self.login_info["user_name"]
@@ -327,7 +329,7 @@ class Parishioner_Main_Interface(QWidget):
             w.titleLabel.setText("删除人员")
             w.set_InputParishionerMessageinfo(self.parishioner_info_all[idx])
             if w.exec():
-                with StudentDB() as db:
+                with StudentDB(self) as db:
                     db.delete_student(self.parishioner_info_all[idx]["student_id"])
                 self.Load_Parishioner(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
                 return True
@@ -343,7 +345,7 @@ class Parishioner_Main_Interface(QWidget):
             if w.exec():
                 if w.readOnly_flag is True:
                     return False
-                with StudentDB() as db:
+                with StudentDB(self) as db:
                     if w.set_reject_flag is True and self.login_info["user_type"] == 0:
                         db.set_data_opera_type(self.parishioner_info_all[idx]["student_id"], 0)
                         return True

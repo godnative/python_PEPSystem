@@ -104,7 +104,7 @@ class LoginWindow(Window, Ui_Form):
         # self.lineEdit_3.setText("admin")
         # self.lineEdit_5.setText("admin123")
         self.pushButton.clicked.connect(self.login)
-        db = ParishDb()
+        db = ParishDb(self)
         db.creat_all_database()
         self.load_all_parish()
         self.load_last_login_info()
@@ -113,8 +113,8 @@ class LoginWindow(Window, Ui_Form):
         """ Returns the system title bar rect, only works for macOS """
         return QRect(size.width() - 75, 0, 75, size.height())
 
-    def resizeEvent(self, e):
-        super().resizeEvent(e)
+    def resizeEvent(self, even):
+        super().resizeEvent(even)
         pixmap = QPixmap("./resource/pic/background.jpg").scaled(
             self.label.size(),
             Qt.AspectRatioMode.KeepAspectRatioByExpanding,
@@ -125,7 +125,7 @@ class LoginWindow(Window, Ui_Form):
 
     def load_all_parish(self):
         self.comboBox.clear()  # 清空 classCombo 下拉框中的所有选项
-        with ParishDb() as db:  # 使用上下文管理器创建 ClassDB 的实例，并确保使用后自动关闭数据库连接
+        with ParishDb(self) as db:  # 使用上下文管理器创建 ClassDB 的实例，并确保使用后自动关闭数据库连接
             load_parish_info = db.fetch_parish()
         self.comboBox.addItem('请选择教区', None)
 
@@ -145,7 +145,7 @@ class LoginWindow(Window, Ui_Form):
         username = self.lineEdit_3.text()
         password = self.lineEdit_5.text()
 
-        with UserDB() as db:
+        with UserDB(self) as db:
             user_info = db.user_login_check(username, password)
 
         if user_info is not None:
@@ -225,7 +225,7 @@ class MainWindow(MSFluentWindow):
         else:
             self.setWindowTitle(
                 '当前教区:%s  当前登录角色：%s' % (
-                self.login_info['parish_name'], user_type[self.login_info['user_type']]))
+                    self.login_info['parish_name'], user_type[self.login_info['user_type']]))
             # create sub interface
             self.studentInterface = ParishionerMainInterface(self.login_info, "Parishioner_Main_Interface")
             self.videoInterface = EvenMainTabInterface(self.login_info, "EvenMainTabInterface")

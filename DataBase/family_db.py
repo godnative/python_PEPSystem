@@ -6,9 +6,6 @@ from DataBase.base_db import DataBaseManage
 
 # 定义一个类 ClassDB，继承自 DatabaseManage
 class FamilyDB(DataBaseManage):
-    def __init__(self):
-        super().__init__()
-
     # 定义一个方法 fetch_classes，用于从数据库中获取班级信息
     def fetch_family(self):
         # 定义 SQL 查询语句，用于选择 CLASSES 表中的所有数据
@@ -104,7 +101,7 @@ class FamilyDB(DataBaseManage):
 
 
 if __name__ == '__main__':
-    with FamilyDB() as db:
+    with FamilyDB(None) as db:
         # for i in range(100):
         #     family_name = "崇义小学第%d号家庭" % (i + 1)
         #     family_address = "%d Main Street" % (random.randint(0, 1000))

@@ -6,9 +6,6 @@ from DataBase.base_db import DataBaseManage
 
 # 定义一个类 ClassDB，继承自 DatabaseManage
 class HolyEventDB(DataBaseManage):
-    def __init__(self):
-        super().__init__()
-
     def fetch_all_event_by_type(self, event_type, school_id):
         # 定义 SQL 查询语句，用于选择 CLASSES 表中的所有数据
         query = """
@@ -105,7 +102,7 @@ class HolyEventDB(DataBaseManage):
         return self.execute_query(query, params)
 
 if __name__ == '__main__':
-    with HolyEventDB() as db:
+    with HolyEventDB(None) as db:
         exd = {'holyevent_p1_id': 1,
                'holyevent_p2_id': 1,
                'holyevent_implementer': '123',

@@ -50,7 +50,7 @@ def check_auth_permission(required_permission):
 
             if check_bit_at_position(authnum, check_pos):
                 # 如果有操作权限，执行原函数
-                with UserDB() as db:
+                with UserDB(self) as db:
                     ret = func(self)
                     if ret:
                         exec_log = "[%s] 执行 %s %s 操作 成功" % (
@@ -72,7 +72,7 @@ def check_auth_permission(required_permission):
                               duration=1000)  # 使用 InfoBar 显示错误提示，设置标题、内容、父窗口和持续时间
                 exec_log = "[%s] 执行 %s 操作 失败[权限不足]" % (formatted_time, required_permission)
                 print(exec_log)
-                with UserDB() as db:
+                with UserDB(self) as db:
                     db.add_user_log({"user_id": self.login_info["user_id"], "user_log_info": exec_log})
             return None
 
@@ -123,7 +123,7 @@ class User_MessageBox(MessageBoxBase):
             errors.append("请输入用户名")  # 验证姓名是否填写，如果未填写，添加错误信息
 
         if self.massage_type == 0:
-            with UserDB() as db:
+            with UserDB(self) as db:
                 if db.check_user_name_exists(self.User_info_edit_widgets.line_name.text().strip()):
                     errors.append("用户名已存在")  # 验证学号是否填写，如果未填写，添加错误信息
 
@@ -201,12 +201,12 @@ class User_Show_Interface(QWidget):
         self.BaseUserInterface.BaseQuery.tableWidget.setColumnCount(len(self.user_log_tableView_header))
         self.BaseUserInterface.BaseQuery.tableWidget.setHorizontalHeaderLabels(self.user_log_tableView_header)
         self.Load_User_Log(self.login_info["user_id"])
-        with UserDB() as db:
+        with UserDB(self) as db:
             user_info = db.fetch_users_from_id(self.login_info["user_id"])
         self.BaseUserInterface.set_user_info(user_info)
 
     def Load_User_Log(self, user_id):
-        with UserDB() as db:
+        with UserDB(self) as db:
             self.user_log_all = db.fetch_user_log(user_id, 10)
 
         if self.user_log_all is None:
@@ -266,7 +266,7 @@ class User_Modify_Interface(QWidget):
             self.Load_User(QUERY_TYPE.QUERY_LIKE, self.BaseMainInterface.BaseQuery.searchInput.text())
 
     def Load_User(self, query_type, query_param=None):
-        with UserDB() as db:
+        with UserDB(self) as db:
             if query_type == QUERY_TYPE.QUERY_ALL:
                 self.user_info_all = db.fetch_all_users()
             elif query_type == QUERY_TYPE.QUERY_LIKE:
@@ -287,7 +287,7 @@ class User_Modify_Interface(QWidget):
         w.User_info_edit_widgets.set_checkbox_state_from_bitmap(32767)
         w.titleLabel.setText("添加用户")
         if w.exec():
-            with UserDB() as db:
+            with UserDB(self) as db:
                 get_InputUserMessageinfo = w.get_InputUserMessageinfo()
                 print("get data")
                 db.add_user(get_InputUserMessageinfo)
@@ -301,7 +301,7 @@ class User_Modify_Interface(QWidget):
             w.titleLabel.setText("添加用户")
             w.set_InputUserMessageinfo(self.user_info_all[idx])
             if w.exec():
-                with UserDB() as db:
+                with UserDB(self) as db:
                     db.delete_user(self.user_info_all[idx]["user_id"])
                 self.Load_User(QUERY_TYPE.QUERY_ALL)
 
@@ -312,7 +312,7 @@ class User_Modify_Interface(QWidget):
             w.titleLabel.setText("修改用户信息")
             w.set_InputUserMessageinfo(self.user_info_all[idx])
             if w.exec():
-                with UserDB() as db:
+                with UserDB(self) as db:
                     parishioner_info = w.get_InputUserMessageinfo()
                     parishioner_info["user_id"] = self.user_info_all[idx]["user_id"]
                     db.update_user(parishioner_info)

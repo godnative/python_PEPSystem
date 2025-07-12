@@ -1,23 +1,24 @@
+import random
+
 from PyQt6 import QtWidgets, QtCore
-from PyQt6.QtCore import QDate, pyqtSignal, QTimer, Qt, QObject
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QSpacerItem, QGridLayout
+from PyQt6.QtCharts import (
+    QChart, QChartView, QPieSeries, QBarSet, QBarSeries, QBarCategoryAxis,
+    QValueAxis
+)
+from PyQt6.QtCore import QDate
+from PyQt6.QtCore import Qt, QTimer, pyqtSignal, QObject
+from PyQt6.QtGui import QPainter
+from PyQt6.QtWidgets import QSpacerItem, QGridLayout
+from PyQt6.QtWidgets import (
+    QVBoxLayout, QHBoxLayout, QWidget, QGroupBox
+)
 from qfluentwidgets import MessageBoxBase, CardWidget, LineEdit, InfoBarIcon, \
     IconWidget, FluentIcon, StrongBodyLabel, TransparentToolButton, BodyLabel, LargeTitleLabel, \
     ProgressRing, ScrollArea, CheckBox, CalendarPicker, PushButton, FlyoutView, Flyout
 
 from DataBase.student_db import StudentDB
 from utils.utils_tool import timestamp_to_date
-import random
-from datetime import datetime, timedelta
-from PyQt6.QtWidgets import (
-    QApplication, QMainWindow, QVBoxLayout, QHBoxLayout, QWidget, QPushButton, QGroupBox
-)
-from PyQt6.QtCharts import (
-    QChart, QChartView, QPieSeries, QBarSet, QBarSeries, QBarCategoryAxis,
-    QLineSeries, QValueAxis, QDateTimeAxis
-)
-from PyQt6.QtCore import Qt, QTimer, pyqtSignal, QObject, QDateTime
-from PyQt6.QtGui import QPainter, QFont
+
 
 class ProcessCard(CardWidget):
     def __init__(self, parent=None):
@@ -251,11 +252,14 @@ class TaskCardMain(CardWidget):
         self.scroll_area.setWidget(self.todo_container)
 
         self.verticalLayout_main_vbox.addWidget(self.scroll_area)
+        # noinspection PyUnresolvedReferences
         self.addTaskButton.clicked.connect(self.add_task)
+        # noinspection PyUnresolvedReferences
         self.syncTaskButton.clicked.connect(self.showFlyout2)
 
         # 添加定时器
         self.timer = QTimer(self)
+        # noinspection PyUnresolvedReferences
         self.timer.timeout.connect(self.update_task_visibility)
         self.timer.start(3000)  # 5000 毫秒 = 5 秒
 
@@ -324,6 +328,7 @@ class TaskCardMain(CardWidget):
             percentage = 0
 
         # 发射信号
+        # noinspection PyUnresolvedReferences
         self.taskCountsChanged.emit(self.overTimeCnt, self.finishTimeCnt, self.waitTimeCnt, percentage)
 
     def delete_all_tasks(self):
@@ -335,7 +340,7 @@ class TaskCardMain(CardWidget):
         self.update_task_visibility()
 
     def RefreshTaskCard(self):
-        with StudentDB() as db:
+        with StudentDB(self) as db:
             self.delete_all_tasks()
             self.task_card_parishioner_info = db.fetch_students_with_birthday(self.login_info["parish_id"])
             if self.task_card_parishioner_info:
@@ -353,6 +358,7 @@ class TaskCardMain(CardWidget):
         # add button to view
         button = PushButton()
         button.setText("同步")
+        # noinspection PyUnresolvedReferences
         button.clicked.connect(self.RefreshTaskCard)
         button.setFixedWidth(120)
         view.addWidget(button, align=Qt.AlignmentFlag.AlignRight)
@@ -541,6 +547,7 @@ class ProcessDashboard(QWidget):
             "已完成": 38,
             "未完成": 20,
         }
+        # noinspection PyUnresolvedReferences
         self.chart_updater.update_pie_signal.emit(parishioner_baptism_info)
 
     def init_ui(self):
@@ -613,6 +620,7 @@ class TaskCardMainInterFace(QWidget):
             "已完成": finishTime,
             "未完成": waitTime,
         }
+        # noinspection PyUnresolvedReferences
         self.process_card.chart_updater.update_pie_signal.emit(parishioner_baptism_info)
         # noinspection PyUnresolvedReferences
         self.taskcardwaitfinishnumchanged.emit(waitTime)

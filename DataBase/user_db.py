@@ -210,13 +210,13 @@ class UserDB(DataBaseManage):
         query = "SELECT * FROM user WHERE user_name = ? LIMIT 1"
         print(user_name)
         params = (user_name,)
-        result = self.fetch_query(query, params=params)
-        print(result)
-        return result != []
+        fetch_result = self.fetch_query(query, params=params)
+        return fetch_result != []
+
 
 if __name__ == '__main__':
     # 使用上下文管理器创建 UserDB 类的实例
-    with UserDB() as db:
+    with UserDB(None) as db:
         # 调用 user_login_check 方法检查用户登录信息
         result = db.user_login_check("admin", "password1")
         # 打印查询结果

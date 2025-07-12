@@ -94,3 +94,10 @@ NameError: name 'QGroupBox' is not defined
 
 2025-07-12 23:46:19,753 - WARNING - Qt: QLayout: Attempting to add QLayout "" to TaskCardMainInterFace "TaskCardMainInterFace", which already has a layout
 2025-07-12 23:50:41,525 - WARNING - Qt: QLayout: Attempting to add QLayout "" to TaskCardMainInterFace "TaskCardMainInterFace", which already has a layout
+2025-07-13 00:33:53,483 - ERROR - Ö÷³ÌÐòÒì³£
+Traceback (most recent call last):
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 290, in <module>
+    window = LoginWindow()
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 107, in __init__
+    db = ParishDb()
+TypeError: DataBaseManage.__init__() missing 1 required positional argument: 'windows'

@@ -5,9 +5,6 @@ from utils.name_rand import generate_chinese_name
 
 
 class StudentDB(DataBaseManage):
-    def __init__(self):
-        super().__init__()
-
     def fetch_students(self):
         # 定义查询语句
         query = """
@@ -137,7 +134,7 @@ class StudentDB(DataBaseManage):
         return self.execute_query(query, params)
 
 if __name__ == '__main__':
-    with StudentDB() as db:
+    with StudentDB(None) as db:
         # for i in range(10):
         #     for j in range(10):
         student_name = generate_chinese_name()

@@ -1,13 +1,11 @@
-import os
 import sys
 
-from PyQt6 import QtGui, QtCore, QtWidgets
+from PyQt6 import QtGui, QtCore
 from PyQt6.QtCharts import QPieSeries, QChartView, QChart, QLineSeries, QValueAxis
 from PyQt6.QtCore import Qt, QPointF
 from PyQt6.QtGui import QPixmap, QPainter
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QApplication, QGridLayout, QSpacerItem, QLabel
-from qfluentwidgets import PushButton, setCustomStyleSheet, MessageBoxBase, InfoBar, IconWidget, InfoBarIcon, \
-    StrongBodyLabel, TransparentToolButton, FluentIcon, CardWidget, SimpleCardWidget
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QApplication, QLabel
+from qfluentwidgets import PushButton, setCustomStyleSheet, MessageBoxBase, InfoBar, CardWidget
 
 from DataBase.parish_db import ParishDb
 from parish.parish_dialog import BaseSchoolInterface_Temp
@@ -33,7 +31,7 @@ class AddSchoolInterface(MessageBoxBase):
         elif len(parish_name) > 20:
             errors.append("教区名称不能超过20个字符")
         else:
-            with ParishDb() as db:
+            with ParishDb(self) as db:
                 if db.check_parish_name(parish_name):
                     errors.append("教区名称已存在")
 
@@ -149,17 +147,19 @@ class ShowSchoolInterface(QWidget):
         else:
             # 将时间戳转换为日期时间格式
             from DataBase.parish_db import ParishDb
-            with ParishDb() as db:
+            with ParishDb(self) as db:
                 parish_info = db.get_parish_info(self.login_info["parish_id"])
                 self.schoolInterface_temp.set_parish_info(parish_info)
 
     def setupUi(self):
         self.addButton = PushButton('添加', self)
         setCustomStyleSheet(self.addButton, ADD_BUTTON_STYLE, ADD_BUTTON_STYLE)
+        # noinspection PyUnresolvedReferences
         self.addButton.clicked.connect(self.addSchoolInfo)
 
         self.modifyButton = PushButton('修改', self)
         setCustomStyleSheet(self.modifyButton, DELETE_BUTTON_STYLE, DELETE_BUTTON_STYLE)
+        # noinspection PyUnresolvedReferences
         self.modifyButton.clicked.connect(self.modifySchoolInfo)
 
         self.horizontalLayout = QHBoxLayout()
@@ -175,7 +175,7 @@ class ShowSchoolInterface(QWidget):
     def addSchoolInfo(self):
         w = AddSchoolInterface(self)
         if w.exec():
-            with ParishDb() as db:
+            with ParishDb(self) as db:
                 db.add_parish(w.schoolInterface_temp.get_InputParishDialoginfo())
                 self.restartButton = PushButton('重启以重新选择教区', self)
                 setCustomStyleSheet(self.restartButton, UPDATE_BUTTON_STYLE, UPDATE_BUTTON_STYLE)
@@ -185,7 +185,7 @@ class ShowSchoolInterface(QWidget):
     def modifySchoolInfo(self):
         w = ModifyParishInterface(self.schoolInterface_temp.get_InputParishDialoginfo(), self)
         if w.exec():
-            with ParishDb() as db:
+            with ParishDb(self) as db:
                 db.modify_parish(w.schoolInterface_temp.get_InputParishDialoginfo())
                 self.schoolInterface_temp.set_parish_info(w.schoolInterface_temp.get_InputParishDialoginfo())
 

@@ -150,8 +150,8 @@ class BaseQueryWidget(QWidget):
         else:
             user_type_table = 1
         for row, data in enumerate(datas):
-            review_filed_checkBox = QCheckBox()
-            self.tableWidget.setCellWidget(row, len(header_info), review_filed_checkBox)
+            review_filed_checkbox = QCheckBox()
+            self.tableWidget.setCellWidget(row, len(header_info), review_filed_checkbox)
             for column, key in enumerate(header_info):
                 if key == "student_gender":
                     value = "男" if data.get(key, "") == 0 else "女"
@@ -162,9 +162,9 @@ class BaseQueryWidget(QWidget):
                 elif key == "opera_type":
                     value = data.get(key, "")
                     if user_type_table == 0 and value != 1:
-                        review_filed_checkBox.setDisabled(True)
+                        review_filed_checkbox.setDisabled(True)
                     elif user_type_table == 1 and value != 0:
-                        review_filed_checkBox.setDisabled(True)
+                        review_filed_checkbox.setDisabled(True)
                     value = opera_type[data.get(key, "")]
                 else:
                     value = data.get(key, "")
@@ -197,10 +197,10 @@ class BaseUserInterface(QWidget):
 
         vbox = QVBoxLayout(self)
         title_info_box = QHBoxLayout()
-        spacerItem = QtWidgets.QSpacerItem(100, 20)
+        spaceritem = QtWidgets.QSpacerItem(100, 20)
         self.label = QLabel(self)
         title_info_box.addWidget(self.label)
-        title_info_box.addItem(spacerItem)
+        title_info_box.addItem(spaceritem)
 
         user_info_box = QGridLayout()
         self.label_name = QLabel("姓名")
@@ -228,7 +228,7 @@ class BaseUserInterface(QWidget):
 
         title_info_box.addLayout(user_info_box)
 
-        title_info_box.addItem(spacerItem)
+        title_info_box.addItem(spaceritem)
 
         user_authiory_box = QGridLayout()
         permission_operation = ['', '添加', '删除', '修改']
@@ -245,9 +245,9 @@ class BaseUserInterface(QWidget):
 
         for i in range(1, len(modules)):
             for j in range(1, len(permission_operation)):
-                checkBox = CheckBox()
-                self.checkBox_maxtir.append(checkBox)
-                user_authiory_box.addWidget(checkBox, i, j)
+                check_box = CheckBox()
+                self.checkBox_maxtir.append(check_box)
+                user_authiory_box.addWidget(check_box, i, j)
 
         title_info_box.addLayout(user_authiory_box)
         vbox.addLayout(title_info_box)

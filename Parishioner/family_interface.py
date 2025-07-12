@@ -80,8 +80,10 @@ class Family_MessageBox(MessageBoxBase):
 
         if self.login_info["user_type"] == 0:
             from qfluentwidgets import PushButton
-            self.rejectButton = PushButton("重新录入")
+            self.rejectButton = PushButton()
+            self.rejectButton.setText("重新录入")
             self.buttonLayout.addWidget(self.rejectButton, 1)
+            # noinspection PyUnresolvedReferences
             self.rejectButton.clicked.connect(self.setRejected)
             self.rejectButton.hide()
 
@@ -98,7 +100,7 @@ class Family_MessageBox(MessageBoxBase):
         self.family_Info_Edit_widgets.inputLine_3.setMinimumWidth(200)
 
 
-        with FamilyDB() as db:
+        with FamilyDB(self) as db:
             self.cur_family_cnt = db.get_family_cnt_with_parish_id(self.login_info["parish_id"]) + 1
 
     def setRejected(self):
@@ -233,7 +235,7 @@ class Family_Main_Interface(QWidget):
                              self.BaseMainInterface.BaseQuery.searchInput.text())
 
     def Load_family(self, query_type, school_id, query_param=None):
-        with FamilyDB() as db:
+        with FamilyDB(self) as db:
             if query_type == QUERY_TYPE.QUERY_ALL:
                 self.family_info_all = db.fetch_family_with_school_id(school_id)
             elif query_type == QUERY_TYPE.QUERY_LIKE:
@@ -252,7 +254,7 @@ class Family_Main_Interface(QWidget):
         else:
             opera_type = 1
         update_flag = False
-        with FamilyDB() as db:
+        with FamilyDB(self) as db:
             for idx in range(self.BaseMainInterface.BaseQuery.tableWidget.rowCount()):
                 if self.BaseMainInterface.BaseQuery.tableWidget.cellWidget(idx, len(self.header_info)).isChecked():
                     family_info = self.family_info_all[idx]
@@ -268,7 +270,7 @@ class Family_Main_Interface(QWidget):
         w.titleLabel.setText("添加家庭")
         w.set_family_name_when_add()
         if w.exec():
-            with FamilyDB() as db:
+            with FamilyDB(self) as db:
                 get_InputParishionerMessageinfo = w.get_InputFamilyMessageinfo()
                 get_InputParishionerMessageinfo["family_school_id"] = self.cur_parish_id
                 get_InputParishionerMessageinfo["operator"] = self.login_info["user_name"]
@@ -294,13 +296,13 @@ class Family_Main_Interface(QWidget):
             w = Family_MessageBox(self.login_info, 1, self)
             del_family_id = self.family_info_all[idx]["family_id"]
             w.titleLabel.setText("删除家庭")
-            with StudentDB() as db:
+            with StudentDB(self) as db:
                 parishioner_info_all = db.fetch_students_with_school_id_and_family_id(del_family_id)
                 if parishioner_info_all is not None:
                     w.BaseQueryWidget.set_viewWidget_data(w.header_info, parishioner_info_all)
             w.set_InputfFamilyMessageinfo(self.family_info_all[idx])
             if w.exec():
-                with FamilyDB() as db:
+                with FamilyDB(self) as db:
                     db.delete_family(self.family_info_all[idx]["family_id"])
                 self.Load_family(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
                 return True
@@ -314,7 +316,7 @@ class Family_Main_Interface(QWidget):
             w.rejectButton.show()
             del_family_id = self.family_info_all[idx]["family_id"]
             w.titleLabel.setText("查看/修改家庭")
-            with StudentDB() as db:
+            with StudentDB(self) as db:
                 parishioner_info_all = db.fetch_students_with_school_id_and_family_id(del_family_id)
                 if parishioner_info_all is not None:
                     w.BaseQueryWidget.set_viewWidget_data(w.header_info, parishioner_info_all)
@@ -322,7 +324,7 @@ class Family_Main_Interface(QWidget):
             if w.exec():
                 if w.readOnly_flag is True:
                     return False
-                with FamilyDB() as db:
+                with FamilyDB(self) as db:
                     if w.set_reject_flag is True and self.login_info["user_type"] == 0:
                         db.set_data_opera_type(self.family_info_all[idx]["family_id"], 0)
                         return True

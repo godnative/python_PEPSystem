@@ -1,16 +1,20 @@
 import sqlite3
 import os
 from sqlite3 import Error
-
+from qfluentwidgets import InfoBar
 
 
 class DataBaseManage:
-    def __init__(self, ):
+    def __init__(self, windows):
+        self.windows = windows
         self.connection = None
         self.db_path = "./DataBase/data.db"
 
     def __enter__(self):
         self.connection = self.create_connection()
+        if self.connection is None:
+            InfoBar.error(title="链接失败", content="链接数据库失败", parent=self.windows,
+                          duration=3000)  # 使用 InfoBar 显示错误提示，设置标题、内容、父窗口和持续时间
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -178,7 +182,7 @@ class DataBaseManage:
 
     def fetch_query(self, query, single=False, params=None):
         result = None
-
+        err_log = ""
         if self.connection:
             try:
                 cursor = self.connection.cursor()
@@ -195,12 +199,17 @@ class DataBaseManage:
                     result = [dict(zip(columns, row)) for row in result]
             except Exception as e:
                 print(e)
+                err_log = f'Error: {e}'
         else:
             print('Connection failed')
-
+            err_log = 'Connection failed'
+        if result is None:
+            InfoBar.error(title="链接失败", content=err_log, parent=self.windows,
+                          duration=3000)  # 使用 InfoBar 显示错误提示，设置标题、内容、父窗口和持续时间
         return result
 
     def execute_query(self, query, params):
+        err_log = ""
         if self.connection:
             try:
                 cursor = self.connection.cursor()
@@ -209,26 +218,34 @@ class DataBaseManage:
                 return True
             except Exception as e:
                 print(f'Error: {e}')
+                err_log = f'Error: {e}'
                 self.connection.rollback()
-                return None
         else:
             print('Connection failed')
+            err_log = 'Connection failed'
+        InfoBar.error(title="链接失败", content=err_log, parent=self.windows,
+                      duration=3000)  # 使用 InfoBar 显示错误提示，设置标题、内容、父窗口和持续时间
         return None
 
     def execute_query_return_id(self, query, params):
+        err_log = ""
         if self.connection:
             try:
                 cursor = self.connection.cursor()
                 cursor.execute(query, params)
-                id = cursor.lastrowid
+                get_id = cursor.lastrowid
                 self.connection.commit()
-                return id
+                return get_id
             except Exception as e:
                 print(f'Error: {e}')
+                err_log = f'Error: {e}'
                 self.connection.rollback()
-                return None
         else:
             print('Connection failed')
+            err_log = 'Connection failed'
+
+        InfoBar.error(title="链接失败", content=err_log, parent=self.windows,
+                      duration=3000)  # 使用 InfoBar 显示错误提示，设置标题、内容、父窗口和持续时间
         return None
 
     def close_connection(self):
@@ -237,5 +254,5 @@ class DataBaseManage:
 
 
 if __name__ == '__main__':
-    with DataBaseManage() as db:
+    with DataBaseManage(None) as db:
         pass

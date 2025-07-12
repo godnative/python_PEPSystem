@@ -66,7 +66,7 @@ class ParishDb(DataBaseManage):
 
 
 if __name__ == '__main__':
-    with ParishDb() as db:
+    with ParishDb(None) as db:
         for i in range(10):
             family_name = "崇义小学第%d号家庭" % (i + 1)
             family_address = "%d Main Street" % (random.randint(0, 1000))

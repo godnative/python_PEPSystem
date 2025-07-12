@@ -1,37 +1,38 @@
 # coding:utf-8
 import os
 import shutil
-
-from qfluentwidgets import (SettingCardGroup, SwitchSettingCard, FolderListSettingCard,
-                            OptionsSettingCard, RangeSettingCard, PushSettingCard,
-                            ColorSettingCard, HyperlinkCard, PrimaryPushSettingCard, ScrollArea,
-                            ComboBoxSettingCard, ExpandLayout, Theme, InfoBar, CustomColorSettingCard,
-                            setTheme, setThemeColor, isDarkTheme, SettingCard, FluentIconBase, HyperlinkButton)
-from qfluentwidgets import FluentIcon as FIF
-from PyQt6.QtCore import Qt, pyqtSignal, QUrl, QStandardPaths
-from PyQt6.QtGui import QDesktopServices, QFont
-from PyQt6.QtWidgets import QWidget, QLabel, QFontDialog, QFileDialog, QPushButton
-
+from datetime import datetime
 from typing import Union
-from PyQt6.QtGui import QColor, QIcon, QPainter
+
+from PyQt6.QtCore import Qt, pyqtSignal
+from PyQt6.QtGui import QFont
+from PyQt6.QtGui import QIcon
+from PyQt6.QtWidgets import QWidget, QLabel, QFileDialog, QPushButton
+from qfluentwidgets import FluentIcon as FIF
+from qfluentwidgets import (SettingCardGroup, PushSettingCard,
+                            ScrollArea,
+                            ExpandLayout, SettingCard, FluentIconBase, HyperlinkButton)
 
 from utils.msyscfg import SYSTEM_DATABASE_BACKUP_FILE_PATH, SYSTEM_DATABASE_FILE_PATH, AUTHOR, VERSION
-from datetime import datetime
+
 
 class PushAndLinkSettingCard(SettingCard):
     """ Setting card with a push button """
 
     clicked = pyqtSignal()
 
-    def __init__(self, url, button_text, url_text, icon: Union[str, QIcon, FluentIconBase], title, content=None, parent=None):
+    def __init__(self, url, button_text, url_text, icon: Union[str, QIcon, FluentIconBase], title, content=None,
+                 parent=None):
         super().__init__(icon, title, content, parent)
         self.button = QPushButton(button_text, self)
         self.linkButton = HyperlinkButton(url, url_text, self)
         self.hBoxLayout.addWidget(self.button, 0, Qt.AlignmentFlag.AlignRight)
         self.hBoxLayout.addWidget(self.linkButton, 0, Qt.AlignmentFlag.AlignRight)
         self.hBoxLayout.addSpacing(16)
+        # noinspection PyUnresolvedReferences
         self.button.clicked.connect(self.clicked)
         print(self.linkButton.getUrl())
+
 
 class SettingInterface(ScrollArea):
     """ Setting interface """
@@ -124,13 +125,14 @@ class SettingInterface(ScrollArea):
                 os.remove(SYSTEM_DATABASE_FILE_PATH + 'bak')
             pass
 
-    def __onBackUpDataBaseCardClicked(self):
+    @staticmethod
+    def __onBackUpDataBaseCardClicked():
         """ download folder card clicked slot """
         if os.path.exists(SYSTEM_DATABASE_BACKUP_FILE_PATH):
             current_time = datetime.now()
             formatted_time = current_time.strftime("%Y_%m_%d_%H_%M_%S")
             shutil.copy(SYSTEM_DATABASE_FILE_PATH,
-                        SYSTEM_DATABASE_BACKUP_FILE_PATH + '/database_'+ formatted_time + '.db')
+                        SYSTEM_DATABASE_BACKUP_FILE_PATH + '/database_' + formatted_time + '.db')
         else:
             print("file not exist")
 
@@ -138,6 +140,7 @@ class SettingInterface(ScrollArea):
         self.restoreDataBaseCard.clicked.connect(
             self.__onRestoreDataBaseCardClicked)
 
+        # noinspection PyUnresolvedReferences
         self.BackUpDataBaseCard.clicked.connect(
             self.__onBackUpDataBaseCardClicked
         )

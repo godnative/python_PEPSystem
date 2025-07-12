@@ -1,9 +1,7 @@
 # coding:utf-8
 import sys
 
-from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QApplication, QHBoxLayout, QWidget
-from qframelesswindow import FramelessWindow, StandardTitleBar
 
 from setting.setting_interface import SettingInterface
 
@@ -24,7 +22,7 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
 
     # create main window
-    w = SettingMainInterFace()
+    w = SettingMainInterFace("tstSettingMainInterFace")
     w.resize(800, 600)
     w.show()
     app.exec()

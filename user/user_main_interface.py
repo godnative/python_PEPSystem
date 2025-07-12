@@ -51,6 +51,7 @@ class UserMainInterface(QWidget):
 
         qrouter.setDefaultRouteKey(self.stackedWidget, self.user_show_interface.objectName())
 
+        # noinspection PyUnresolvedReferences
         self.stackedWidget.currentChanged.connect(self.onCurrentIndexChanged)
 
     def addSubInterface(self, widget, objectName, text, icon):

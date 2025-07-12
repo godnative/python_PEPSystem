@@ -56,6 +56,7 @@ class ParishionerMainInterface(QWidget):
 
         qrouter.setDefaultRouteKey(self.stackedWidget, self.parishioner_interface.objectName())
 
+        # noinspection PyUnresolvedReferences
         self.stackedWidget.currentChanged.connect(self.onCurrentIndexChanged)
 
     def addSubInterface(self, widget, objectName, text, icon):
