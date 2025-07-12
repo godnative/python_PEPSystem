@@ -1,13 +1,23 @@
 from PyQt6 import QtWidgets, QtCore
-from PyQt6.QtCore import QDate, pyqtSignal, QTimer, Qt
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QSpacerItem
+from PyQt6.QtCore import QDate, pyqtSignal, QTimer, Qt, QObject
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QSpacerItem, QGridLayout
 from qfluentwidgets import MessageBoxBase, CardWidget, LineEdit, InfoBarIcon, \
     IconWidget, FluentIcon, StrongBodyLabel, TransparentToolButton, BodyLabel, LargeTitleLabel, \
     ProgressRing, ScrollArea, CheckBox, CalendarPicker, PushButton, FlyoutView, Flyout
 
 from DataBase.student_db import StudentDB
 from utils.utils_tool import timestamp_to_date
-
+import random
+from datetime import datetime, timedelta
+from PyQt6.QtWidgets import (
+    QApplication, QMainWindow, QVBoxLayout, QHBoxLayout, QWidget, QPushButton, QGroupBox
+)
+from PyQt6.QtCharts import (
+    QChart, QChartView, QPieSeries, QBarSet, QBarSeries, QBarCategoryAxis,
+    QLineSeries, QValueAxis, QDateTimeAxis
+)
+from PyQt6.QtCore import Qt, QTimer, pyqtSignal, QObject, QDateTime
+from PyQt6.QtGui import QPainter, QFont
 
 class ProcessCard(CardWidget):
     def __init__(self, parent=None):
@@ -355,6 +365,220 @@ class TaskCardMain(CardWidget):
         w = Flyout.make(view, self.syncTaskButton, self)
         view.closed.connect(w.close)
 
+class ChartUpdater(QObject):
+    """用于跨线程更新图表的信号类"""
+    update_pie_signal = pyqtSignal(dict)
+    update_bar_signal = pyqtSignal(list)
+
+# noinspection PyUnresolvedReferences
+class ParishDashboard(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("数据可视化仪表板")
+
+        # 创建信号对象
+        self.chart_updater = ChartUpdater()
+
+        # 初始化UI
+        self.init_ui()
+
+        # 连接信号槽
+        # noinspection PyUnresolvedReferences
+        self.chart_updater.update_pie_signal.connect(self.update_pie_chart)
+        self.chart_updater.update_bar_signal.connect(self.update_bar_chart)
+        # 创建图表
+        self.create_pie_chart()
+        self.create_bar_chart()
+
+        self.simulate_data_updates()
+
+    def init_ui(self):
+        """初始化用户界面"""
+
+        # 左侧图表区域
+        up_layout = QHBoxLayout(self)
+
+        # 饼图组
+        pie_group = QGroupBox("领洗人员数量")
+        pie_layout = QVBoxLayout()
+        self.pie_chart_view = QChartView()
+        self.pie_chart_view.setRenderHint(QPainter.RenderHint.Antialiasing)
+        pie_layout.addWidget(self.pie_chart_view)
+        pie_group.setLayout(pie_layout)
+        up_layout.addWidget(pie_group)
+
+        # 柱状图组
+        bar_group = QGroupBox("人员年龄分布")
+        bar_layout = QVBoxLayout()
+        self.bar_chart_view = QChartView()
+        self.bar_chart_view.setRenderHint(QPainter.RenderHint.Antialiasing)
+        bar_layout.addWidget(self.bar_chart_view)
+        bar_group.setLayout(bar_layout)
+        up_layout.addWidget(bar_group)
+
+    def create_pie_chart(self):
+        """创建饼图"""
+        self.pie_series = QPieSeries()
+        self.pie_series.setHoleSize(0.35)
+
+        # 创建图表
+        chart = QChart()
+        chart.addSeries(self.pie_series)
+        chart.setTitle("人员领洗比例")
+        chart.legend().setVisible(True)
+        chart.legend().setAlignment(Qt.AlignmentFlag.AlignRight)
+
+        self.pie_chart_view.setChart(chart)
+
+    def create_bar_chart(self):
+        """创建柱状图"""
+        self.bar_series = QBarSeries()
+        self.bar_set = QBarSet("人数")
+
+        # 统计年龄段
+        parishioner_age_data = [random.randint(0, 90) for _ in range(50)]
+        self.update_bar_statistics(parishioner_age_data)
+
+        self.bar_series.append(self.bar_set)
+
+        # 创建图表
+        chart = QChart()
+        chart.addSeries(self.bar_series)
+        chart.setTitle("人员年龄分布")
+        chart.setAnimationOptions(QChart.AnimationOption.SeriesAnimations)
+
+        # X轴
+        self.bar_categories = ["0-20岁", "20-40岁", "40-60岁", "60岁以上"]
+        axis_x = QBarCategoryAxis()
+        axis_x.append(self.bar_categories)
+        chart.addAxis(axis_x, Qt.AlignmentFlag.AlignBottom)
+        self.bar_series.attachAxis(axis_x)
+
+        # Y轴
+        axis_y = QValueAxis()
+        axis_y.setTitleText("人数")
+        chart.addAxis(axis_y, Qt.AlignmentFlag.AlignLeft)
+        self.bar_series.attachAxis(axis_y)
+
+        self.bar_chart_view.setChart(chart)
+
+    def update_bar_statistics(self, age_data):
+        """更新柱状图统计数据"""
+        # 先移除所有数据点（PyQt6中QBarSet没有clear方法，需要逐个移除）
+        while self.bar_set.count() > 0:
+            self.bar_set.remove(0)
+
+        # 统计各年龄段人数
+        age_groups = {
+            "0-20岁": 0,
+            "20-40岁": 0,
+            "40-60岁": 0,
+            "60岁以上": 0
+        }
+
+        for age in age_data:
+            if age < 20:
+                age_groups["0-20岁"] += 1
+            elif 20 <= age < 40:
+                age_groups["20-40岁"] += 1
+            elif 40 <= age < 60:
+                age_groups["40-60岁"] += 1
+            else:
+                age_groups["60岁以上"] += 1
+        # 添加到柱状图数据集
+        for count in age_groups.values():
+            self.bar_set.append(count)
+
+    def simulate_data_updates(self):
+        """模拟数据更新（可以在其他线程中调用）"""
+
+        # 更新水果数据（线程安全）
+        parishioner_baptism_info = {
+            "领洗人数": 65,
+            "未领洗人数": 38
+        }
+        self.chart_updater.update_pie_signal.emit(parishioner_baptism_info)
+
+        # 更新年龄数据（添加一些新数据）
+        parishioner_age_data = [random.randint(0, 90) for _ in range(50)]
+        self.chart_updater.update_bar_signal.emit(parishioner_age_data)
+
+    def update_pie_chart(self, new_data):
+        """更新饼图（通过信号槽调用）"""
+        self.pie_series.clear()
+
+        for fruit, count in new_data.items():
+            slice_ = self.pie_series.append(f"{fruit}: {count}", count)
+            slice_.setLabelVisible(True)
+
+    def update_bar_chart(self, age_data):
+        """更新柱状图（通过信号槽调用）"""
+        self.update_bar_statistics(age_data)
+
+        # 获取图表并强制更新
+        chart = self.bar_chart_view.chart()
+        if chart:
+            chart.update()  # 使用 QChart 的 update() 方法而不是 QBarSeries 的 invalidate()
+
+class ProcessDashboard(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        # 创建信号对象
+        self.chart_updater = ChartUpdater()
+
+        # 初始化UI
+        self.init_ui()
+
+        # 连接信号槽
+        # noinspection PyUnresolvedReferences
+        self.chart_updater.update_pie_signal.connect(self.update_pie_chart)
+        # 创建图表
+        self.create_pie_chart()
+
+        parishioner_baptism_info = {
+            "逾期": 65,
+            "已完成": 38,
+            "未完成": 20,
+        }
+        self.chart_updater.update_pie_signal.emit(parishioner_baptism_info)
+
+    def init_ui(self):
+        """初始化用户界面"""
+
+        # 左侧图表区域
+        up_layout = QHBoxLayout(self)
+        # 饼图组
+        pie_group = QGroupBox("任务完成情况")
+        pie_layout = QVBoxLayout()
+        self.pie_chart_view = QChartView()
+        self.pie_chart_view.setRenderHint(QPainter.RenderHint.Antialiasing)
+        pie_layout.addWidget(self.pie_chart_view)
+        pie_group.setLayout(pie_layout)
+        up_layout.addWidget(pie_group)
+
+    def create_pie_chart(self):
+        """创建饼图"""
+        self.pie_series = QPieSeries()
+        self.pie_series.setHoleSize(0.35)
+
+        # 创建图表
+        chart = QChart()
+        chart.addSeries(self.pie_series)
+        chart.setTitle("任务完成情况")
+        chart.legend().setVisible(True)
+        chart.legend().setAlignment(Qt.AlignmentFlag.AlignRight)
+
+        self.pie_chart_view.setChart(chart)
+
+    def update_pie_chart(self, new_data):
+        """更新饼图（通过信号槽调用）"""
+        self.pie_series.clear()
+
+        for fruit, count in new_data.items():
+            slice_ = self.pie_series.append(f"{fruit}: {count}", count)
+            slice_.setLabelVisible(True)
+
 
 class TaskCardMainInterFace(QWidget):
     taskcardwaitfinishnumchanged = pyqtSignal(int)
@@ -365,21 +589,30 @@ class TaskCardMainInterFace(QWidget):
         self.task_card_parishioner_info = None
         self.setObjectName(objectname)
 
-        layout = QHBoxLayout(self)
+        main_layout = QGridLayout(self)
+
+        self.ParishDashboard = ParishDashboard()
+        main_layout.addWidget(self.ParishDashboard, 0,0,1,2)
 
         # 实际功能界面
-        self.process_card = ProcessCard(self)
-        # self.process_card.setFixedSize(400, 400)
+        self.process_card = ProcessDashboard()
         self.task_card_main = TaskCardMain(self.login_info, self)
-        self.task_card_main.setFixedSize(800, 600)
-        layout.addWidget(self.process_card)
-        layout.addWidget(self.task_card_main)
+        self.process_card.setMinimumHeight(500)
+        main_layout.addWidget(self.process_card, 1, 0)
+        main_layout.addWidget(self.task_card_main, 1, 1)
+
+
 
         # 连接信号量
         # noinspection PyUnresolvedReferences
         self.task_card_main.taskCountsChanged.connect(self.setOFWValue)
 
     def setOFWValue(self, overTime, finishTime, waitTime, percentage):
-        self.process_card.setOFWValue(overTime, finishTime, waitTime, percentage)
+        parishioner_baptism_info = {
+            "逾期": overTime,
+            "已完成": finishTime,
+            "未完成": waitTime,
+        }
+        self.process_card.chart_updater.update_pie_signal.emit(parishioner_baptism_info)
         # noinspection PyUnresolvedReferences
         self.taskcardwaitfinishnumchanged.emit(waitTime)

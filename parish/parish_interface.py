@@ -2,12 +2,12 @@ import os
 import sys
 
 from PyQt6 import QtGui, QtCore, QtWidgets
-from PyQt6.QtCharts import QPieSeries, QChartView, QChart
-from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QPixmap
+from PyQt6.QtCharts import QPieSeries, QChartView, QChart, QLineSeries, QValueAxis
+from PyQt6.QtCore import Qt, QPointF
+from PyQt6.QtGui import QPixmap, QPainter
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QApplication, QGridLayout, QSpacerItem, QLabel
 from qfluentwidgets import PushButton, setCustomStyleSheet, MessageBoxBase, InfoBar, IconWidget, InfoBarIcon, \
-    StrongBodyLabel, TransparentToolButton, FluentIcon, CardWidget
+    StrongBodyLabel, TransparentToolButton, FluentIcon, CardWidget, SimpleCardWidget
 
 from DataBase.parish_db import ParishDb
 from parish.parish_dialog import BaseSchoolInterface_Temp
@@ -190,39 +190,18 @@ class ShowSchoolInterface(QWidget):
                 self.schoolInterface_temp.set_parish_info(w.schoolInterface_temp.get_InputParishDialoginfo())
 
 
-class GenderShowInfo(CardWidget):
+class ParishInfoShowInfo(CardWidget):
     def __init__(self):
         super().__init__()
         self.setObjectName("GenderShowInfo")
 
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.sizePolicy().hasHeightForWidth())
-        self.setSizePolicy(sizePolicy)
-
         self.verticalLayout = QVBoxLayout(self)
-
-        self.horizontalLayout_title = QHBoxLayout()
-        self.horizontalLayout_title.setContentsMargins(5, -1, -1, -1)
-        self.progressIcon = IconWidget(self)
-        self.progressIcon.setFixedSize(24, 24)
-        self.progressIcon.setIcon(InfoBarIcon.SUCCESS)
-        self.horizontalLayout_title.addWidget(self.progressIcon)
-        self.dailyProgressLabel = StrongBodyLabel(text="本堂区男女教友比例", parent=self)
-        self.horizontalLayout_title.addWidget(self.dailyProgressLabel)
-        spacerItem1 = QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.horizontalLayout_title.addItem(spacerItem1)
-        self.editButton = TransparentToolButton(parent=self)
-        self.editButton.setIcon(FluentIcon.EDIT)
-        self.horizontalLayout_title.addWidget(self.editButton)
-        self.verticalLayout.addLayout(self.horizontalLayout_title)
 
         self.male_ratio = 60
         self.female_ratio = 40
 
         # 创建饼图
-        self.create_pie_chart()
+        self.create_line_chart()
 
     def create_pie_chart(self):
         series = QPieSeries()
@@ -248,6 +227,59 @@ class GenderShowInfo(CardWidget):
         # 创建图表视图
         self.chart_view = QChartView(self.chart)
         self.chart_view.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
+
+        self.verticalLayout.addWidget(self.chart_view)
+
+    def create_line_chart(self):
+        # 创建折线系列
+        chart = QChart()
+        chart.setTitle("销售数据趋势")
+        chart.setAnimationOptions(QChart.AnimationOption.AllAnimations)
+
+        # 创建折线系列
+        series = QLineSeries()
+        series.setName("2023年销售额")
+
+        # 添加数据点 (x, y)
+        data = [
+            (1, 10),
+            (2, 15),
+            (3, 13),
+            (4, 17),
+            (5, 20),
+            (6, 25),
+            (7, 23),
+            (8, 28),
+            (9, 30),
+            (10, 35),
+            (11, 33),
+            (12, 40)
+        ]
+
+        for x, y in data:
+            series.append(QPointF(x, y))
+
+        # 将系列添加到图表
+        chart.addSeries(series)
+
+        # 创建坐标轴
+        axis_x = QValueAxis()
+        axis_x.setTitleText("月份")
+        axis_x.setRange(0, 12)
+
+        axis_y = QValueAxis()
+        axis_y.setTitleText("销售额 (万元)")
+        axis_y.setRange(0, 45)
+
+        # 将坐标轴附加到系列
+        chart.addAxis(axis_x, Qt.AlignmentFlag.AlignBottom)
+        chart.addAxis(axis_y, Qt.AlignmentFlag.AlignLeft)
+        series.attachAxis(axis_x)
+        series.attachAxis(axis_y)
+
+        # 创建图表视图
+        self.chart_view = QChartView(chart)
+        self.chart_view.setRenderHint(QPainter.RenderHint.Antialiasing)
 
         self.verticalLayout.addWidget(self.chart_view)
 
@@ -278,6 +310,6 @@ class GenderShowInfo(CardWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    window = ShowSchoolInterface(None)
+    window = ParishInfoShowInfo()
     window.show()
     sys.exit(app.exec())

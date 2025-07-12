@@ -230,6 +230,7 @@ class MainWindow(MSFluentWindow):
             self.studentInterface = ParishionerMainInterface(self.login_info, "Parishioner_Main_Interface")
             self.videoInterface = EvenMainTabInterface(self.login_info, "EvenMainTabInterface")
             self.libraryInterface = UserMainInterface(self.login_info, "UserMainInterface")
+
             self.taskCardInterface = TaskCardMainInterFace(self.login_info, "TaskCardMainInterFace")
 
             self.addSubInterface(self.schoolInterface, FIF.APPLICATION, '教区')

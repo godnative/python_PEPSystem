@@ -441,13 +441,7 @@ class Event_Main_Interface(QWidget):
             implementer = self.Event_all_info[idx]["holyevent_implementer"]
             witness = self.Event_all_info[idx]["holyevent_witness"]
             data_str = """"""
-            com_info = f"""
-                        施行人:_{implementer}_ \n\n
-                        见证人:_{witness}_ \n\n
-                        堂区神父::_{parish_priest}_ \n\n
-                        堂区地址::_{parish_address}_ \n\n
-                        堂区联系电话::_{parish_phonenum}_ \n\n</font>
-                        \n\n***\n\n"""
+
             if self.evenType == 0:
                 data_str = f"""<center><font size=9>证明</font></center>\n\n***\n\n  兹证明 _{p1_name}_ 圣名: _{p1_holyname}_ 于 _{date}_ 在 _{parish_name}_ 举行坚振圣事\n\n施行人:_{implementer}_</div> \n\n见证人:_{witness}_ \n\n堂区神父:_{parish_priest}_ \n\n堂区地址:_{parish_address}_ \n\n堂区联系电话:_{parish_phonenum}_\n\n***\n\n"""
             elif self.evenType == 1:

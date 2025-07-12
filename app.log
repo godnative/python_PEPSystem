@@ -74,3 +74,23 @@ Traceback (most recent call last):
     
 KeyboardInterrupt
 
+2025-07-12 23:45:54,627 - ERROR - 未捕获异常:
+Traceback (most recent call last):
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 181, in login
+    mainwindow = MainWindow(login_info)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 235, in __init__
+    self.taskCardInterface = TaskCardMainInterFace(self.login_info, "TaskCardMainInterFace")
+                             ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 526, in __init__
+    self.ParishDashboard = ParishDashboard()
+                           ~~~~~~~~~~~~~~~^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 374, in __init__
+    self.init_ui()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 393, in init_ui
+    pie_group = QGroupBox("领洗人员数量")
+                ^^^^^^^^^
+NameError: name 'QGroupBox' is not defined
+
+2025-07-12 23:46:19,753 - WARNING - Qt: QLayout: Attempting to add QLayout "" to TaskCardMainInterFace "TaskCardMainInterFace", which already has a layout
+2025-07-12 23:50:41,525 - WARNING - Qt: QLayout: Attempting to add QLayout "" to TaskCardMainInterFace "TaskCardMainInterFace", which already has a layout
