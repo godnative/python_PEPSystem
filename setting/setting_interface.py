@@ -8,11 +8,12 @@ from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QFont
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QWidget, QLabel, QFileDialog, QPushButton
-from qfluentwidgets import FluentIcon as FIF
+from qfluentwidgets import FluentIcon as FIF, SwitchSettingCard
 from qfluentwidgets import (SettingCardGroup, PushSettingCard,
                             ScrollArea,
                             ExpandLayout, SettingCard, FluentIconBase, HyperlinkButton)
 
+from sqlite_server.flask_server import FlaskServer
 from utils.msyscfg import SYSTEM_DATABASE_BACKUP_FILE_PATH, SYSTEM_DATABASE_FILE_PATH, AUTHOR, VERSION
 
 
@@ -31,13 +32,13 @@ class PushAndLinkSettingCard(SettingCard):
         self.hBoxLayout.addSpacing(16)
         # noinspection PyUnresolvedReferences
         self.button.clicked.connect(self.clicked)
-        print(self.linkButton.getUrl())
 
 
 class SettingInterface(ScrollArea):
     """ Setting interface """
 
     downloadFolderChanged = pyqtSignal(str)
+    acrylicEnableChanged = pyqtSignal(bool)
 
     def __init__(self):
         super().__init__()
@@ -73,8 +74,21 @@ class SettingInterface(ScrollArea):
             self.musicInThisPCGroup
         )
 
+        self.personalGroup = SettingCardGroup(
+            self.tr('开放服务器端口'), self.scrollWidget)
+
+        self.enableAcrylicCard = SwitchSettingCard(
+            FIF.TRANSPARENT,
+            self.tr("开启服务器端口"),
+            self.tr("状态: 停止运行"),
+            configItem=None,
+            parent=self.personalGroup
+        )
+
         # application
-        self.aboutGroup = SettingCardGroup(self.tr('关于'), self.scrollWidget)
+        self.aboutGroup = SettingCardGroup(
+            self.tr('关于'), self.scrollWidget)
+
         self.aboutCard = SettingCard(
             FIF.INFO,
             self.tr('关于'),
@@ -102,12 +116,15 @@ class SettingInterface(ScrollArea):
         self.musicInThisPCGroup.addSettingCard(self.BackUpDataBaseCard)
         self.musicInThisPCGroup.addSettingCard(self.restoreDataBaseCard)
 
+        self.personalGroup.addSettingCard(self.enableAcrylicCard)
+
         self.aboutGroup.addSettingCard(self.aboutCard)
 
         # add setting card group to layout
         self.expandLayout.setSpacing(28)
         self.expandLayout.setContentsMargins(60, 10, 60, 0)
         self.expandLayout.addWidget(self.musicInThisPCGroup)
+        self.expandLayout.addWidget(self.personalGroup)
         self.expandLayout.addWidget(self.aboutGroup)
 
     def __onRestoreDataBaseCardClicked(self):
@@ -136,6 +153,23 @@ class SettingInterface(ScrollArea):
         else:
             print("file not exist")
 
+    def __acrylicEnableChanged(self, enabled: bool):
+        host = "127.0.0.1"
+        port = 54321
+        if enabled:
+            try:
+                self.flask_server = FlaskServer(host=host, port=port)
+                self.flask_server.start()
+                self.enableAcrylicCard.contentLabel.setText(f"状态: 运行中 (http://{host}:{port})")
+            except Exception as e:
+                self.enableAcrylicCard.contentLabel.setText(f"无法启动服务器: {str(e)}")
+        else:
+            if self.flask_server:
+                self.flask_server.stop()
+                self.flask_server = None
+            self.enableAcrylicCard.contentLabel.setText(f"状态: 停止运行 (http://{host}:{port})")
+
+
     def __connectSignalToSlot(self):
         self.restoreDataBaseCard.clicked.connect(
             self.__onRestoreDataBaseCardClicked)
@@ -144,3 +178,6 @@ class SettingInterface(ScrollArea):
         self.BackUpDataBaseCard.clicked.connect(
             self.__onBackUpDataBaseCardClicked
         )
+
+        self.enableAcrylicCard.checkedChanged.connect(
+            self.__acrylicEnableChanged)

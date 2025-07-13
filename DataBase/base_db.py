@@ -12,7 +12,7 @@ class DataBaseManage:
 
     def __enter__(self):
         self.connection = self.create_connection()
-        if self.connection is None:
+        if self.connection is None and self.windows is not None:
             InfoBar.error(title="链接失败", content="链接数据库失败", parent=self.windows,
                           duration=3000)  # 使用 InfoBar 显示错误提示，设置标题、内容、父窗口和持续时间
         return self
@@ -203,7 +203,7 @@ class DataBaseManage:
         else:
             print('Connection failed')
             err_log = 'Connection failed'
-        if result is None:
+        if result is None and self.windows is not None:
             InfoBar.error(title="链接失败", content=err_log, parent=self.windows,
                           duration=3000)  # 使用 InfoBar 显示错误提示，设置标题、内容、父窗口和持续时间
         return result
@@ -223,8 +223,9 @@ class DataBaseManage:
         else:
             print('Connection failed')
             err_log = 'Connection failed'
-        InfoBar.error(title="链接失败", content=err_log, parent=self.windows,
-                      duration=3000)  # 使用 InfoBar 显示错误提示，设置标题、内容、父窗口和持续时间
+        if self.windows is not None:
+            InfoBar.error(title="链接失败", content=err_log, parent=self.windows,
+                          duration=3000)  # 使用 InfoBar 显示错误提示，设置标题、内容、父窗口和持续时间
         return None
 
     def execute_query_return_id(self, query, params):
@@ -243,9 +244,9 @@ class DataBaseManage:
         else:
             print('Connection failed')
             err_log = 'Connection failed'
-
-        InfoBar.error(title="链接失败", content=err_log, parent=self.windows,
-                      duration=3000)  # 使用 InfoBar 显示错误提示，设置标题、内容、父窗口和持续时间
+        if self.windows is not None:
+            InfoBar.error(title="链接失败", content=err_log, parent=self.windows,
+                          duration=3000)  # 使用 InfoBar 显示错误提示，设置标题、内容、父窗口和持续时间
         return None
 
     def close_connection(self):

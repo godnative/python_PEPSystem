@@ -101,3 +101,41 @@ Traceback (most recent call last):
   File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 107, in __init__
     db = ParishDb()
 TypeError: DataBaseManage.__init__() missing 1 required positional argument: 'windows'
+2025-07-13 12:45:36,047 - ERROR - 未捕获异常:
+Traceback (most recent call last):
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 163, in login
+    login_info["user_id"] = user_info["user_id"]
+                            ~~~~~~~~~^^^^^^^^^^^
+TypeError: list indices must be integers or slices, not str
+
+2025-07-13 12:47:05,556 - ERROR - 未捕获异常:
+Traceback (most recent call last):
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 164, in login
+    login_info["user_id"] = user_info["user_id"]
+                            ~~~~~~~~~^^^^^^^^^^^
+TypeError: list indices must be integers or slices, not str
+
+2025-07-13 12:47:25,668 - ERROR - 未捕获异常:
+Traceback (most recent call last):
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 182, in login
+    mainwindow = MainWindow(login_info)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 222, in __init__
+    self.schoolInterface = ShowSchoolInterface(self.login_info, "ShowSchoolInterface")
+                           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_interface.py", line 152, in __init__
+    self.schoolInterface_temp.set_parish_info(parish_info)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_dialog.py", line 114, in set_parish_info
+    self.lineEdit_2.setText(parish_info['parish_name'])
+                            ~~~~~~~~~~~^^^^^^^^^^^^^^^
+TypeError: list indices must be integers or slices, not str
+
+2025-07-13 12:52:16,473 - INFO - 127.0.0.1 - - [13/Jul/2025 12:52:16] "POST /execute HTTP/1.1" 200 -
+2025-07-13 12:52:16,487 - INFO - 127.0.0.1 - - [13/Jul/2025 12:52:16] "POST /execute HTTP/1.1" 200 -
+2025-07-13 12:52:58,132 - ERROR - 未捕获异常:
+Traceback (most recent call last):
+  File "C:\Users\97895\.conda\envs\py131\Lib\site-packages\qfluentwidgets\components\widgets\frameless_window.py", line 24, in nativeEvent
+    def nativeEvent(self, eventType, message):
+    
+KeyboardInterrupt
+

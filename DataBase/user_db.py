@@ -17,7 +17,7 @@ class UserDB(DataBaseManage):
         # 准备查询参数
         params = (username, password)
         # 调用父类的 fetch_query 方法执行查询，并返回查询结果，single=True 表示只取一条记录
-        return self.fetch_query(query, params=params, single=True)
+        return self.fetch_query(query, params=params)[0]
 
     def fetch_all_users(self):
         """
@@ -42,7 +42,7 @@ class UserDB(DataBaseManage):
                 """
         params = (user_id, )
         # 调用父类的 fetch_query 方法执行查询，并返回查询结果
-        return self.fetch_query(query, params=params, single=True)
+        return self.fetch_query(query, params=params)[0]
 
     def fetch_user_with_likestr(self, like_str):
         """
@@ -94,7 +94,7 @@ class UserDB(DataBaseManage):
         # 准备查询参数
         params = (user_id,)
         # 调用父类的 fetch_query 方法执行查询，并返回查询结果，single=True 表示只取一条记录
-        return self.fetch_query(query, params=params, single=True)
+        return self.fetch_query(query, params=params)[0]
 
     def delete_user(self, user_id):
         """

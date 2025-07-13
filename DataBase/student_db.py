@@ -29,7 +29,7 @@ class StudentDB(DataBaseManage):
                   student["student_holyname"], student["student_family_id"], student["student_school_id"],
                   student["student_identity_num"], student["student_birthday"], student["student_note"],
                   student["operator"], student["opera_time"], student["opera_type"])
-        return self.execute_query_return_id(query, params)
+        return self.execute_query(query, params)
 
     def fetch_students_with_school_id(self, school_id):
         # 定义查询语句
@@ -148,6 +148,5 @@ if __name__ == '__main__':
             "student_family_id": random.randint(1, 20),
             "student_school_id": 1,
         }
-        idx = db.add_student(student_info)
+        db.add_student(student_info)
         print(student_info)
-        print(idx)

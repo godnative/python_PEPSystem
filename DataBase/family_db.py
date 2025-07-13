@@ -59,13 +59,6 @@ class FamilyDB(DataBaseManage):
         params = (school_id, f"%{like_str}%", f"%{like_str}%")
         return self.fetch_query(query, params=params)
 
-    def fetch_tempfamily_with_school_id(self, like_str, school_id):
-        query = """
-                SELECT family_id FROM family WHERE family_name LIKE ? and family_school_id = ?
-                """
-        params = (f"%{like_str}%", school_id)
-        return self.fetch_query(query, single=True, params=params)
-
     def update_family(self, family):
         query = """
                 UPDATE family
