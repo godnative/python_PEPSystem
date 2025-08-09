@@ -7,6 +7,7 @@ from PyQt6.QtGui import QPixmap, QPainter
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QApplication, QLabel
 from qfluentwidgets import PushButton, setCustomStyleSheet, MessageBoxBase, InfoBar, CardWidget
 
+from DataBase.family_db import FamilyDB
 from DataBase.parish_db import ParishDb
 from parish.parish_dialog import BaseSchoolInterface_Temp
 from utils.custom_style import ADD_BUTTON_STYLE, DELETE_BUTTON_STYLE, UPDATE_BUTTON_STYLE

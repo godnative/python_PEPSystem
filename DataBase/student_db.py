@@ -116,7 +116,7 @@ class StudentDB(DataBaseManage):
         query = """
             SELECT *
             FROM student
-            WHERE strftime('%m', datetime(student_birthday, 'unixepoch')) = strftime('%m', 'now') and student_school_id = ?;
+            WHERE strftime('%m', student_birthday ) = strftime('%m', 'now') and student_school_id = ?;
         """
         params = (school_id,)
         if CUR_SYS_TYPE == 0:
@@ -137,20 +137,39 @@ class StudentDB(DataBaseManage):
         params = (opera_type, student_id)
         return self.execute_query(query, params)
 
+    def get_parishioner_cnt_with_parish_id(self, parish_id):
+        query = """
+                SELECT COUNT(*) FROM student WHERE student_school_id = ?
+                """
+        params = (parish_id, )
+        return self.fetch_query(query, params=params)[0]["COUNT(*)"]
+
+    def get_parishioner_none_holy_name_cnt_with_parish_id(self, parish_id):
+        query = """
+                SELECT COUNT(*) FROM student WHERE student_school_id = ? and student_holyname = ''
+                """
+        params = (parish_id, )
+        return self.fetch_query(query, params=params)[0]["COUNT(*)"]
+
+    def get_parishioner_age_with_parish_id(self, parish_id):
+        query = """
+                SELECT 
+                strftime('%Y', 'now') - strftime('%Y', student_birthday) - 
+                (strftime('%m-%d', 'now') < strftime('%m-%d', student_birthday)) as age
+                FROM student WHERE student_school_id = ?;
+                """
+        params = (parish_id, )
+        ret = self.fetch_query(query, params=params)
+        data = []
+        for row in ret:
+            data.append(row["age"])
+        return data
 if __name__ == '__main__':
     with StudentDB(None) as db:
         # for i in range(10):
         #     for j in range(10):
-        student_name = generate_chinese_name()
-        student_gender = random.randint(0, 1)
-        student_phonenum = "1310547" + str(random.randint(0, 99999))
-        student_info = {
-            "student_name": student_name,
-            "student_gender": student_gender,
-            "student_phonenum": student_phonenum,
-            "student_holyname": "",
-            "student_family_id": random.randint(1, 20),
-            "student_school_id": 1,
-        }
-        db.add_student(student_info)
-        print(student_info)
+        a=db.get_parishioner_cnt_with_parish_id(1)
+        b=db.get_parishioner_none_holy_name_cnt_with_parish_id(2)
+        c=db.get_parishioner_age_with_parish_id(2)
+        print(a,b)
+        print(c)

@@ -1,747 +1,342 @@
-2025-07-08 21:36:54,290 - ERROR - Œ¥≤∂ªÒ“Ï≥£:
+2025-08-09 23:23:45,569 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:45,575 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:46,092 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:46,258 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:46,280 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:46,296 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:46,302 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:46,310 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:46,622 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:47,152 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:47,263 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:47,289 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:47,337 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:47,572 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:47,661 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:48,108 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:48,127 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:48,138 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:48,155 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:48,170 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:48,187 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:48,201 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:48,219 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:48,232 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:48,249 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:48,265 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:49,245 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:49,387 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:49,411 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:49,426 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:49,441 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:49,459 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:49,481 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:49,491 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:49,507 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:49,524 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:49,540 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:49,555 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:49,572 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:49,587 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:49,603 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:49,618 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:49,633 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:49,649 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:49,666 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:49,682 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:49,698 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:49,713 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:49,730 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:49,746 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:49,762 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:50,326 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:50,709 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:50,819 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:50,840 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:50,856 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:50,873 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:50,889 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:50,904 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:50,919 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:50,931 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:50,941 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:50,957 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:50,977 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:50,981 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:50,982 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:50,990 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,004 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,020 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,037 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,050 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,066 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,082 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,098 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,115 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,131 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,147 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,163 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,179 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,182 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,194 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,204 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,220 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,236 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,253 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,269 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,285 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,301 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,316 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,332 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,349 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,365 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,381 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,397 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,413 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,429 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,444 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,461 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,477 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,492 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,506 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,506 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,509 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,520 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,523 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,525 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,537 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,539 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,540 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,557 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,573 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,577 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,589 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,605 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,621 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,623 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,637 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,653 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,668 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,685 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,701 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,717 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,732 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,749 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:23:51,765 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-08-09 23:48:50,357 - ERROR - Êú™ÊçïËé∑ÂºÇÂ∏∏:
 Traceback (most recent call last):
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\user\User_Interface.py", line 67, in wrapper
-    self.cur_user["user_name"],
-    ^^^^^^^^^^^^^
-AttributeError: 'EventBaptism_Main_Interface' object has no attribute 'cur_user'
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 204, in login
+    mainwindow = MainWindow(login_info)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 257, in __init__
+    self.taskCardInterface = TaskCardMainInterFace(self.login_info, "TaskCardMainInterFace")
+                             ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 609, in __init__
+    self.ParishDashboard = ParishDashboard(self.login_info)
+                           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 399, in __init__
+    self.create_bar_chart()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 448, in create_bar_chart
+    self.update_bar_statistics(parishioner_age_data)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 480, in update_bar_statistics
+    for count in age_data.values():
+                 ^^^^^^^^^^^^^^^
+AttributeError: 'list' object has no attribute 'values'
 
-2025-07-08 21:37:43,808 - ERROR - Œ¥≤∂ªÒ“Ï≥£:
+2025-08-09 23:49:02,817 - ERROR - Êú™ÊçïËé∑ÂºÇÂ∏∏:
 Traceback (most recent call last):
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\user\User_Interface.py", line 76, in wrapper
-    db.add_user_log({"user_id": self.cur_user["user_id"], "user_log_info": exec_log})
-                                ^^^^^^^^^^^^^
-AttributeError: 'EventBaptism_Main_Interface' object has no attribute 'cur_user'
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 204, in login
+    mainwindow = MainWindow(login_info)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 257, in __init__
+    self.taskCardInterface = TaskCardMainInterFace(self.login_info, "TaskCardMainInterFace")
+                             ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 609, in __init__
+    self.ParishDashboard = ParishDashboard(self.login_info)
+                           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 399, in __init__
+    self.create_bar_chart()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 448, in create_bar_chart
+    self.update_bar_statistics(parishioner_age_data)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 480, in update_bar_statistics
+    for count in age_data.values():
+                 ^^^^^^^^^^^^^^^
+AttributeError: 'list' object has no attribute 'values'
 
-2025-07-08 21:38:25,257 - ERROR - Œ¥≤∂ªÒ“Ï≥£:
+2025-08-09 23:49:50,943 - ERROR - Êú™ÊçïËé∑ÂºÇÂ∏∏:
+Traceback (most recent call last):
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 204, in login
+    mainwindow = MainWindow(login_info)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 257, in __init__
+    self.taskCardInterface = TaskCardMainInterFace(self.login_info, "TaskCardMainInterFace")
+                             ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 609, in __init__
+    self.ParishDashboard = ParishDashboard(self.login_info)
+                           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 399, in __init__
+    self.create_bar_chart()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 448, in create_bar_chart
+    self.update_bar_statistics(parishioner_age_data)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 480, in update_bar_statistics
+    for count in age_data.values():
+                 ^^^^^^^^^^^^^^^
+AttributeError: 'list' object has no attribute 'values'
+
+2025-08-09 23:54:36,953 - ERROR - Êú™ÊçïËé∑ÂºÇÂ∏∏:
+Traceback (most recent call last):
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 561, in update_bar_chart
+    self.update_bar_statistics(age_data)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 513, in update_bar_statistics
+    for count in age_groups.values():
+                 ^^^^^^^^^^^^^^^^^
+AttributeError: 'list' object has no attribute 'values'
+
+2025-08-10 00:12:03,767 - ERROR - Êú™ÊçïËé∑ÂºÇÂ∏∏:
+Traceback (most recent call last):
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 204, in login
+    mainwindow = MainWindow(login_info)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 257, in __init__
+    self.taskCardInterface = TaskCardMainInterFace(self.login_info, "TaskCardMainInterFace")
+                             ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 609, in __init__
+    self.ParishDashboard = ParishDashboard(self.login_info)
+                           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 399, in __init__
+    self.create_bar_chart()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 448, in create_bar_chart
+    self.update_bar_statistics(parishioner_age_data)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 487, in update_bar_statistics
+    for age in age_data:
+               ^^^^^^^^
+NameError: name 'age_data' is not defined
+
+2025-08-10 00:12:23,671 - ERROR - Êú™ÊçïËé∑ÂºÇÂ∏∏:
+Traceback (most recent call last):
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 204, in login
+    mainwindow = MainWindow(login_info)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 257, in __init__
+    self.taskCardInterface = TaskCardMainInterFace(self.login_info, "TaskCardMainInterFace")
+                             ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 609, in __init__
+    self.ParishDashboard = ParishDashboard(self.login_info)
+                           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 401, in __init__
+    self.simulate_data_updates()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 510, in simulate_data_updates
+    age_cnt = db.get_age_cnt_with_parish_id(self.cur_parish_id)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'StudentDB' object has no attribute 'get_age_cnt_with_parish_id'. Did you mean: 'get_parishioner_cnt_with_parish_id'?
+
+2025-08-10 00:13:14,383 - ERROR - Êú™ÊçïËé∑ÂºÇÂ∏∏:
 Traceback (most recent call last):
   File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\user\User_Interface.py", line 54, in wrapper
     ret = func(self)
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\Parishioner\Parishioner_Interface.py", line 339, in modify_parishioner
-    w.rejectButton.show()
-    ^^^^^^^^^^^^^^
-AttributeError: 'Parishioner_MessageBox' object has no attribute 'rejectButton'
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\Parishioner\Parishioner_Interface.py", line 315, in add_parishioner
+    self.Load_Parishioner(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\Parishioner\Parishioner_Interface.py", line 284, in Load_Parishioner
+    self.BaseMainInterface.BaseQuery.set_viewWidget_data(self.header_info, self.parishioner_info_all)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\BaseWidgets\BaseModule.py", line 159, in set_viewWidget_data
+    value = timestamp_to_date(data.get(key, "")).toString("yyyy-MM-dd")
+            ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\utils\utils_tool.py", line 20, in timestamp_to_date
+    dt_object = datetime.fromtimestamp(timestamp)
+OSError: [Errno 22] Invalid argument
 
-2025-07-08 23:53:46,229 - ERROR - Œ¥≤∂ªÒ“Ï≥£:
+2025-08-10 00:13:49,813 - ERROR - Êú™ÊçïËé∑ÂºÇÂ∏∏:
 Traceback (most recent call last):
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\Event\ComEventMessageBoxBase.py", line 422, in tprint
-    parish = self.cur_parish["school_name"]
-             ^^^^^^^^^^^^^^^
-AttributeError: 'Event_Main_Interface' object has no attribute 'cur_parish'. Did you mean: 'cur_parish_id'?
-
-2025-07-08 23:54:11,246 - ERROR - Œ¥≤∂ªÒ“Ï≥£:
-Traceback (most recent call last):
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\Event\ComEventMessageBoxBase.py", line 422, in tprint
-    parish = self.login_info["school_name"]
-             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
-KeyError: 'school_name'
-
-2025-07-09 00:23:46,648 - ERROR - ÷˜≥Ã–Ú“Ï≥£
-Traceback (most recent call last):
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 287, in <module>
-    window = LoginWindow()
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 107, in __init__
-    self.load_all_parish()
-    ~~~~~~~~~~~~~~~~~~~~^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 126, in load_all_parish
-    with ParishDb() as db:  #  π”√…œœ¬Œƒπ‹¿Ì∆˜¥¥Ω® ClassDB µƒ µ¿˝£¨≤¢»∑±£ π”√∫Û◊‘∂Øπÿ±’ ˝æ›ø‚¡¨Ω”
-         ~~~~~~~~^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\DataBase\base_db.py", line 13, in __init__
-    self.creat_all_database()
-    ~~~~~~~~~~~~~~~~~~~~~~~^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\DataBase\base_db.py", line 24, in creat_all_database
-    if os.path.exists(self.db_path):
-                      ^^^^^^^^^^^^
-AttributeError: 'ParishDb' object has no attribute 'db_path'
-2025-07-09 00:31:37,762 - ERROR - Œ¥≤∂ªÒ“Ï≥£:
-Traceback (most recent call last):
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 181, in login
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 204, in login
     mainwindow = MainWindow(login_info)
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 221, in __init__
-    self.schoolInterface = ShowSchoolInterface(self.login_info, "ShowSchoolInterface")
-                           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_interface.py", line 154, in __init__
-    self.schoolInterface_temp.set_parish_info(parish_info)
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_dialog.py", line 129, in set_parish_info
-    self.lineEdit_7.setText(parish_info['parish_phonenum'])
-    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-TypeError: setText(self, a0: Optional[str]): argument 1 has unexpected type 'int'
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 253, in __init__
+    self.studentInterface = ParishionerMainInterface(self.login_info, "Parishioner_Main_Interface")
+                            ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\Parishioner\Parishioner_main_interface.py", line 35, in __init__
+    self.parishioner_interface = Parishioner_Main_Interface(self.login_info,
+                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+                                                            "Parishioner_Main_Interface_from_Main_Even")
+                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\Parishioner\Parishioner_Interface.py", line 263, in __init__
+    self.Load_Parishioner(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\Parishioner\Parishioner_Interface.py", line 284, in Load_Parishioner
+    self.BaseMainInterface.BaseQuery.set_viewWidget_data(self.header_info, self.parishioner_info_all)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\BaseWidgets\BaseModule.py", line 159, in set_viewWidget_data
+    value = timestamp_to_date(data.get(key, "")).toString("yyyy-MM-dd")
+            ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\utils\utils_tool.py", line 20, in timestamp_to_date
+    dt_object = datetime.fromtimestamp(timestamp)
+OSError: [Errno 22] Invalid argument
 
-2025-07-09 21:18:16,986 - ERROR - Œ¥≤∂ªÒ“Ï≥£:
+2025-08-10 00:21:05,831 - ERROR - Êú™ÊçïËé∑ÂºÇÂ∏∏:
 Traceback (most recent call last):
-  File "C:\Users\97895\.conda\envs\py131\Lib\site-packages\qfluentwidgets\components\widgets\frameless_window.py", line 24, in nativeEvent
-    def nativeEvent(self, eventType, message):
-    
-KeyboardInterrupt
-
-2025-07-12 23:45:54,627 - ERROR - Œ¥≤∂ªÒ“Ï≥£:
-Traceback (most recent call last):
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 181, in login
-    mainwindow = MainWindow(login_info)
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 235, in __init__
-    self.taskCardInterface = TaskCardMainInterFace(self.login_info, "TaskCardMainInterFace")
-                             ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 526, in __init__
-    self.ParishDashboard = ParishDashboard()
-                           ~~~~~~~~~~~~~~~^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 374, in __init__
-    self.init_ui()
-    ~~~~~~~~~~~~^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 393, in init_ui
-    pie_group = QGroupBox("¡Ïœ¥»À‘± ˝¡ø")
-                ^^^^^^^^^
-NameError: name 'QGroupBox' is not defined
-
-2025-07-12 23:46:19,753 - WARNING - Qt: QLayout: Attempting to add QLayout "" to TaskCardMainInterFace "TaskCardMainInterFace", which already has a layout
-2025-07-12 23:50:41,525 - WARNING - Qt: QLayout: Attempting to add QLayout "" to TaskCardMainInterFace "TaskCardMainInterFace", which already has a layout
-2025-07-13 00:33:53,483 - ERROR - ÷˜≥Ã–Ú“Ï≥£
-Traceback (most recent call last):
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 290, in <module>
-    window = LoginWindow()
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 107, in __init__
-    db = ParishDb()
-TypeError: DataBaseManage.__init__() missing 1 required positional argument: 'windows'
-2025-07-13 12:45:36,047 - ERROR - Œ¥≤∂ªÒ“Ï≥£:
-Traceback (most recent call last):
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 163, in login
-    login_info["user_id"] = user_info["user_id"]
-                            ~~~~~~~~~^^^^^^^^^^^
-TypeError: list indices must be integers or slices, not str
-
-2025-07-13 12:47:05,556 - ERROR - Œ¥≤∂ªÒ“Ï≥£:
-Traceback (most recent call last):
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 164, in login
-    login_info["user_id"] = user_info["user_id"]
-                            ~~~~~~~~~^^^^^^^^^^^
-TypeError: list indices must be integers or slices, not str
-
-2025-07-13 12:47:25,668 - ERROR - Œ¥≤∂ªÒ“Ï≥£:
-Traceback (most recent call last):
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 182, in login
-    mainwindow = MainWindow(login_info)
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 222, in __init__
-    self.schoolInterface = ShowSchoolInterface(self.login_info, "ShowSchoolInterface")
-                           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_interface.py", line 152, in __init__
-    self.schoolInterface_temp.set_parish_info(parish_info)
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_dialog.py", line 114, in set_parish_info
-    self.lineEdit_2.setText(parish_info['parish_name'])
-                            ~~~~~~~~~~~^^^^^^^^^^^^^^^
-TypeError: list indices must be integers or slices, not str
-
-2025-07-13 12:52:16,473 - INFO - 127.0.0.1 - - [13/Jul/2025 12:52:16] "POST /execute HTTP/1.1" 200 -
-2025-07-13 12:52:16,487 - INFO - 127.0.0.1 - - [13/Jul/2025 12:52:16] "POST /execute HTTP/1.1" 200 -
-2025-07-13 12:52:58,132 - ERROR - Œ¥≤∂ªÒ“Ï≥£:
-Traceback (most recent call last):
-  File "C:\Users\97895\.conda\envs\py131\Lib\site-packages\qfluentwidgets\components\widgets\frameless_window.py", line 24, in nativeEvent
-    def nativeEvent(self, eventType, message):
-    
-KeyboardInterrupt
-
-2025-07-13 13:13:59,337 - ERROR - ÷˜≥Ã–Ú“Ï≥£
-Traceback (most recent call last):
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 290, in <module>
-    window = LoginWindow()
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 108, in __init__
-    db.creat_all_database()
-    ~~~~~~~~~~~~~~~~~~~~~^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\DataBase\base_db.py", line 32, in creat_all_database
-    if os.path.exists(self.db_path):
-       ~~~~~~~~~~~~~~^^^^^^^^^^^^^^
-TypeError: _path_exists: path should be string, bytes, os.PathLike or integer, not NoneType
-2025-07-13 13:15:07,793 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:15:07,796 - INFO - 127.0.0.1 - - [13/Jul/2025 13:15:07] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:15:07,797 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 13:15:07,797 - ERROR - ÷˜≥Ã–Ú“Ï≥£
-Traceback (most recent call last):
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 293, in <module>
-    window = LoginWindow()
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 112, in __init__
-    self.load_all_parish()
-    ~~~~~~~~~~~~~~~~~~~~^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 137, in load_all_parish
-    self.comboBox.addItem(parish_info['parish_name'],
-                          ~~~~~~~~~~~^^^^^^^^^^^^^^^
-TypeError: string indices must be integers, not 'str'
-2025-07-13 13:15:23,622 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:15:23,624 - INFO - 127.0.0.1 - - [13/Jul/2025 13:15:23] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:15:23,624 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 13:15:23,625 - ERROR - ÷˜≥Ã–Ú“Ï≥£
-Traceback (most recent call last):
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 294, in <module>
-    window = LoginWindow()
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 112, in __init__
-    self.load_all_parish()
-    ~~~~~~~~~~~~~~~~~~~~^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 138, in load_all_parish
-    self.comboBox.addItem(parish_info['parish_name'],
-                          ~~~~~~~~~~~^^^^^^^^^^^^^^^
-TypeError: string indices must be integers, not 'str'
-2025-07-13 13:39:12,157 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:39:12,159 - INFO - 127.0.0.1 - - [13/Jul/2025 13:39:12] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:39:12,159 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 13:39:12,160 - ERROR - ÷˜≥Ã–Ú“Ï≥£
-Traceback (most recent call last):
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 294, in <module>
-    window = LoginWindow()
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 112, in __init__
-    self.load_all_parish()
-    ~~~~~~~~~~~~~~~~~~~~^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 138, in load_all_parish
-    self.comboBox.addItem(parish_info['parish_name'],
-                          ~~~~~~~~~~~^^^^^^^^^^^^^^^
-TypeError: string indices must be integers, not 'str'
-2025-07-13 13:40:22,805 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:40:22,807 - INFO - 127.0.0.1 - - [13/Jul/2025 13:40:22] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:40:22,807 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 13:40:22,809 - ERROR - ÷˜≥Ã–Ú“Ï≥£
-Traceback (most recent call last):
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 294, in <module>
-    window = LoginWindow()
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 112, in __init__
-    self.load_all_parish()
-    ~~~~~~~~~~~~~~~~~~~~^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 138, in load_all_parish
-    self.comboBox.addItem(parish_info['parish_name'],
-                          ~~~~~~~~~~~^^^^^^^^^^^^^^^
-TypeError: string indices must be integers, not 'str'
-2025-07-13 13:40:54,084 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:40:54,086 - INFO - 127.0.0.1 - - [13/Jul/2025 13:40:54] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:40:54,086 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 13:40:54,087 - ERROR - ÷˜≥Ã–Ú“Ï≥£
-Traceback (most recent call last):
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 294, in <module>
-    window = LoginWindow()
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 112, in __init__
-    self.load_all_parish()
-    ~~~~~~~~~~~~~~~~~~~~^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 132, in load_all_parish
-    load_parish_info = db.fetch_parish()
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\DataBase\parish_db.py", line 17, in fetch_parish
-    return self.fetch_query(query)
-           ~~~~~~~~~~~~~~~~^^^^^^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\DataBase\base_db.py", line 237, in fetch_query
-    result = formatted_result["result"]
-             ~~~~~~~~~~~~~~~~^^^^^^^^^^
-TypeError: string indices must be integers, not 'str'
-2025-07-13 13:42:06,070 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:42:06,073 - INFO - 127.0.0.1 - - [13/Jul/2025 13:42:06] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:42:06,073 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 13:42:06,074 - ERROR - ÷˜≥Ã–Ú“Ï≥£
-Traceback (most recent call last):
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 294, in <module>
-    window = LoginWindow()
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 112, in __init__
-    self.load_all_parish()
-    ~~~~~~~~~~~~~~~~~~~~^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 132, in load_all_parish
-    load_parish_info = db.fetch_parish()
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\DataBase\parish_db.py", line 17, in fetch_parish
-    return self.fetch_query(query)
-           ~~~~~~~~~~~~~~~~^^^^^^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\DataBase\base_db.py", line 237, in fetch_query
-    print(formatted_result["result"])
-          ~~~~~~~~~~~~~~~~^^^^^^^^^^
-TypeError: string indices must be integers, not 'str'
-2025-07-13 13:42:36,614 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:42:36,617 - INFO - 127.0.0.1 - - [13/Jul/2025 13:42:36] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:42:36,617 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 13:42:36,617 - ERROR - ÷˜≥Ã–Ú“Ï≥£
-Traceback (most recent call last):
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 294, in <module>
-    window = LoginWindow()
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 112, in __init__
-    self.load_all_parish()
-    ~~~~~~~~~~~~~~~~~~~~^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 132, in load_all_parish
-    load_parish_info = db.fetch_parish()
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\DataBase\parish_db.py", line 17, in fetch_parish
-    return self.fetch_query(query)
-           ~~~~~~~~~~~~~~~~^^^^^^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\DataBase\base_db.py", line 237, in fetch_query
-    print(formatted_result[0]["result"])
-          ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
-TypeError: string indices must be integers, not 'str'
-2025-07-13 13:42:50,499 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:42:50,501 - INFO - 127.0.0.1 - - [13/Jul/2025 13:42:50] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:42:50,501 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 13:42:50,502 - ERROR - ÷˜≥Ã–Ú“Ï≥£
-Traceback (most recent call last):
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 294, in <module>
-    window = LoginWindow()
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 112, in __init__
-    self.load_all_parish()
-    ~~~~~~~~~~~~~~~~~~~~^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 132, in load_all_parish
-    load_parish_info = db.fetch_parish()
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\DataBase\parish_db.py", line 17, in fetch_parish
-    return self.fetch_query(query)
-           ~~~~~~~~~~~~~~~~^^^^^^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\DataBase\base_db.py", line 238, in fetch_query
-    result = formatted_result["result"]
-             ~~~~~~~~~~~~~~~~^^^^^^^^^^
-TypeError: string indices must be integers, not 'str'
-2025-07-13 13:44:58,226 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:44:58,228 - INFO - 127.0.0.1 - - [13/Jul/2025 13:44:58] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:44:58,228 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 13:45:22,162 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:45:22,164 - INFO - 127.0.0.1 - - [13/Jul/2025 13:45:22] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:45:22,164 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 13:45:22,165 - ERROR - ÷˜≥Ã–Ú“Ï≥£
-Traceback (most recent call last):
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 294, in <module>
-    window = LoginWindow()
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 112, in __init__
-    self.load_all_parish()
-    ~~~~~~~~~~~~~~~~~~~~^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 138, in load_all_parish
-    self.comboBox.addItem(parish_info['parish_name'],
-                          ~~~~~~~~~~~^^^^^^^^^^^^^^^
-TypeError: string indices must be integers, not 'str'
-2025-07-13 13:45:41,344 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:45:41,347 - INFO - 127.0.0.1 - - [13/Jul/2025 13:45:41] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:45:41,347 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 13:45:41,348 - ERROR - ÷˜≥Ã–Ú“Ï≥£
-Traceback (most recent call last):
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 294, in <module>
-    window = LoginWindow()
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 112, in __init__
-    self.load_all_parish()
-    ~~~~~~~~~~~~~~~~~~~~^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 138, in load_all_parish
-    self.comboBox.addItem(parish_info['parish_name'],
-                          ~~~~~~~~~~~^^^^^^^^^^^^^^^
-TypeError: string indices must be integers, not 'str'
-2025-07-13 13:46:52,636 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:46:52,638 - INFO - 127.0.0.1 - - [13/Jul/2025 13:46:52] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:46:52,638 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 13:46:52,639 - ERROR - ÷˜≥Ã–Ú“Ï≥£
-Traceback (most recent call last):
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 294, in <module>
-    window = LoginWindow()
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 112, in __init__
-    self.load_all_parish()
-    ~~~~~~~~~~~~~~~~~~~~^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 132, in load_all_parish
-    load_parish_info = db.fetch_parish()
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\DataBase\parish_db.py", line 17, in fetch_parish
-    return self.fetch_query(query)
-           ~~~~~~~~~~~~~~~~^^^^^^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\DataBase\base_db.py", line 239, in fetch_query
-    result = json.loads(result["result"][0])
-  File "C:\Users\97895\.conda\envs\py131\Lib\json\__init__.py", line 339, in loads
-    raise TypeError(f'the JSON object must be str, bytes or bytearray, '
-                    f'not {s.__class__.__name__}')
-TypeError: the JSON object must be str, bytes or bytearray, not dict
-2025-07-13 13:47:33,897 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:47:33,899 - INFO - 127.0.0.1 - - [13/Jul/2025 13:47:33] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:47:33,900 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 13:47:33,901 - ERROR - ÷˜≥Ã–Ú“Ï≥£
-Traceback (most recent call last):
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 294, in <module>
-    window = LoginWindow()
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 112, in __init__
-    self.load_all_parish()
-    ~~~~~~~~~~~~~~~~~~~~^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 138, in load_all_parish
-    self.comboBox.addItem(parish_info['parish_name'],
-                          ~~~~~~~~~~~^^^^^^^^^^^^^^^
-TypeError: string indices must be integers, not 'str'
-2025-07-13 13:48:03,775 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:48:03,778 - INFO - 127.0.0.1 - - [13/Jul/2025 13:48:03] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:48:03,778 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 13:48:10,373 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:48:10,384 - INFO - 127.0.0.1 - - [13/Jul/2025 13:48:10] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:48:10,385 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 168
-2025-07-13 13:48:10,428 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:48:10,441 - INFO - 127.0.0.1 - - [13/Jul/2025 13:48:10] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:48:10,441 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 13:48:10,467 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:48:10,478 - INFO - 127.0.0.1 - - [13/Jul/2025 13:48:10] "[31m[1mPOST /execute HTTP/1.1[0m" 400 -
-2025-07-13 13:48:10,478 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 400 71
-2025-07-13 13:48:10,500 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:48:10,511 - INFO - 127.0.0.1 - - [13/Jul/2025 13:48:10] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:48:10,511 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 244
-2025-07-13 13:48:10,562 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:48:10,575 - INFO - 127.0.0.1 - - [13/Jul/2025 13:48:10] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:48:10,575 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 468
-2025-07-13 13:48:10,594 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:48:10,606 - INFO - 127.0.0.1 - - [13/Jul/2025 13:48:10] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:48:10,606 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 466
-2025-07-13 13:48:10,625 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:48:10,637 - INFO - 127.0.0.1 - - [13/Jul/2025 13:48:10] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:48:10,638 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 472
-2025-07-13 13:48:10,704 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:48:10,715 - INFO - 127.0.0.1 - - [13/Jul/2025 13:48:10] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:48:10,716 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 816
-2025-07-13 13:48:10,721 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:48:10,734 - INFO - 127.0.0.1 - - [13/Jul/2025 13:48:10] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:48:10,735 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 168
-2025-07-13 13:48:10,753 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:48:10,764 - INFO - 127.0.0.1 - - [13/Jul/2025 13:48:10] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:48:10,764 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 168
-2025-07-13 13:48:10,823 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:48:10,835 - INFO - 127.0.0.1 - - [13/Jul/2025 13:48:10] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:48:10,835 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 40
-2025-07-13 13:48:10,917 - ERROR - Œ¥≤∂ªÒ“Ï≥£:
-Traceback (most recent call last):
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 185, in login
-    mainwindow = MainWindow(login_info)
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 248, in __init__
-    self.settingInterface = SettingMainInterFace("SettingMainInterFace")
-                            ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\setting\settingMainInterFace.py", line 15, in __init__
-    self.settingInterface = SettingInterface()
-                            ~~~~~~~~~~~~~~~~^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\setting\setting_interface.py", line 105, in __init__
-    self.__initWidget()
-    ~~~~~~~~~~~~~~~~~^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\setting\setting_interface.py", line 116, in __initWidget
-    self.__connectSignalToSlot()
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\setting\setting_interface.py", line 180, in __connectSignalToSlot
-    self.restoreDataBaseCard.clicked.connect(
-    ^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: 'SettingInterface' object has no attribute 'restoreDataBaseCard'
-
-2025-07-13 13:50:48,131 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:50:48,134 - INFO - 127.0.0.1 - - [13/Jul/2025 13:50:48] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:50:48,134 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 13:50:50,665 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:50:50,677 - INFO - 127.0.0.1 - - [13/Jul/2025 13:50:50] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:50:50,678 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 168
-2025-07-13 13:50:50,721 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:50:50,734 - INFO - 127.0.0.1 - - [13/Jul/2025 13:50:50] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:50:50,734 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 13:50:50,760 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:50:50,772 - INFO - 127.0.0.1 - - [13/Jul/2025 13:50:50] "[31m[1mPOST /execute HTTP/1.1[0m" 400 -
-2025-07-13 13:50:50,772 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 400 71
-2025-07-13 13:50:50,792 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:50:50,804 - INFO - 127.0.0.1 - - [13/Jul/2025 13:50:50] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:50:50,804 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 244
-2025-07-13 13:50:50,855 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:50:50,868 - INFO - 127.0.0.1 - - [13/Jul/2025 13:50:50] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:50:50,868 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 468
-2025-07-13 13:50:50,886 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:50:50,898 - INFO - 127.0.0.1 - - [13/Jul/2025 13:50:50] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:50:50,898 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 466
-2025-07-13 13:50:50,916 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:50:50,928 - INFO - 127.0.0.1 - - [13/Jul/2025 13:50:50] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:50:50,928 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 472
-2025-07-13 13:50:50,995 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:50:51,006 - INFO - 127.0.0.1 - - [13/Jul/2025 13:50:51] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:50:51,007 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 816
-2025-07-13 13:50:51,012 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:50:51,024 - INFO - 127.0.0.1 - - [13/Jul/2025 13:50:51] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:50:51,024 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 168
-2025-07-13 13:50:51,043 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:50:51,045 - INFO - 127.0.0.1 - - [13/Jul/2025 13:50:51] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:50:51,045 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 168
-2025-07-13 13:50:51,101 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:50:51,113 - INFO - 127.0.0.1 - - [13/Jul/2025 13:50:51] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:50:51,113 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 40
-2025-07-13 13:51:55,307 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:51:55,309 - INFO - 127.0.0.1 - - [13/Jul/2025 13:51:55] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:51:55,310 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 13:52:42,149 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:52:42,151 - INFO - 127.0.0.1 - - [13/Jul/2025 13:52:42] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:52:42,151 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 13:54:48,956 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:54:48,959 - INFO - 127.0.0.1 - - [13/Jul/2025 13:54:48] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:54:48,959 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 13:56:48,999 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:56:49,002 - INFO - 127.0.0.1 - - [13/Jul/2025 13:56:49] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:56:49,002 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 13:57:10,180 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:57:10,182 - INFO - 127.0.0.1 - - [13/Jul/2025 13:57:10] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:57:10,182 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 13:58:01,009 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:58:01,012 - INFO - 127.0.0.1 - - [13/Jul/2025 13:58:01] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:58:01,012 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 13:59:07,841 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:59:07,843 - INFO - 127.0.0.1 - - [13/Jul/2025 13:59:07] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:59:07,844 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 13:59:11,335 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:59:11,348 - INFO - 127.0.0.1 - - [13/Jul/2025 13:59:11] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:59:11,348 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 168
-2025-07-13 13:59:11,389 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:59:11,400 - INFO - 127.0.0.1 - - [13/Jul/2025 13:59:11] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:59:11,401 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 13:59:11,425 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:59:11,436 - INFO - 127.0.0.1 - - [13/Jul/2025 13:59:11] "[31m[1mPOST /execute HTTP/1.1[0m" 400 -
-2025-07-13 13:59:11,436 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 400 71
-2025-07-13 13:59:11,455 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:59:11,467 - INFO - 127.0.0.1 - - [13/Jul/2025 13:59:11] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:59:11,467 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 244
-2025-07-13 13:59:11,517 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:59:11,528 - INFO - 127.0.0.1 - - [13/Jul/2025 13:59:11] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:59:11,528 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 468
-2025-07-13 13:59:11,544 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:59:11,555 - INFO - 127.0.0.1 - - [13/Jul/2025 13:59:11] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:59:11,556 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 466
-2025-07-13 13:59:11,572 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:59:11,584 - INFO - 127.0.0.1 - - [13/Jul/2025 13:59:11] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:59:11,584 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 472
-2025-07-13 13:59:11,646 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:59:11,658 - INFO - 127.0.0.1 - - [13/Jul/2025 13:59:11] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:59:11,658 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 816
-2025-07-13 13:59:11,660 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:59:11,672 - INFO - 127.0.0.1 - - [13/Jul/2025 13:59:11] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:59:11,672 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 168
-2025-07-13 13:59:11,689 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:59:11,701 - INFO - 127.0.0.1 - - [13/Jul/2025 13:59:11] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:59:11,701 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 168
-2025-07-13 13:59:11,755 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:59:11,757 - INFO - 127.0.0.1 - - [13/Jul/2025 13:59:11] "POST /execute HTTP/1.1" 200 -
-2025-07-13 13:59:11,757 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 40
-2025-07-13 13:59:28,548 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 13:59:28,549 - INFO - 127.0.0.1 - - [13/Jul/2025 13:59:28] "[31m[1mPOST /execute HTTP/1.1[0m" 400 -
-2025-07-13 13:59:28,549 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 400 71
-2025-07-13 14:09:31,490 - INFO - 127.0.0.1 - - [13/Jul/2025 14:09:31] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:09:31,503 - INFO - 127.0.0.1 - - [13/Jul/2025 14:09:31] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:11:30,634 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 14:11:30,637 - INFO - 127.0.0.1 - - [13/Jul/2025 14:11:30] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:11:30,637 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 14:11:32,727 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 14:11:32,739 - INFO - 127.0.0.1 - - [13/Jul/2025 14:11:32] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:11:32,740 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 168
-2025-07-13 14:11:32,780 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 14:11:32,791 - INFO - 127.0.0.1 - - [13/Jul/2025 14:11:32] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:11:32,791 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 14:11:32,817 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 14:11:32,830 - INFO - 127.0.0.1 - - [13/Jul/2025 14:11:32] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:11:32,830 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 750
-2025-07-13 14:11:32,846 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 14:11:32,859 - INFO - 127.0.0.1 - - [13/Jul/2025 14:11:32] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:11:32,859 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 244
-2025-07-13 14:11:32,909 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 14:11:32,920 - INFO - 127.0.0.1 - - [13/Jul/2025 14:11:32] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:11:32,921 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 468
-2025-07-13 14:11:32,937 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 14:11:32,950 - INFO - 127.0.0.1 - - [13/Jul/2025 14:11:32] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:11:32,951 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 466
-2025-07-13 14:11:32,966 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 14:11:32,978 - INFO - 127.0.0.1 - - [13/Jul/2025 14:11:32] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:11:32,979 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 472
-2025-07-13 14:11:33,042 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 14:11:33,055 - INFO - 127.0.0.1 - - [13/Jul/2025 14:11:33] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:11:33,055 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 816
-2025-07-13 14:11:33,057 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 14:11:33,069 - INFO - 127.0.0.1 - - [13/Jul/2025 14:11:33] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:11:33,070 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 168
-2025-07-13 14:11:33,085 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 14:11:33,096 - INFO - 127.0.0.1 - - [13/Jul/2025 14:11:33] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:11:33,097 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 168
-2025-07-13 14:11:33,148 - DEBUG - Starting new HTTP connection (1): 127.0.0.1:54321
-2025-07-13 14:11:33,161 - INFO - 127.0.0.1 - - [13/Jul/2025 14:11:33] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:11:33,161 - DEBUG - http://127.0.0.1:54321 "POST /execute HTTP/1.1" 200 40
-2025-07-13 14:36:13,705 - INFO - 192.168.0.105 - - [13/Jul/2025 14:36:13] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:36:30,469 - INFO - 192.168.0.105 - - [13/Jul/2025 14:36:30] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:36:53,515 - INFO - 192.168.0.105 - - [13/Jul/2025 14:36:53] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:37:08,585 - INFO - 192.168.0.105 - - [13/Jul/2025 14:37:08] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:37:08,649 - INFO - 192.168.0.105 - - [13/Jul/2025 14:37:08] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:37:08,723 - INFO - 192.168.0.105 - - [13/Jul/2025 14:37:08] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:37:08,782 - INFO - 192.168.0.105 - - [13/Jul/2025 14:37:08] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:37:08,896 - INFO - 192.168.0.105 - - [13/Jul/2025 14:37:08] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:37:08,939 - INFO - 192.168.0.105 - - [13/Jul/2025 14:37:08] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:37:08,981 - INFO - 192.168.0.105 - - [13/Jul/2025 14:37:08] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:37:09,081 - INFO - 192.168.0.105 - - [13/Jul/2025 14:37:09] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:37:09,130 - INFO - 192.168.0.105 - - [13/Jul/2025 14:37:09] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:37:09,202 - INFO - 192.168.0.105 - - [13/Jul/2025 14:37:09] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:37:09,318 - INFO - 192.168.0.105 - - [13/Jul/2025 14:37:09] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:37:38,803 - DEBUG - Starting new HTTP connection (1): 192.168.0.102:54321
-2025-07-13 14:37:38,805 - INFO - 192.168.0.102 - - [13/Jul/2025 14:37:38] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:37:38,806 - DEBUG - http://192.168.0.102:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 14:37:45,270 - DEBUG - Starting new HTTP connection (1): 192.168.0.102:54321
-2025-07-13 14:37:45,282 - INFO - 192.168.0.102 - - [13/Jul/2025 14:37:45] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:37:45,282 - DEBUG - http://192.168.0.102:54321 "POST /execute HTTP/1.1" 200 40
-2025-07-13 14:37:45,284 - ERROR - Œ¥≤∂ªÒ“Ï≥£:
-Traceback (most recent call last):
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 152, in login
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 171, in login
     user_info = db.user_login_check(username, password)
   File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\DataBase\user_db.py", line 20, in user_login_check
     return self.fetch_query(query, params=params)[0]
            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^
-IndexError: list index out of range
+TypeError: 'NoneType' object is not subscriptable
 
-2025-07-13 14:38:58,048 - DEBUG - Starting new HTTP connection (1): 192.168.0.102:54321
-2025-07-13 14:38:58,050 - INFO - 192.168.0.102 - - [13/Jul/2025 14:38:58] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:38:58,050 - DEBUG - http://192.168.0.102:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 14:39:07,478 - DEBUG - Starting new HTTP connection (1): 192.168.0.102:54321
-2025-07-13 14:39:07,489 - INFO - 192.168.0.102 - - [13/Jul/2025 14:39:07] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:39:07,490 - DEBUG - http://192.168.0.102:54321 "POST /execute HTTP/1.1" 200 40
-2025-07-13 14:39:07,492 - ERROR - Œ¥≤∂ªÒ“Ï≥£:
+2025-08-10 00:24:48,808 - ERROR - Êú™ÊçïËé∑ÂºÇÂ∏∏:
 Traceback (most recent call last):
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 152, in login
-    user_info = db.user_login_check(username, password)
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\DataBase\user_db.py", line 20, in user_login_check
-    return self.fetch_query(query, params=params)[0]
-           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^
-IndexError: list index out of range
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_interface.py", line 179, in addSchoolInfo
+    db.add_parish(w.schoolInterface_temp.get_InputParishDialoginfo())
+                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_dialog.py", line 105, in get_InputParishDialoginfo
+    'parish_date': qdate_to_timestamp(self.calendarPicker.date),
+                   ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\utils\utils_tool.py", line 11, in qdate_to_timestamp
+    date_time = datetime(date.year(), date.month(), date.day())
+                         ^^^^^^^^^
+AttributeError: 'builtin_function_or_method' object has no attribute 'year'
 
-2025-07-13 14:41:35,613 - DEBUG - Starting new HTTP connection (1): 192.168.0.102:54321
-2025-07-13 14:41:35,615 - INFO - 192.168.0.102 - - [13/Jul/2025 14:41:35] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:41:35,616 - DEBUG - http://192.168.0.102:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 14:41:37,770 - DEBUG - Starting new HTTP connection (1): 192.168.0.102:54321
-2025-07-13 14:41:37,782 - INFO - 192.168.0.102 - - [13/Jul/2025 14:41:37] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:41:37,782 - DEBUG - http://192.168.0.102:54321 "POST /execute HTTP/1.1" 200 40
-2025-07-13 14:41:37,784 - ERROR - Œ¥≤∂ªÒ“Ï≥£:
+2025-08-10 00:48:33,868 - ERROR - Êú™ÊçïËé∑ÂºÇÂ∏∏:
 Traceback (most recent call last):
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 166, in login
-    login_info["user_id"] = user_info["user_id"]
-                            ~~~~~~~~~^^^^^^^^^^^
-TypeError: 'set' object is not subscriptable
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 530, in update_bar_chart
+    self.update_bar_statistics(age_data)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 488, in update_bar_statistics
+    if age < 20:
+       ^^^^^^^^
+TypeError: '<' not supported between instances of 'NoneType' and 'int'
 
-2025-07-13 14:42:20,362 - DEBUG - Starting new HTTP connection (1): 192.168.0.102:54321
-2025-07-13 14:42:20,364 - INFO - 192.168.0.102 - - [13/Jul/2025 14:42:20] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:42:20,365 - DEBUG - http://192.168.0.102:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 14:42:22,338 - DEBUG - Starting new HTTP connection (1): 192.168.0.102:54321
-2025-07-13 14:42:22,350 - INFO - 192.168.0.102 - - [13/Jul/2025 14:42:22] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:42:22,350 - DEBUG - http://192.168.0.102:54321 "POST /execute HTTP/1.1" 200 40
-2025-07-13 14:42:22,352 - ERROR - Œ¥≤∂ªÒ“Ï≥£:
+2025-08-10 00:48:56,812 - ERROR - Êú™ÊçïËé∑ÂºÇÂ∏∏:
 Traceback (most recent call last):
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 167, in login
-    login_info["user_id"] = user_info["user_id"]
-                            ~~~~~~~~~^^^^^^^^^^^
-TypeError: 'set' object is not subscriptable
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 531, in update_bar_chart
+    self.update_bar_statistics(age_data)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 488, in update_bar_statistics
+    if age < 20:
+       ^^^^^^^^
+TypeError: '<' not supported between instances of 'NoneType' and 'int'
 
-2025-07-13 14:42:42,955 - DEBUG - Starting new HTTP connection (1): 192.168.0.102:54321
-2025-07-13 14:42:42,957 - INFO - 192.168.0.102 - - [13/Jul/2025 14:42:42] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:42:42,958 - DEBUG - http://192.168.0.102:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 14:42:45,572 - DEBUG - Starting new HTTP connection (1): 192.168.0.102:54321
-2025-07-13 14:42:45,584 - INFO - 192.168.0.102 - - [13/Jul/2025 14:42:45] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:42:45,584 - DEBUG - http://192.168.0.102:54321 "POST /execute HTTP/1.1" 200 40
-2025-07-13 14:42:55,808 - DEBUG - Starting new HTTP connection (1): 192.168.0.102:54321
-2025-07-13 14:42:55,820 - INFO - 192.168.0.102 - - [13/Jul/2025 14:42:55] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:42:55,820 - DEBUG - http://192.168.0.102:54321 "POST /execute HTTP/1.1" 200 40
-2025-07-13 14:42:59,711 - DEBUG - Starting new HTTP connection (1): 192.168.0.102:54321
-2025-07-13 14:42:59,723 - INFO - 192.168.0.102 - - [13/Jul/2025 14:42:59] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:42:59,723 - DEBUG - http://192.168.0.102:54321 "POST /execute HTTP/1.1" 200 40
-2025-07-13 14:43:54,001 - DEBUG - Starting new HTTP connection (1): 192.168.0.102:54321
-2025-07-13 14:47:01,509 - INFO - 192.168.0.105 - - [13/Jul/2025 14:47:01] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:47:10,808 - INFO - 192.168.0.105 - - [13/Jul/2025 14:47:10] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:47:10,872 - INFO - 192.168.0.105 - - [13/Jul/2025 14:47:10] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:47:10,922 - INFO - 192.168.0.105 - - [13/Jul/2025 14:47:10] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:47:10,968 - INFO - 192.168.0.105 - - [13/Jul/2025 14:47:10] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:47:11,048 - INFO - 192.168.0.105 - - [13/Jul/2025 14:47:11] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:47:11,127 - INFO - 192.168.0.105 - - [13/Jul/2025 14:47:11] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:47:11,174 - INFO - 192.168.0.105 - - [13/Jul/2025 14:47:11] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:47:11,299 - INFO - 192.168.0.105 - - [13/Jul/2025 14:47:11] "POST /execute HTTP/1.1" 200 -
-2025-07-13 14:55:30,037 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 14:55:30,067 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 14:55:32,757 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 14:55:32,792 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 157
-2025-07-13 14:55:32,844 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 14:55:32,861 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 14:55:32,905 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 14:55:32,932 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 750
-2025-07-13 14:55:32,962 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 14:55:32,980 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 244
-2025-07-13 14:55:33,041 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 14:55:33,072 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 468
-2025-07-13 14:55:33,100 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 14:55:33,132 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 466
-2025-07-13 14:55:33,163 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 14:55:33,194 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 472
-2025-07-13 14:55:33,271 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 14:55:33,301 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 40
-2025-07-13 14:55:33,324 - ERROR - Œ¥≤∂ªÒ“Ï≥£:
+2025-08-10 00:49:35,051 - ERROR - Êú™ÊçïËé∑ÂºÇÂ∏∏:
 Traceback (most recent call last):
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 185, in login
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 531, in update_bar_chart
+    self.update_bar_statistics(age_data)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 488, in update_bar_statistics
+    if age < 20:
+       ^^^^^^^^
+TypeError: '<' not supported between instances of 'NoneType' and 'int'
+
+2025-08-10 00:54:45,793 - ERROR - Êú™ÊçïËé∑ÂºÇÂ∏∏:
+Traceback (most recent call last):
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 204, in login
     mainwindow = MainWindow(login_info)
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 236, in __init__
-    self.libraryInterface = UserMainInterface(self.login_info, "UserMainInterface")
-                            ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\user\user_main_interface.py", line 30, in __init__
-    self.user_show_interface = User_Show_Interface(
-                               ~~~~~~~~~~~~~~~~~~~^
-        self.login_info, "User_Show_Interface_from_Main_Even")
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\user\User_Interface.py", line 203, in __init__
-    self.Load_User_Log(self.login_info["user_id"])
-    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\user\User_Interface.py", line 218, in Load_User_Log
-    self.BaseUserInterface.BaseQuery.set_viewWidget_data(header_info, self.user_log_all)
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\BaseWidgets\BaseModule.py", line 170, in set_viewWidget_data
-    value = data.get(key, "")
-            ^^^^^^^^
-AttributeError: 'NoneType' object has no attribute 'get'
-
-2025-07-13 15:43:47,658 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:43:47,694 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 15:43:49,314 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:43:49,341 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 157
-2025-07-13 15:43:49,405 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:43:49,434 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 15:43:49,470 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:43:49,487 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 750
-2025-07-13 15:43:49,528 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:43:49,545 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 244
-2025-07-13 15:43:49,621 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:43:49,650 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 468
-2025-07-13 15:43:49,680 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:43:49,697 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 466
-2025-07-13 15:43:49,726 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:43:49,744 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 472
-2025-07-13 15:43:49,827 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:43:49,854 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 40
-2025-07-13 15:43:49,884 - ERROR - Œ¥≤∂ªÒ“Ï≥£:
-Traceback (most recent call last):
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 185, in login
-    mainwindow = MainWindow(login_info)
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 236, in __init__
-    self.libraryInterface = UserMainInterface(self.login_info, "UserMainInterface")
-                            ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\user\user_main_interface.py", line 30, in __init__
-    self.user_show_interface = User_Show_Interface(
-                               ~~~~~~~~~~~~~~~~~~~^
-        self.login_info, "User_Show_Interface_from_Main_Even")
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\user\User_Interface.py", line 203, in __init__
-    self.Load_User_Log(self.login_info["user_id"])
-    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\user\User_Interface.py", line 219, in Load_User_Log
-    self.BaseUserInterface.BaseQuery.set_viewWidget_data(header_info, self.user_log_all)
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\BaseWidgets\BaseModule.py", line 170, in set_viewWidget_data
-    value = data.get(key, "")
-            ^^^^^^^^
-AttributeError: 'NoneType' object has no attribute 'get'
-
-2025-07-13 15:47:43,287 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:47:43,331 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 15:47:44,963 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:47:44,982 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 157
-2025-07-13 15:47:45,050 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:47:45,067 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 15:47:45,119 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:47:45,151 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 750
-2025-07-13 15:47:45,180 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:47:45,198 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 244
-2025-07-13 15:47:45,281 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:47:45,310 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 468
-2025-07-13 15:47:45,346 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:47:45,365 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 466
-2025-07-13 15:47:45,415 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:47:45,435 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 472
-2025-07-13 15:47:45,527 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:47:45,547 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 40
-2025-07-13 15:47:45,563 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:47:45,589 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 157
-2025-07-13 15:47:45,637 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:47:45,661 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 286
-2025-07-13 15:47:45,734 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:47:45,762 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 40
-2025-07-13 15:47:45,786 - ERROR - Œ¥≤∂ªÒ“Ï≥£:
-Traceback (most recent call last):
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 185, in login
-    mainwindow = MainWindow(login_info)
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 238, in __init__
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 257, in __init__
     self.taskCardInterface = TaskCardMainInterFace(self.login_info, "TaskCardMainInterFace")
                              ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 606, in __init__
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 615, in __init__
     self.task_card_main = TaskCardMain(self.login_info, self)
                           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
   File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 266, in __init__
@@ -752,305 +347,7 @@ Traceback (most recent call last):
     ~~~~~~~~~~~~~~~~~~~~~~~^^^
   File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\TaskCard\TaskCardMainInterface.py", line 285, in add_task_with_info
     parishioner_birthday = timestamp_to_date(parishioner_info["student_birthday"])
-                                             ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
-TypeError: 'NoneType' object is not subscriptable
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\utils\utils_tool.py", line 20, in timestamp_to_date
+    dt_object = datetime.fromtimestamp(timestamp)
+TypeError: 'str' object cannot be interpreted as an integer
 
-2025-07-13 15:49:01,858 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:49:01,887 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 15:49:03,132 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:49:03,160 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 157
-2025-07-13 15:49:03,213 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:49:03,241 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 15:49:03,276 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:49:03,303 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 750
-2025-07-13 15:49:03,328 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:49:03,357 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 244
-2025-07-13 15:49:03,422 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:49:03,450 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 468
-2025-07-13 15:49:03,481 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:49:03,514 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 466
-2025-07-13 15:49:03,547 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:49:03,577 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 472
-2025-07-13 15:49:03,656 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:49:03,688 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 40
-2025-07-13 15:49:03,700 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:49:03,730 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 157
-2025-07-13 15:49:03,759 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:49:03,792 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 286
-2025-07-13 15:49:03,857 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:49:03,884 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 40
-2025-07-13 15:49:42,227 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:49:42,261 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 15:49:42,324 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:42,332 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:42,613 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:42,661 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:42,683 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:42,706 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:42,740 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:42,799 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:42,844 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:42,871 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:42,908 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:42,925 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:43,383 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:43,902 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:44,446 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:44,977 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:45,495 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:46,027 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:47,698 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:49:47,728 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 157
-2025-07-13 15:49:47,785 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:49:47,815 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 15:49:47,864 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:49:47,893 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 750
-2025-07-13 15:49:47,934 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:49:47,961 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 244
-2025-07-13 15:49:48,028 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:49:48,055 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 468
-2025-07-13 15:49:48,087 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:49:48,115 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 466
-2025-07-13 15:49:48,152 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:49:48,177 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 472
-2025-07-13 15:49:48,265 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:49:48,284 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 40
-2025-07-13 15:49:48,314 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:49:48,343 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 157
-2025-07-13 15:49:48,398 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:49:48,416 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 286
-2025-07-13 15:49:48,490 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:49:48,508 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 40
-2025-07-13 15:49:48,638 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:48,660 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:48,677 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:48,692 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:48,711 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:48,725 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:48,742 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:48,758 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:48,774 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:48,790 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:48,805 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:49,674 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:49,680 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:49,685 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:49,702 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:49,717 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:49,733 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:49,750 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:49,766 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:49,780 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:49,798 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:49,889 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:49,897 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:49,921 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:49,936 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:49,952 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:49,956 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:49,968 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:49,970 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:49,984 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:50,000 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:50,015 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:50,032 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:50,142 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:50,178 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:50,185 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:50,186 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:50,207 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:50,223 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:50,239 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:50,255 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:50,271 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:50,287 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:50,304 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:50,320 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:50,472 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:50,478 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:50,501 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:50,517 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:50,534 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:50,550 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:50,564 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:50,581 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:50,596 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:50,612 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:50,983 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:51,005 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:51,021 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:51,038 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:51,053 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:51,069 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:51,085 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:51,101 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-07-13 15:49:51,110 - WARNING - Qt: QPainter::begin: A paint device can only be painted by one painter at a time.
-2025-07-13 15:49:51,110 - WARNING - Qt: QPainter::translate: Painter not active
-2025-07-13 15:49:51,110 - WARNING - Qt: QPainter::worldTransform: Painter not active
-2025-07-13 15:49:51,110 - WARNING - Qt: QWidgetEffectSourcePrivate::pixmap: Painter not active
-2025-07-13 15:49:51,121 - WARNING - Qt: QPainter::worldTransform: Painter not active
-2025-07-13 15:49:51,121 - WARNING - Qt: QPainter::setWorldTransform: Painter not active
-2025-07-13 15:49:51,122 - WARNING - Qt: QPainter::setWorldTransform: Painter not active
-2025-07-13 15:49:51,122 - WARNING - Qt: QPainter::begin: A paint device can only be painted by one painter at a time.
-2025-07-13 15:49:51,122 - WARNING - Qt: QPainter::translate: Painter not active
-2025-07-13 15:49:51,122 - WARNING - Qt: QPainter::worldTransform: Painter not active
-2025-07-13 15:49:51,122 - WARNING - Qt: QWidgetEffectSourcePrivate::pixmap: Painter not active
-2025-07-13 15:49:51,123 - WARNING - Qt: QPainter::worldTransform: Painter not active
-2025-07-13 15:49:51,123 - WARNING - Qt: QPainter::setWorldTransform: Painter not active
-2025-07-13 15:49:51,123 - WARNING - Qt: QPainter::setWorldTransform: Painter not active
-2025-07-13 15:49:55,575 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:49:55,602 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 244
-2025-07-13 15:49:58,819 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:49:58,847 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 244
-2025-07-13 15:50:11,348 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:50:11,390 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 47
-2025-07-13 15:50:11,410 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:50:11,438 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 1104
-2025-07-13 15:50:11,455 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:50:11,493 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 47
-2025-07-13 15:50:24,136 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:50:24,178 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 47
-2025-07-13 15:50:24,204 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:50:24,235 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 1104
-2025-07-13 15:50:36,708 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:50:36,738 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 1104
-2025-07-13 15:50:42,215 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:50:42,243 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 1104
-2025-07-13 15:51:54,868 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:51:54,959 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 15:51:56,365 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:51:56,409 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 157
-2025-07-13 15:51:56,494 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:51:56,547 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 15:51:56,613 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:51:56,681 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 1104
-2025-07-13 15:51:56,743 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:51:56,770 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 244
-2025-07-13 15:51:56,839 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:51:56,866 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 468
-2025-07-13 15:51:56,898 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:51:56,925 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 466
-2025-07-13 15:51:56,961 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:51:56,987 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 472
-2025-07-13 15:51:57,071 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:51:57,088 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 197
-2025-07-13 15:51:57,103 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:51:57,129 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 157
-2025-07-13 15:51:57,166 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:51:57,194 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 286
-2025-07-13 15:51:57,258 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:51:57,276 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 40
-2025-07-13 15:52:01,039 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:52:01,068 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 244
-2025-07-13 15:55:42,739 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:55:42,768 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 15:55:43,778 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:55:43,805 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 157
-2025-07-13 15:55:43,858 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:55:43,879 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 15:55:43,918 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:55:43,947 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 1104
-2025-07-13 15:55:43,987 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:55:44,015 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 244
-2025-07-13 15:55:44,079 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:55:44,109 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 468
-2025-07-13 15:55:44,143 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:55:44,175 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 466
-2025-07-13 15:55:44,203 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:55:44,232 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 472
-2025-07-13 15:55:44,308 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:55:44,339 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 197
-2025-07-13 15:55:44,359 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:55:44,387 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 157
-2025-07-13 15:55:44,419 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:55:44,450 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 286
-2025-07-13 15:55:44,514 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:55:44,536 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 40
-2025-07-13 15:55:50,516 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:56:17,042 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:56:17,070 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 15:56:18,263 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:56:18,295 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 157
-2025-07-13 15:56:18,346 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:56:18,377 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 370
-2025-07-13 15:56:18,407 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:56:18,439 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 1104
-2025-07-13 15:56:18,477 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:56:18,504 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 244
-2025-07-13 15:56:18,568 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:56:18,602 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 468
-2025-07-13 15:56:18,630 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:56:18,655 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 466
-2025-07-13 15:56:18,697 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:56:18,725 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 472
-2025-07-13 15:56:18,798 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:56:18,827 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 197
-2025-07-13 15:56:18,849 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:56:18,877 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 157
-2025-07-13 15:56:18,911 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:56:18,946 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 286
-2025-07-13 15:56:19,010 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:56:19,027 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 40
-2025-07-13 15:56:35,808 - DEBUG - Starting new HTTP connection (1): 192.168.0.105:54321
-2025-07-13 15:56:35,835 - DEBUG - http://192.168.0.105:54321 "POST /execute HTTP/1.1" 200 1104
-2025-08-09 20:23:39,168 - ERROR - ÷˜≥Ã–Ú“Ï≥£
-Traceback (most recent call last):
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 294, in <module>
-    window = LoginWindow()
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 112, in __init__
-    self.load_all_parish()
-    ~~~~~~~~~~~~~~~~~~~~^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 132, in load_all_parish
-    load_parish_info = db.fetch_parish()
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\DataBase\parish_db.py", line 17, in fetch_parish
-    return self.fetch_query(query)
-           ~~~~~~~~~~~~~~~~^^^^^^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\DataBase\base_db.py", line 239, in fetch_query
-    self.network_manager.post(request, json_data)
-    ^^^^^^^^^^^^^^^^^^^^
-AttributeError: 'ParishDb' object has no attribute 'network_manager'
-2025-08-09 20:26:11,577 - ERROR - ÷˜≥Ã–Ú“Ï≥£
-Traceback (most recent call last):
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 294, in <module>
-    window = LoginWindow()
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 112, in __init__
-    self.load_all_parish()
-    ~~~~~~~~~~~~~~~~~~~~^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\login_interface.py", line 132, in load_all_parish
-    load_parish_info = db.fetch_parish()
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\DataBase\parish_db.py", line 17, in fetch_parish
-    return self.fetch_query(query)
-           ~~~~~~~~~~~~~~~~^^^^^^^
-  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\DataBase\base_db.py", line 239, in fetch_query
-    self.network_manager.post(request, json_data)
-    ^^^^^^^^^^^^^^^^^^^^
-AttributeError: 'ParishDb' object has no attribute 'network_manager'
-2025-08-09 20:46:42,929 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-08-09 20:46:42,934 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-08-09 20:46:43,451 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-08-09 20:46:43,982 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-08-09 20:46:44,512 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-08-09 20:46:45,046 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-08-09 20:46:45,574 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-08-09 20:46:46,106 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-08-09 20:46:46,639 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-08-09 20:47:54,769 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-08-09 20:47:54,774 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-08-09 20:47:55,279 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-08-09 20:47:55,810 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-08-09 20:47:56,342 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-08-09 20:47:56,873 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-08-09 20:47:57,404 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-08-09 20:47:57,937 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-08-09 20:47:58,468 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-08-09 20:47:58,996 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-08-09 20:48:02,451 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-08-09 20:48:02,467 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-08-09 20:48:02,478 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-08-09 20:48:02,498 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-08-09 20:48:02,510 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-08-09 20:48:02,526 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-08-09 20:48:02,544 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-08-09 20:48:02,560 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-08-09 20:48:02,577 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
-2025-08-09 20:48:02,592 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?

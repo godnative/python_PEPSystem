@@ -1,6 +1,6 @@
 from PyQt6 import QtWidgets
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout, \
-    QAbstractItemView, QHeaderView, QTableWidgetItem, QApplication, QGridLayout, QCheckBox
+    QAbstractItemView, QHeaderView, QTableWidgetItem, QApplication, QGridLayout, QCheckBox, QDateEdit
 from qfluentwidgets import PushButton, SearchLineEdit, TableWidget, LineEdit, CalendarPicker, ComboBox, CheckBox
 
 from utils.utils_tool import get_now_date, timestamp_to_date, timestamp_to_times
@@ -67,7 +67,7 @@ class BaseMessageBoxWidget(QWidget):
         self.label_9 = QLabel("label_9")
         self.inputLine_9 = ComboBox()
         self.label_10 = QLabel("label_10")
-        self.inputLine_10 = CalendarPicker()
+        self.inputLine_10 = QDateEdit()
         self.inputLine_10.setDate(get_now_date())
         hbox_5.addWidget(self.label_9)
         hbox_5.addWidget(self.inputLine_9)
@@ -155,8 +155,8 @@ class BaseQueryWidget(QWidget):
             for column, key in enumerate(header_info):
                 if key == "student_gender":
                     value = "男" if data.get(key, "") == 0 else "女"
-                elif key == "student_birthday" or key == "holyevent_date":
-                    value = timestamp_to_date(data.get(key, "")).toString("yyyy-MM-dd")
+                # elif key == "student_birthday" or key == "holyevent_date":
+                #     value = timestamp_to_date(data.get(key, "")).toString("yyyy-MM-dd")
                 elif key == "opera_time":
                     value = timestamp_to_times(data.get(key, ""))
                 elif key == "opera_type":

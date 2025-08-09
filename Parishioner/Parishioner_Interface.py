@@ -139,7 +139,7 @@ class Parishioner_MessageBox(MessageBoxBase):
             "student_holyname": self.Parishioner_Info_Edit_widgets.inputLine_2.text(),  # 班级字段与对应的下拉框
             "student_family_id": self.Parishioner_Info_Edit_widgets.inputLine_11.currentData(),  # 语文字段与对应的输入框
             "student_identity_num": self.Parishioner_Info_Edit_widgets.inputLine_4.text(),  # 语文字段与对应的输入框
-            "student_birthday": qdate_to_timestamp(self.Parishioner_Info_Edit_widgets.inputLine_10.getDate()),
+            "student_birthday": self.Parishioner_Info_Edit_widgets.inputLine_10.date().toString("yyyy-MM-dd"),
             "student_note": self.Parishioner_Info_Edit_widgets.inputLine_13.text(),
             "operator": None,
             "opera_time": None,
@@ -155,7 +155,7 @@ class Parishioner_MessageBox(MessageBoxBase):
         self.Parishioner_Info_Edit_widgets.inputLine_2.setText(parishioner_messageinfo["student_holyname"])
         self.Parishioner_Info_Edit_widgets.inputLine_4.setText(str(parishioner_messageinfo["student_identity_num"]))
         self.Parishioner_Info_Edit_widgets.inputLine_10.setDate(
-            timestamp_to_date(parishioner_messageinfo["student_birthday"]))
+            QDate.fromString(parishioner_messageinfo["holyevent_date"], "yyyy-MM-dd"))
         self.Parishioner_Info_Edit_widgets.inputLine_13.setText(parishioner_messageinfo["student_note"])
         family_idx = self.Parishioner_Info_Edit_widgets.inputLine_11.findData(
             parishioner_messageinfo["student_family_id"])

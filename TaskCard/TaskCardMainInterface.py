@@ -282,7 +282,7 @@ class TaskCardMain(CardWidget):
 
     def add_task_with_info(self, parishioner_info):
         cur_year = QDate.currentDate().year()
-        parishioner_birthday = timestamp_to_date(parishioner_info["student_birthday"])
+        parishioner_birthday = QDate.fromString(parishioner_info["student_birthday"], "yyyy-mm-dd")
         diff_year = cur_year - parishioner_birthday.year()
         # 计算当前年份的生日
         parishioner_birthday = parishioner_birthday.addYears(diff_year)
@@ -378,8 +378,10 @@ class ChartUpdater(QObject):
 
 # noinspection PyUnresolvedReferences
 class ParishDashboard(QWidget):
-    def __init__(self):
+    def __init__(self, login_info):
         super().__init__()
+        self.login_info = login_info
+        self.cur_parish_id = self.login_info['parish_id']
         self.setWindowTitle("数据可视化仪表板")
 
         # 创建信号对象
@@ -499,15 +501,22 @@ class ParishDashboard(QWidget):
         """模拟数据更新（可以在其他线程中调用）"""
 
         # 更新水果数据（线程安全）
+        total_student = 0
+        none_holy_name_student = 0
+        age_cnt = 0
+        with StudentDB(self) as db:
+            total_student = db.get_parishioner_cnt_with_parish_id(self.cur_parish_id)
+            none_holy_name_student = db.get_parishioner_none_holy_name_cnt_with_parish_id(self.cur_parish_id)
+            age_cnt = db.get_parishioner_age_with_parish_id(self.cur_parish_id)
+            print(age_cnt)
         parishioner_baptism_info = {
-            "领洗人数": 65,
-            "未领洗人数": 38
+            "领洗人数": total_student - none_holy_name_student,
+            "未领洗人数": none_holy_name_student
         }
         self.chart_updater.update_pie_signal.emit(parishioner_baptism_info)
 
         # 更新年龄数据（添加一些新数据）
-        parishioner_age_data = [random.randint(0, 90) for _ in range(50)]
-        self.chart_updater.update_bar_signal.emit(parishioner_age_data)
+        self.chart_updater.update_bar_signal.emit(age_cnt)
 
     def update_pie_chart(self, new_data):
         """更新饼图（通过信号槽调用）"""
@@ -527,9 +536,9 @@ class ParishDashboard(QWidget):
             chart.update()  # 使用 QChart 的 update() 方法而不是 QBarSeries 的 invalidate()
 
 class ProcessDashboard(QWidget):
-    def __init__(self):
+    def __init__(self, login_info):
         super().__init__()
-
+        self.login_info = login_info
         # 创建信号对象
         self.chart_updater = ChartUpdater()
 
@@ -598,11 +607,11 @@ class TaskCardMainInterFace(QWidget):
 
         main_layout = QGridLayout(self)
 
-        self.ParishDashboard = ParishDashboard()
+        self.ParishDashboard = ParishDashboard(self.login_info)
         main_layout.addWidget(self.ParishDashboard, 0,0,1,2)
 
         # 实际功能界面
-        self.process_card = ProcessDashboard()
+        self.process_card = ProcessDashboard(self.login_info)
         self.task_card_main = TaskCardMain(self.login_info, self)
         self.process_card.setMinimumHeight(500)
         main_layout.addWidget(self.process_card, 1, 0)

@@ -1,7 +1,7 @@
 import enum
 import time
 
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QDate
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtPrintSupport import QPrinter, QPrintPreviewDialog
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QTextEdit
@@ -168,7 +168,7 @@ class EventMessageBoxBase(MessageBoxBase):
             'holyevent_witness': self.BaseMessageBoxWidget.inputLine_5.text(),
             'holyevent_implementer': self.BaseMessageBoxWidget.inputLine_6.text(),
             'holyevent_school_id': "",
-            'holyevent_date': qdate_to_timestamp(self.BaseMessageBoxWidget.inputLine_10.date),
+            'holyevent_date': self.BaseMessageBoxWidget.inputLine_10.date().toString("yyyy-MM-dd"),
             "operator": None,
             "opera_time": None,
             "opera_type": None,
@@ -186,7 +186,8 @@ class EventMessageBoxBase(MessageBoxBase):
         self.BaseMessageBoxWidget.inputLine_5.setText(even_message_info["holyevent_witness"])
         self.BaseMessageBoxWidget.inputLine_6.setText(even_message_info["holyevent_implementer"])
         self.BaseMessageBoxWidget.inputLine_9.setCurrentIndex(even_message_info["holyevent_p1_gender"])
-        self.BaseMessageBoxWidget.inputLine_10.setDate(timestamp_to_date(even_message_info["holyevent_date"]))
+        self.BaseMessageBoxWidget.inputLine_10.setDate(
+            QDate.fromString(even_message_info["holyevent_date"], "yyyy-MM-dd"))
         self.BaseMessageBoxWidget.inputLine_13.setText(even_message_info["holyevent_note"])
 
         if self.login_info["user_type"] == 1 and even_message_info["opera_type"] != 0:

@@ -60,7 +60,7 @@ class DataBaseManage:
                                             constraint holyevent_pk_2
                                                 unique,
                                         holyevent_type        integer not null,
-                                        holyevent_date        INT     not null,
+                                        holyevent_date        TEXT     not null,
                                         holyevent_witness     TEXT,
                                         holyevent_implementer TEXT    not null,
                                         holyevent_p1_id       integer not null,
@@ -82,7 +82,7 @@ class DataBaseManage:
                                         parish_name     TEXT    not null
                                             constraint parish_pk_3
                                                 unique,
-                                        parish_date     DATE    not null,
+                                        parish_date     TEXT    not null,
                                         parish_address  TEXT    not null,
                                         parish_info     TEXT,
                                         parish_pic_path TEXT,
@@ -105,7 +105,7 @@ class DataBaseManage:
                                     student_school_id    integer not null,
                                     student_name         TEXT    not null,
                                     student_identity_num TEXT,
-                                    student_birthday     integer,
+                                    student_birthday     TEXT    not null,
                                     student_note         TEXT,
                                     operator             TEXT not null,
                                     opera_time           integer not null,

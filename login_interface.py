@@ -1,6 +1,7 @@
 import os
 import pickle
 import sys
+from logging.handlers import RotatingFileHandler
 
 from utils.msyscfg import CUR_SYS_TYPE
 
@@ -34,14 +35,32 @@ from PyQt6.QtCore import QtMsgType, qInstallMessageHandler
 
 # 1. 设置日志
 def setup_logging():
-    logging.basicConfig(
-        level=logging.DEBUG,
-        format='%(asctime)s - %(levelname)s - %(message)s',
-        handlers=[
-            logging.FileHandler('app.log'),
-            logging.StreamHandler()
-        ]
+    # 创建 logger 对象（可选，默认使用 root logger）
+    logger = logging.getLogger()
+    logger.setLevel(logging.DEBUG)
+
+    # 定义日志格式
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+
+    # 创建 RotatingFileHandler（设置最大 5MB，保留 3 个备份）
+    file_handler = RotatingFileHandler(
+        'app.log',
+        maxBytes=5 * 1024 * 1024,  # 5MB
+        backupCount=3,  # 保留 3 个旧日志
+        encoding='utf-8'  # 可选：设置编码
     )
+    file_handler.setFormatter(formatter)
+
+    # 创建 StreamHandler（输出到控制台）
+    stream_handler = logging.StreamHandler()
+    stream_handler.setFormatter(formatter)
+
+    # 移除默认的 handlers（避免重复日志）
+    logger.handlers.clear()
+
+    # 添加自定义 handlers
+    logger.addHandler(file_handler)
+    logger.addHandler(stream_handler)
 
 
 # 2. 全局异常处理
