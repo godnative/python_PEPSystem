@@ -1,18 +1,29 @@
+import hashlib
+import json
 import sqlite3
 import os
 from sqlite3 import Error
+
+import requests
+from PyQt6.QtCore import QEventLoop, QUrl, QTimer
+from PyQt6.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
+import json
+
 from qfluentwidgets import InfoBar
+from utils.msyscfg import CUR_SYS_TYPE
 
 
 class DataBaseManage:
     def __init__(self, windows):
         self.windows = windows
         self.connection = None
-        self.db_path = "./DataBase/data.db"
+        self.db_path = None
+        if CUR_SYS_TYPE == 0:
+            self.db_path = "./DataBase/data.db"
 
     def __enter__(self):
         self.connection = self.create_connection()
-        if self.connection is None and self.windows is not None:
+        if self.connection is None and self.windows is not None and CUR_SYS_TYPE == 0:
             InfoBar.error(title="链接失败", content="链接数据库失败", parent=self.windows,
                           duration=3000)  # 使用 InfoBar 显示错误提示，设置标题、内容、父窗口和持续时间
         return self
@@ -175,34 +186,120 @@ class DataBaseManage:
         except Error as e:
             print(e)
 
+    def sync_post_request(self, url, data=None, headers=None, timeout=5000):
+        """
+        PyQt6 同步 POST 请求（阻塞主线程直到返回结果）
+        :param url: 请求 URL
+        :param data: POST 数据（dict 或 bytes）
+        :param headers: 请求头（dict）
+        :param timeout: 超时时间（毫秒）
+        :return: (success: bool, response_data: dict/str 或 error_msg: str)
+        """
+        manager = QNetworkAccessManager()
+        loop = QEventLoop()
+        request = QNetworkRequest(QUrl(url))
+
+        # 设置请求头
+        if headers:
+            for key, value in headers.items():
+                request.setRawHeader(key.encode(), value.encode())
+
+        # 处理 POST 数据
+        if isinstance(data, dict):
+            post_data = json.dumps(data).encode()
+            request.setHeader(b"Content-Type", b"application/json")
+        elif isinstance(data, bytes):
+            post_data = data
+        elif data is None:
+            post_data = b""
+        else:
+            return False, "Invalid POST data type (expected dict or bytes)"
+
+        # 发起请求
+        reply = manager.post(request, post_data)
+
+        # 超时处理（PyQt6 仍支持 QTimer.singleShot）
+        if timeout > 0:
+            QTimer.singleShot(timeout, loop.quit)
+
+        # 阻塞直到请求完成或超时
+        reply.finished.connect(loop.quit)
+        loop.exec()
+
+        # 处理响应
+        if reply.error() == QNetworkReply.ErrorCode.NoError:
+            response_data = reply.readAll().data()
+            try:
+                response_data = json.loads(response_data.decode())
+            except ValueError:
+                response_data = response_data.decode()
+            return True, response_data
+        else:
+            return False, reply.errorString()
+
     def create_connection(self):
-        if self.connection is None:
+        if self.connection is None and CUR_SYS_TYPE == 0:
             self.connection = sqlite3.connect(self.db_path)
         return self.connection
 
-    def fetch_query(self, query, single=False, params=None):
+    def fetch_query(self, query, params=None):
         result = None
         err_log = ""
-        if self.connection:
-            try:
-                cursor = self.connection.cursor()
-                if params is None:
-                    cursor.execute(query)
-                else:
-                    cursor.execute(query, params)
-                columns = [column[0] for column in cursor.description]
-                if single:
-                    result = cursor.fetchone()
-                    result = dict(zip(columns, result))
-                else:
+        if CUR_SYS_TYPE == 0:
+            if self.connection:
+                try:
+                    cursor = self.connection.cursor()
+                    if params is None:
+                        cursor.execute(query)
+                    else:
+                        cursor.execute(query, params)
+                    columns = [column[0] for column in cursor.description]
                     result = cursor.fetchall()
                     result = [dict(zip(columns, row)) for row in result]
-            except Exception as e:
-                print(e)
-                err_log = f'Error: {e}'
+                except Exception as e:
+                    print(e)
+                    err_log = f'Error: {e}'
+            else:
+                print('Connection failed')
+                err_log = 'Connection failed'
         else:
-            print('Connection failed')
-            err_log = 'Connection failed'
+            try:
+                # 发送 POST 请求（带 Basic Auth）
+                server_url = "http://192.168.0.105:54321"  # 默认服务器地址
+                # 构造请求数据
+                data = {"sql": query}
+                if params:
+                    data["params"] = params
+                username = "client1"
+                password = "password1"
+                provided_password_hash = hashlib.sha256(password.encode()).hexdigest()
+                response = requests.post(
+                    f"{server_url}/execute",
+                    json=data,
+                    auth=(username, provided_password_hash),
+                    timeout=5
+                )
+
+                # 处理响应
+                if response.status_code == 200:
+                    result = response.json()
+                    if "error" in result:
+                        err_log = f"服务器返回错误: {result['error']}"
+                    else:
+                        err_log = f"执行成功:\n{result}"
+                        count_ret = result['count']
+                        if count_ret > 0:
+                            result = result["result"]
+                        else:
+                            result = [None]
+
+                else:
+                    # 处理 HTTP 错误
+                    err_log = f"HTTP 错误: {response.status_code}\n{response.text}"
+            except requests.exceptions.RequestException as e:
+                # 处理连接错误
+                err_log = f"连接服务器失败: {str(e)}"
+
         if result is None and self.windows is not None:
             InfoBar.error(title="链接失败", content=err_log, parent=self.windows,
                           duration=3000)  # 使用 InfoBar 显示错误提示，设置标题、内容、父窗口和持续时间
@@ -210,40 +307,51 @@ class DataBaseManage:
 
     def execute_query(self, query, params):
         err_log = ""
-        if self.connection:
-            try:
-                cursor = self.connection.cursor()
-                cursor.execute(query, params)
-                self.connection.commit()
-                return True
-            except Exception as e:
-                print(f'Error: {e}')
-                err_log = f'Error: {e}'
-                self.connection.rollback()
+        if CUR_SYS_TYPE == 0:
+            if self.connection:
+                try:
+                    cursor = self.connection.cursor()
+                    cursor.execute(query, params)
+                    self.connection.commit()
+                    return True
+                except Exception as e:
+                    err_log = f'Error: {e}'
+                    self.connection.rollback()
+            else:
+                print('Connection failed')
+                err_log = 'Connection failed'
         else:
-            print('Connection failed')
-            err_log = 'Connection failed'
-        if self.windows is not None:
-            InfoBar.error(title="链接失败", content=err_log, parent=self.windows,
-                          duration=3000)  # 使用 InfoBar 显示错误提示，设置标题、内容、父窗口和持续时间
-        return None
+            try:
+                # 发送 POST 请求（带 Basic Auth）
+                server_url = "http://192.168.0.105:54321"  # 默认服务器地址
+                # 构造请求数据
+                data = {"sql": query}
+                if params:
+                    data["params"] = params
+                username = "client1"
+                password = "password1"
+                provided_password_hash = hashlib.sha256(password.encode()).hexdigest()
+                response = requests.post(
+                    f"{server_url}/execute",
+                    json=data,
+                    auth=(username, provided_password_hash),
+                    timeout=5
+                )
 
-    def execute_query_return_id(self, query, params):
-        err_log = ""
-        if self.connection:
-            try:
-                cursor = self.connection.cursor()
-                cursor.execute(query, params)
-                get_id = cursor.lastrowid
-                self.connection.commit()
-                return get_id
-            except Exception as e:
-                print(f'Error: {e}')
-                err_log = f'Error: {e}'
-                self.connection.rollback()
-        else:
-            print('Connection failed')
-            err_log = 'Connection failed'
+                # 处理响应
+                if response.status_code == 200:
+                    result = response.json()
+                    if "error" in result:
+                        err_log = f"服务器返回错误: {result['error']}"
+                    else:
+                        print("execute success")
+                        return True
+                else:
+                    # 处理 HTTP 错误
+                    err_log = f"HTTP 错误: {response.status_code}\n{response.text}"
+            except requests.exceptions.RequestException as e:
+                # 处理连接错误
+                err_log = f"连接服务器失败: {str(e)}"
         if self.windows is not None:
             InfoBar.error(title="链接失败", content=err_log, parent=self.windows,
                           duration=3000)  # 使用 InfoBar 显示错误提示，设置标题、内容、父窗口和持续时间

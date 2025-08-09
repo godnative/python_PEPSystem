@@ -1,5 +1,5 @@
 from DataBase.base_db import DataBaseManage
-
+from utils.msyscfg import CUR_SYS_TYPE
 
 # 定义一个名为 UserDB 的类，继承自 DataBaseManage 类，用于管理用户相关的数据库操作
 class UserDB(DataBaseManage):
@@ -199,7 +199,14 @@ class UserDB(DataBaseManage):
             query = base_query
             params = (user_id,)
 
-        return self.fetch_query(query, params=params)
+        if CUR_SYS_TYPE == 0:
+            return self.fetch_query(query, params=params)
+        else:
+            fetch_ret = self.fetch_query(query, params=params)
+            if len(fetch_ret) == 1 and fetch_ret[0] is None:
+                return None
+            else:
+                return fetch_ret
 
     def check_user_name_exists(self, user_name):
         """

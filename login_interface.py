@@ -2,6 +2,8 @@ import os
 import pickle
 import sys
 
+from utils.msyscfg import CUR_SYS_TYPE
+
 from PyQt6.QtCore import QRect
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon
@@ -104,8 +106,9 @@ class LoginWindow(Window, Ui_Form):
         # self.lineEdit_3.setText("admin")
         # self.lineEdit_5.setText("admin123")
         self.pushButton.clicked.connect(self.login)
-        db = ParishDb(self)
-        db.creat_all_database()
+        if CUR_SYS_TYPE == 0:
+            db = ParishDb(self)
+            db.creat_all_database()
         self.load_all_parish()
         self.load_last_login_info()
 
@@ -147,6 +150,7 @@ class LoginWindow(Window, Ui_Form):
 
         with UserDB(self) as db:
             user_info = db.user_login_check(username, password)
+            print(user_info)
 
         if user_info is not None:
             login_info = {

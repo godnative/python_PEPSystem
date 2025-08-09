@@ -8,6 +8,7 @@ from qfluentwidgets import MessageBoxBase, SubtitleLabel, InfoBar
 
 from BaseWidgets.BaseModule import BaseMainInterface, BaseUserInterface
 from DataBase.user_db import UserDB
+from utils.msyscfg import CUR_SYS_TYPE
 
 check_module_data = {
     "parishioner": 0,
@@ -50,9 +51,9 @@ def check_auth_permission(required_permission):
 
             if check_bit_at_position(authnum, check_pos):
                 # 如果有操作权限，执行原函数
-                with UserDB(self) as db:
-                    ret = func(self)
-                    if ret:
+                ret = func(self)
+                if CUR_SYS_TYPE == 0 and ret:
+                    with UserDB(self) as db:
                         exec_log = "[%s] 执行 %s %s 操作 成功" % (
                             formatted_time,
                             required_permission["module_data"],
@@ -72,8 +73,9 @@ def check_auth_permission(required_permission):
                               duration=1000)  # 使用 InfoBar 显示错误提示，设置标题、内容、父窗口和持续时间
                 exec_log = "[%s] 执行 %s 操作 失败[权限不足]" % (formatted_time, required_permission)
                 print(exec_log)
-                with UserDB(self) as db:
-                    db.add_user_log({"user_id": self.login_info["user_id"], "user_log_info": exec_log})
+                if CUR_SYS_TYPE == 0:
+                    with UserDB(self) as db:
+                        db.add_user_log({"user_id": self.login_info["user_id"], "user_log_info": exec_log})
             return None
 
         return wrapper
@@ -208,6 +210,7 @@ class User_Show_Interface(QWidget):
     def Load_User_Log(self, user_id):
         with UserDB(self) as db:
             self.user_log_all = db.fetch_user_log(user_id, 10)
+            print(self.user_log_all)
 
         if self.user_log_all is None:
             return

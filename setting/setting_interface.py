@@ -14,7 +14,11 @@ from qfluentwidgets import (SettingCardGroup, PushSettingCard,
                             ExpandLayout, SettingCard, FluentIconBase, HyperlinkButton)
 
 from sqlite_server.flask_server import FlaskServer
-from utils.msyscfg import SYSTEM_DATABASE_BACKUP_FILE_PATH, SYSTEM_DATABASE_FILE_PATH, AUTHOR, VERSION
+from utils.msyscfg import CUR_SYS_TYPE
+if CUR_SYS_TYPE == 0:
+    from utils.msyscfg import SYSTEM_DATABASE_BACKUP_FILE_PATH, SYSTEM_DATABASE_FILE_PATH, AUTHOR, VERSION
+else:
+    from utils.msyscfg import AUTHOR, VERSION
 
 
 class PushAndLinkSettingCard(SettingCard):
@@ -53,37 +57,38 @@ class SettingInterface(ScrollArea):
         self.settingLabel.setFont(font)
 
         # music folders
-        self.musicInThisPCGroup = SettingCardGroup(
-            self.tr("备份与恢复"), self.scrollWidget)
+        if CUR_SYS_TYPE == 0:
+            self.musicInThisPCGroup = SettingCardGroup(
+                self.tr("备份与恢复"), self.scrollWidget)
 
-        self.BackUpDataBaseCard = PushAndLinkSettingCard(
-            SYSTEM_DATABASE_BACKUP_FILE_PATH,
-            self.tr('备份当前数据库文件'),
-            self.tr('打开备份文件夹'),
-            FIF.DOWNLOAD,
-            self.tr("备份"),
-            SYSTEM_DATABASE_BACKUP_FILE_PATH,
-            self.musicInThisPCGroup
-        )
+            self.BackUpDataBaseCard = PushAndLinkSettingCard(
+                SYSTEM_DATABASE_BACKUP_FILE_PATH,
+                self.tr('备份当前数据库文件'),
+                self.tr('打开备份文件夹'),
+                FIF.DOWNLOAD,
+                self.tr("备份"),
+                SYSTEM_DATABASE_BACKUP_FILE_PATH,
+                self.musicInThisPCGroup
+            )
 
-        self.restoreDataBaseCard = PushSettingCard(
-            self.tr('选择需要恢复的文件'),
-            FIF.UPDATE,
-            self.tr("恢复"),
-            SYSTEM_DATABASE_BACKUP_FILE_PATH,
-            self.musicInThisPCGroup
-        )
+            self.restoreDataBaseCard = PushSettingCard(
+                self.tr('选择需要恢复的文件'),
+                FIF.UPDATE,
+                self.tr("恢复"),
+                SYSTEM_DATABASE_BACKUP_FILE_PATH,
+                self.musicInThisPCGroup
+            )
 
-        self.personalGroup = SettingCardGroup(
-            self.tr('开放服务器端口'), self.scrollWidget)
+            self.personalGroup = SettingCardGroup(
+                self.tr('开放服务器端口'), self.scrollWidget)
 
-        self.enableAcrylicCard = SwitchSettingCard(
-            FIF.TRANSPARENT,
-            self.tr("开启服务器端口"),
-            self.tr("状态: 停止运行"),
-            configItem=None,
-            parent=self.personalGroup
-        )
+            self.enableAcrylicCard = SwitchSettingCard(
+                FIF.TRANSPARENT,
+                self.tr("开启服务器端口"),
+                self.tr("状态: 停止运行"),
+                configItem=None,
+                parent=self.personalGroup
+            )
 
         # application
         self.aboutGroup = SettingCardGroup(
@@ -113,18 +118,20 @@ class SettingInterface(ScrollArea):
     def __initLayout(self):
         self.settingLabel.move(60, 63)
 
-        self.musicInThisPCGroup.addSettingCard(self.BackUpDataBaseCard)
-        self.musicInThisPCGroup.addSettingCard(self.restoreDataBaseCard)
+        if CUR_SYS_TYPE == 0:
+            self.musicInThisPCGroup.addSettingCard(self.BackUpDataBaseCard)
+            self.musicInThisPCGroup.addSettingCard(self.restoreDataBaseCard)
 
-        self.personalGroup.addSettingCard(self.enableAcrylicCard)
+            self.personalGroup.addSettingCard(self.enableAcrylicCard)
 
         self.aboutGroup.addSettingCard(self.aboutCard)
 
         # add setting card group to layout
         self.expandLayout.setSpacing(28)
         self.expandLayout.setContentsMargins(60, 10, 60, 0)
-        self.expandLayout.addWidget(self.musicInThisPCGroup)
-        self.expandLayout.addWidget(self.personalGroup)
+        if CUR_SYS_TYPE == 0:
+            self.expandLayout.addWidget(self.musicInThisPCGroup)
+            self.expandLayout.addWidget(self.personalGroup)
         self.expandLayout.addWidget(self.aboutGroup)
 
     def __onRestoreDataBaseCardClicked(self):
@@ -154,7 +161,7 @@ class SettingInterface(ScrollArea):
             print("file not exist")
 
     def __acrylicEnableChanged(self, enabled: bool):
-        host = "127.0.0.1"
+        host = "0.0.0.0"
         port = 54321
         if enabled:
             try:
@@ -169,15 +176,15 @@ class SettingInterface(ScrollArea):
                 self.flask_server = None
             self.enableAcrylicCard.contentLabel.setText(f"状态: 停止运行 (http://{host}:{port})")
 
-
     def __connectSignalToSlot(self):
-        self.restoreDataBaseCard.clicked.connect(
-            self.__onRestoreDataBaseCardClicked)
+        if CUR_SYS_TYPE == 0:
+            self.restoreDataBaseCard.clicked.connect(
+                self.__onRestoreDataBaseCardClicked)
 
-        # noinspection PyUnresolvedReferences
-        self.BackUpDataBaseCard.clicked.connect(
-            self.__onBackUpDataBaseCardClicked
-        )
+            # noinspection PyUnresolvedReferences
+            self.BackUpDataBaseCard.clicked.connect(
+                self.__onBackUpDataBaseCardClicked
+            )
 
-        self.enableAcrylicCard.checkedChanged.connect(
-            self.__acrylicEnableChanged)
+            self.enableAcrylicCard.checkedChanged.connect(
+                self.__acrylicEnableChanged)

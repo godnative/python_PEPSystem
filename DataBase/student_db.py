@@ -1,6 +1,7 @@
 import random
 
 from DataBase.base_db import DataBaseManage
+from utils.msyscfg import CUR_SYS_TYPE
 from utils.name_rand import generate_chinese_name
 
 
@@ -8,7 +9,6 @@ class StudentDB(DataBaseManage):
     def fetch_students(self):
         # 定义查询语句
         query = """
-               -- 查询学生表（student）中的所有字段，并关联班级表（classes），获取学生所属班级的名称
                 SELECT s.*,              -- 查询 student 表中的所有字段
                        c.family_name      -- 查询 classes 表中的 class_name 字段（班级名称）
                 FROM student s           -- 从 student 表中查询数据，给表取别名为 s
@@ -34,10 +34,9 @@ class StudentDB(DataBaseManage):
     def fetch_students_with_school_id(self, school_id):
         # 定义查询语句
         query = """
-               -- 查询学生表（student）中的所有字段，并关联班级表（classes），获取学生所属班级的名称
-                SELECT s.*,             -- 查询 student 表中的所有字段
-                       c.family_name      -- 查询 classes 表中的 class_name 字段（班级名称）
-                FROM student s           -- 从 student 表中查询数据，给表取别名为 s
+                SELECT s.*,
+                       c.family_name
+                FROM student s
                 
                 JOIN family c
                 ON s.student_family_id = c.family_id
@@ -50,13 +49,12 @@ class StudentDB(DataBaseManage):
     def fetch_students_with_school_id_and_family_id(self, family_id):
         # 定义查询语句
         query = """
-               -- 查询学生表（student）中的所有字段，并关联班级表（classes），获取学生所属班级的名称
-                SELECT s.* ,             -- 查询 student 表中的所有字段
+                SELECT s.* ,
                         c.family_name
-                FROM student s           -- 从 student 表中查询数据，给表取别名为 s
+                FROM student s
                 JOIN family c
                 ON s.student_family_id = c.family_id
-                where s.student_family_id = ? -- 通过 student 表的 class_id 字段与 classes 表的 class_id 字段进行匹配
+                where s.student_family_id = ?
                """
         params = (family_id,)
         # 调用父类的 fetch_query 方法执行查询，并返回查询结果
@@ -64,7 +62,7 @@ class StudentDB(DataBaseManage):
 
     def fetch_students_with_like(self, school_id, like_str):
         query = """
-                SELECT s.* ,             -- 查询 student 表中的所有字段
+                SELECT s.* ,
                         c.family_name
                 FROM student s
                 JOIN family c
@@ -118,11 +116,17 @@ class StudentDB(DataBaseManage):
         query = """
             SELECT *
             FROM student
-            -- 将 student_birthday 时间戳转换为日期格式，然后提取月份
             WHERE strftime('%m', datetime(student_birthday, 'unixepoch')) = strftime('%m', 'now') and student_school_id = ?;
         """
         params = (school_id,)
-        return self.fetch_query(query, params=params)
+        if CUR_SYS_TYPE == 0:
+            return self.fetch_query(query, params=params)
+        else:
+            fetch_ret = self.fetch_query(query, params=params)
+            if len(fetch_ret) == 1 and fetch_ret[0] is None:
+                return None
+            else:
+                return fetch_ret
 
     def set_data_opera_type(self, student_id, opera_type):
         query = """

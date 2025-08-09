@@ -9,7 +9,7 @@ class HolyEventDB(DataBaseManage):
     def fetch_all_event_by_type(self, event_type, school_id):
         # 定义 SQL 查询语句，用于选择 CLASSES 表中的所有数据
         query = """
-            SELECT h.*,              -- 查询 student 表中的所有字段
+            SELECT h.*,
                    s1.student_name AS holyevent_p1_name,
                    s1.student_holyname AS holyevent_p1_holyname,
                    s1.student_gender AS holyevent_p1_gender,
@@ -18,8 +18,7 @@ class HolyEventDB(DataBaseManage):
                    s2.student_holyname AS holyevent_p2_holyname,
                    s2.student_gender AS holyevent_p2_gender,
                    s2.student_id     AS holyevent_p2_id
-            -- 查询 classes 表中的 class_name 字段（班级名称）
-            FROM holyevent h           -- 从 student 表中查询数据，给表取别名为 s
+            FROM holyevent h
             JOIN student s1 ON h.holyevent_p1_id = s1.student_id
             JOIN student s2 ON h.holyevent_p2_id = s2.student_id
             where h.holyevent_type = ? and h.holyevent_school_id =?;
@@ -44,7 +43,7 @@ class HolyEventDB(DataBaseManage):
 
     def fetch_even_with_like(self, even_type, like_str, school_id):
         query = """
-                SELECT h.*,              -- 查询 student 表中的所有字段
+                SELECT h.*,
                        s1.student_name AS holyevent_p1_name,
                        s1.student_holyname AS holyevent_p1_holyname,
                        s1.student_gender AS holyevent_p1_gender,
@@ -53,8 +52,7 @@ class HolyEventDB(DataBaseManage):
                        s2.student_holyname AS holyevent_p2_holyname,
                        s2.student_gender AS holyevent_p2_gender,
                        s2.student_id     AS holyevent_p2_id
-                -- 查询 classes 表中的 class_name 字段（班级名称）
-                FROM holyevent h           -- 从 student 表中查询数据，给表取别名为 s
+                FROM holyevent h 
                 JOIN student s1 ON h.holyevent_p1_id = s1.student_id
                 JOIN student s2 ON h.holyevent_p2_id = s2.student_id
                 where h.holyevent_type = ? and h.holyevent_school_id =?
