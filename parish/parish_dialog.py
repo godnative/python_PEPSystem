@@ -33,7 +33,7 @@ class BaseSchoolInterface_Temp:
         self.label_2 = QLabel()
         self.label_2.setMaximumSize(QSize(16777215, 20))
         self.label_2.setFont(font)
-        self.label_2.setText("教区名字")
+        self.label_2.setText("堂区名称")
 
         self.verticalLayout.addWidget(self.label_2)
 

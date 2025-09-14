@@ -1,9 +1,12 @@
 from PyQt6 import QtWidgets
+from PyQt6.QtCore import Qt, QDate
+from PyQt6.QtGui import QFont, QPixmap
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout, \
-    QAbstractItemView, QHeaderView, QTableWidgetItem, QApplication, QGridLayout, QCheckBox, QDateEdit
-from qfluentwidgets import PushButton, SearchLineEdit, TableWidget, LineEdit, CalendarPicker, ComboBox, CheckBox
+    QAbstractItemView, QHeaderView, QTableWidgetItem, QApplication, QGridLayout, QCheckBox, QDateEdit, QTextEdit
+from qfluentwidgets import PushButton, SearchLineEdit, TableWidget, LineEdit, CalendarPicker, ComboBox, CheckBox, \
+    TextEdit, DateEdit
 
-from utils.utils_tool import get_now_date, timestamp_to_date, timestamp_to_times
+from utils.utils_tool import get_now_date, timestamp_to_date, timestamp_to_times, ImageLabel
 
 user_type = ["管理员", "录入员", "游客"]
 opera_type = ["录入", "待审阅", "归档"]
@@ -305,12 +308,128 @@ class BaseUserInterface(QWidget):
             self.set_checkbox_state_from_bitmap(0)
 
 
+class BaseParishInterface(QWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+        self.mainVbox = QVBoxLayout(self)
+
+        # 标题画幅
+        self.titleLabel = ImageLabel()
+        self.mainVbox.addWidget(self.titleLabel)
+
+        # 信息展示区
+        self.infoMainHbox = QHBoxLayout()
+
+        # 教堂图片
+        self.mainPic = ImageLabel()
+        self.infoMainHbox.addWidget(self.mainPic)
+
+        # 教堂信息
+        self.InfohBox = QVBoxLayout()
+
+        font = QFont()
+        font.setFamily("楷体")
+        font.setPointSize(18)
+
+        self.label_1 = QLabel("堂区名称")
+        self.label_1.setFont(font)
+        self.textEdit_1 = LineEdit()
+        self.textEdit_1.setMaximumHeight(20)
+
+        self.label_2 = QLabel("建立日期")
+        self.label_2.setFont(font)
+        self.textEdit_2 = DateEdit()
+        self.textEdit_2.setMaximumHeight(20)
+
+        self.label_3 = QLabel("当前主保")
+        self.label_3.setFont(font)
+        self.textEdit_3 = LineEdit()
+        self.textEdit_3.setMaximumHeight(20)
+
+        self.label_4 = QLabel("地址")
+        self.label_4.setFont(font)
+        self.textEdit_4 = LineEdit()
+        self.textEdit_4.setMaximumHeight(20)
+
+        self.label_5 = QLabel("本堂神父")
+        self.label_5.setFont(font)
+        self.textEdit_5 = LineEdit()
+        self.textEdit_5.setMaximumHeight(20)
+
+        self.label_6 = QLabel("联系电话")
+        self.label_6.setFont(font)
+        self.textEdit_6 = LineEdit()
+        self.textEdit_6.setMaximumHeight(20)
+
+        self.InfohBox.addWidget(self.label_1)
+        self.InfohBox.addWidget(self.textEdit_1)
+        self.InfohBox.addWidget(self.label_2)
+        self.InfohBox.addWidget(self.textEdit_2)
+        self.InfohBox.addWidget(self.label_3)
+        self.InfohBox.addWidget(self.textEdit_3)
+        self.InfohBox.addWidget(self.label_4)
+        self.InfohBox.addWidget(self.textEdit_4)
+        self.InfohBox.addWidget(self.label_5)
+        self.InfohBox.addWidget(self.textEdit_5)
+        self.InfohBox.addWidget(self.label_6)
+        self.InfohBox.addWidget(self.textEdit_6)
+
+
+        self.infoMainHbox.addLayout(self.InfohBox)
+
+        self.mainVbox.addLayout(self.infoMainHbox)
+
+        # 按键
+        self.buttonBox = QHBoxLayout()
+        self.button_1 = PushButton()
+        self.button_2 = PushButton()
+        self.buttonBox.addWidget(self.button_1)
+        self.buttonBox.addWidget(self.button_2)
+        self.mainVbox.addLayout(self.buttonBox)
+
+        # 尾部画幅
+        self.tailPic = ImageLabel()
+        self.mainVbox.addWidget(self.tailPic)
+
+    def setParishInfo(self, parish_info):
+        if parish_info["parish_pic_path"] is not None:
+            pixmap = QPixmap(parish_info["parish_pic_path"]).scaled(
+                self.mainPic.size(),
+                Qt.AspectRatioMode.KeepAspectRatioByExpanding,
+                Qt.TransformationMode.SmoothTransformation
+            )
+            self.mainPic.setPixmap(pixmap)
+
+        self.textEdit_1.setText(parish_info["parish_name"])
+        self.textEdit_2.setDate(
+                QDate.fromString(parish_info["parish_date"], "yyyy-MM-dd"))
+        self.textEdit_3.setText(parish_info["parish_info"])
+        self.textEdit_4.setText(parish_info["parish_address"])
+        self.textEdit_5.setText(parish_info["parish_priest"])
+        self.textEdit_6.setText(str(parish_info["parish_phonenum"]))
+
+    def getParishInfo(self):
+        parishInfo = {
+            "parish_name": self.textEdit_1.text(),
+            "parish_date": self.textEdit_2.date().toString("yyyy-MM-dd"),
+            "parish_info": self.textEdit_3.text(),
+            "parish_address": self.textEdit_4.text(),
+            "parish_priest": self.textEdit_5.text(),
+            "parish_phonenum": int(self.textEdit_6.text()),
+            "parish_pic_path": self.mainPic.image_path,
+            "operator": None,
+            "opera_time": None,
+            "opera_type": None
+        }
+        return parishInfo
+
 if __name__ == "__main__":
     import sys
 
     app = QApplication(sys.argv)
 
-    main_window = BaseUserInterface()
+    main_window = BaseParishInterface()
     main_window.show()
 
     sys.exit(app.exec())

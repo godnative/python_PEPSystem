@@ -3,6 +3,7 @@ import pickle
 import sys
 from logging.handlers import RotatingFileHandler
 
+from parish.parish_interface_new import Parish_Main_Interface
 from utils.msyscfg import CUR_SYS_TYPE
 
 from PyQt6.QtCore import QRect
@@ -24,7 +25,6 @@ from Event.EvenMainTabInterface import EvenMainTabInterface
 from LoginWindow import Ui_Form
 from Parishioner.Parishioner_main_interface import ParishionerMainInterface
 from TaskCard.TaskCardMainInterface import TaskCardMainInterFace
-from parish.parish_interface import ShowSchoolInterface
 from setting.settingMainInterFace import SettingMainInterFace
 from user.user_main_interface import UserMainInterface
 
@@ -241,7 +241,7 @@ class MainWindow(MSFluentWindow):
     def __init__(self, login_info):
         super().__init__()
         self.login_info = login_info
-        self.schoolInterface = ShowSchoolInterface(self.login_info, "ShowSchoolInterface")
+        self.schoolInterface = Parish_Main_Interface(self.login_info, "ShowSchoolInterface")
         if self.login_info["parish_id"] is None:
             self.setWindowTitle('未选择当前教区')
             self.addSubInterface(self.schoolInterface, FIF.APPLICATION, '教区')

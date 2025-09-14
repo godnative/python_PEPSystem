@@ -155,7 +155,7 @@ class Parishioner_MessageBox(MessageBoxBase):
         self.Parishioner_Info_Edit_widgets.inputLine_2.setText(parishioner_messageinfo["student_holyname"])
         self.Parishioner_Info_Edit_widgets.inputLine_4.setText(str(parishioner_messageinfo["student_identity_num"]))
         self.Parishioner_Info_Edit_widgets.inputLine_10.setDate(
-            QDate.fromString(parishioner_messageinfo["holyevent_date"], "yyyy-MM-dd"))
+            QDate.fromString(parishioner_messageinfo["student_birthday"], "yyyy-MM-dd"))
         self.Parishioner_Info_Edit_widgets.inputLine_13.setText(parishioner_messageinfo["student_note"])
         family_idx = self.Parishioner_Info_Edit_widgets.inputLine_11.findData(
             parishioner_messageinfo["student_family_id"])

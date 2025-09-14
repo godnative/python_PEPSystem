@@ -431,7 +431,7 @@ class Event_Main_Interface(QWidget):
             p1_holyname = self.Event_all_info[idx]["holyevent_p1_holyname"]
             p2_name = self.Event_all_info[idx]["holyevent_p2_name"]
             p2_holyname = self.Event_all_info[idx]["holyevent_p2_holyname"]
-            date = timestamp_to_date(self.Event_all_info[idx]["holyevent_date"]).toString("yyyy-MM-dd")
+            date = self.Event_all_info[idx]["holyevent_date"]
             parish_id = self.Event_all_info[idx]["holyevent_school_id"]
             with ParishDb(self) as db:
                 parish_info = db.get_parish_info(parish_id)

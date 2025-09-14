@@ -38,7 +38,11 @@ class ParishDb(DataBaseManage):
         """
         params = (parish_id,)
         # 使用父类的 fetch_query 方法执行查询，并返回查询结果
-        return self.fetch_query(query, params=params)[0]
+        ret = self.fetch_query(query, params=params)
+        if not ret:
+            return None
+        else:
+            return ret[0]
 
     def get_max_parish_id(self):
         # 定义 SQL 查询语句，用于选择 CLASSES 表中的所有数据
