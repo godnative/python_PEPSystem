@@ -1,9 +1,10 @@
 import enum
 import time
+from datetime import datetime
 
 from PyQt6.QtCore import Qt, QDate
-from PyQt6.QtGui import QPixmap
-from PyQt6.QtPrintSupport import QPrinter, QPrintPreviewDialog
+from PyQt6.QtGui import QPixmap, QTextBlockFormat, QTextCharFormat, QFont, QTextCursor
+from PyQt6.QtPrintSupport import QPrinter, QPrintPreviewDialog, QPrintDialog
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QTextEdit
 from qfluentwidgets import MessageBoxBase, SubtitleLabel, InfoBar, PushButton
 
@@ -269,8 +270,12 @@ class Event_Main_Interface(QWidget):
         self.BaseMainInterface.BaseQuery.searchInput.searchSignal.connect(self.query_even_info_with_like)
         self.BaseMainInterface.BaseQuery.searchInput.returnPressed.connect(self.query_even_info_with_like)
         self.BaseMainInterface.BaseQuery.ReviewButton.clicked.connect(self.review_data)
-        self.BaseMainInterface.BaseQuery.printButton.clicked.connect(self.tprint)
+        self.BaseMainInterface.BaseQuery.printButton.clicked.connect(self.show_print_preview)
         self.BaseMainInterface.BaseQuery.printButton.show()
+
+        self.text_edit = QTextEdit()
+        self.text_edit.setReadOnly(True)  # 设置为只读，防止用户直接修改
+        # self.text_edit.hide()
 
         if self.login_info["user_type"] == 0:
 
@@ -463,3 +468,118 @@ class Event_Main_Interface(QWidget):
 
     def table2print(self):
         self.textEdit.print(self.printer)
+
+    def update_text(self):
+        """更新文本框内容，应用指定的格式"""
+        # 获取输入的人名，如果为空则使用默认值
+        person_name = "张三"
+
+        # 清空现有内容
+        self.text_edit.clear()
+
+        idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
+        if idx != -1:
+            p1_name = self.Event_all_info[idx]["holyevent_p1_name"]
+            p1_holyname = self.Event_all_info[idx]["holyevent_p1_holyname"]
+            p2_name = self.Event_all_info[idx]["holyevent_p2_name"]
+            p2_holyname = self.Event_all_info[idx]["holyevent_p2_holyname"]
+            date = self.Event_all_info[idx]["holyevent_date"]
+            parish_id = self.Event_all_info[idx]["holyevent_school_id"]
+            with ParishDb(self) as db:
+                parish_info = db.get_parish_info(parish_id)
+            parish_name = parish_info["parish_name"]
+            parish_priest = parish_info["parish_priest"]
+            parish_address = parish_info["parish_address"]
+            parish_phonenum = parish_info["parish_phonenum"]
+            implementer = self.Event_all_info[idx]["holyevent_implementer"]
+            witness = self.Event_all_info[idx]["holyevent_witness"]
+            data_str = """"""
+            # 获取文本光标用于格式化
+            cursor = self.text_edit.textCursor()
+
+            # 1. 添加标题（居中）
+            title_format = QTextBlockFormat()
+            title_format.setAlignment(Qt.AlignmentFlag.AlignHCenter)  # 水平居中
+
+            char_format = QTextCharFormat()
+            title_font = QFont()
+            title_font.setPointSize(16)
+            title_font.setBold(True)
+            char_format.setFont(title_font)
+
+            cursor.setBlockFormat(title_format)
+            cursor.setCharFormat(char_format)
+            cursor.insertText("证明\n\n")
+
+            # 2. 添加正文（开头空两格）
+            body_format = QTextBlockFormat()
+            body_format.setTextIndent(2 * self.text_edit.fontMetrics().horizontalAdvance(' '))  # 首行缩进两个字符
+
+            body_font = QFont()
+            body_font.setPointSize(12)
+            char_format.setFont(body_font)
+            char_format.setFontUnderline(False)  # 重置下划线格式
+
+            cursor.setBlockFormat(body_format)
+            cursor.setCharFormat(char_format)
+
+            # 正文内容，分部分插入以对人名应用特殊格式
+            if self.evenType == 0:
+                data_str = f"""兹证明 {p1_name} 圣名: {p1_holyname} 于 {date} 在 {parish_name} 举行坚振圣事\n\n"""
+            elif self.evenType == 1:
+                data_str = f"""兹证明 {p1_name} 圣名: {p1_holyname} 于 {date} 在 {parish_name} 举行圣洗圣事\n\n"""
+            elif self.evenType == 2:
+                data_str = f"""兹证明 {p1_name} 与: {p2_name} 于 {date} 在 {parish_name} 举行婚姻圣事\n\n"""
+            cursor.insertText(data_str)
+            data_str = f"""施行人:{implementer} \n\n见证人: {witness}\n\n"""
+            cursor.insertText(data_str)
+
+            # 3. 添加落款（靠右）和时间
+            signature_format = QTextBlockFormat()
+            signature_format.setAlignment(Qt.AlignmentFlag.AlignRight)  # 靠右对齐
+
+            cursor.setBlockFormat(signature_format)
+
+            # 落款名称
+            data_str = f"""堂区神父:{parish_priest} \n\n堂区地址:{parish_address} \n\n堂区联系电话:_{parish_phonenum}\n\n"""
+            cursor.insertText(data_str)
+
+            # 日期时间（当前时间）
+            current_time = datetime.now().strftime("  %Y年%m月%d日 %H:%M")
+            cursor.insertText(parish_name + current_time)
+
+            # 确保文本框内容可见
+            self.text_edit.moveCursor(QTextCursor.MoveOperation.Start)
+
+    def show_print_preview(self):
+        """显示打印预览窗口"""
+        # 创建打印机实例
+        self.update_text()
+        printer = QPrinter(QPrinter.PrinterMode.HighResolution)
+
+        # 创建打印预览对话框
+        preview_dialog = QPrintPreviewDialog(printer, self)
+        # 连接预览信号，设置绘制预览的回调函数
+        preview_dialog.paintRequested.connect(self.print_preview)
+
+        # 设置预览窗口标题和大小
+        preview_dialog.setWindowTitle("打印预览")
+        preview_dialog.resize(1000, 800)
+
+        # 显示预览对话框
+        preview_dialog.exec()
+
+    def print_preview(self, printer):
+        """打印预览回调函数，用于在预览窗口中绘制内容"""
+        self.text_edit.document().print(printer)
+
+    def print_text(self, printer=None):
+        """实际执行打印操作"""
+        if not printer:
+            printer = QPrinter(QPrinter.PrinterMode.HighResolution)
+            dialog = QPrintDialog(printer, self)
+
+            if dialog.exec() != QPrintDialog.DialogCode.Accepted:
+                return
+
+        self.text_edit.document().print(printer)
