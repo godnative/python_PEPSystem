@@ -20,11 +20,13 @@ class QUERY_TYPE(enum.Enum):
 
 class Family_MessageBox(MessageBoxBase):
 
-    def __init__(self, login_info, massage_type, parent=None):
+    def __init__(self, login_info, massage_type, cur_family_id, parent=None):
         super().__init__(parent)
         self.family_info = None
         self.readOnly_flag = False
         self.set_reject_flag = False
+        self.parishioner_info_all = None
+        self.cur_family_id = cur_family_id
         self.login_info = login_info
         self.massage_type = massage_type
         self.titleLabel = SubtitleLabel('人员', self)
@@ -73,10 +75,13 @@ class Family_MessageBox(MessageBoxBase):
         self.family_Info_Edit_widgets.inputLine_12.hide()
 
         self.BaseQueryWidget.addButton.hide()
-        self.BaseQueryWidget.delButton.hide()
+        # self.BaseQueryWidget.delButton.hide()
+        self.BaseQueryWidget.delButton.setText("删除选中人员")
         self.BaseQueryWidget.ModButton.hide()
         self.BaseQueryWidget.ReviewButton.hide()
         self.BaseQueryWidget.searchInput.hide()
+
+        self.BaseQueryWidget.delButton.clicked.connect(self.family_delete_parishioner)
 
         if self.login_info["user_type"] == 0:
             from qfluentwidgets import PushButton
@@ -95,7 +100,7 @@ class Family_MessageBox(MessageBoxBase):
         )
         self.family_Info_Edit_widgets.pic.setPixmap(pixmap)
 
-        self.widget.setMinimumWidth(350)
+        self.widget.setMinimumWidth(600)
         self.family_Info_Edit_widgets.inputLine_1.setMinimumWidth(200)
         self.family_Info_Edit_widgets.inputLine_3.setMinimumWidth(200)
 
@@ -103,9 +108,33 @@ class Family_MessageBox(MessageBoxBase):
         with FamilyDB(self) as db:
             self.cur_family_cnt = db.get_family_cnt_with_parish_id(self.login_info["parish_id"]) + 1
 
+        if self.massage_type != 0:
+            self.Load_Parishioner()
+
     def setRejected(self):
         self.set_reject_flag = True
         self.accept()
+
+    def Load_Parishioner(self):
+        with StudentDB(self) as db:
+            self.parishioner_info_all = db.fetch_students_with_school_id_and_family_id(self.cur_family_id)
+            if self.parishioner_info_all is not None:
+                self.BaseQueryWidget.set_viewWidget_data(self.header_info, self.parishioner_info_all)
+
+    @check_auth_permission(required_permission={"module_data": "parishioner", "permission_data": "delete"})
+    def family_delete_parishioner(self):
+        idx = self.BaseQueryWidget.tableWidget.currentRow()
+        if idx != -1:
+            if self.login_info["user_type"] != 0 and self.parishioner_info_all[idx]["opera_type"] > 0:
+                exec_log = "审阅或归档模式下禁止删除数据"
+                InfoBar.error(title="错误", content=exec_log, parent=self,
+                                duration=3000)  # 使用 InfoBar 显示错误提示，设置标题、内容、父窗口和持续时间
+                return False
+
+            with StudentDB(self) as db:
+                db.delete_student(self.parishioner_info_all[idx]["student_id"])
+            self.Load_Parishioner()
+            return True
 
     def _validateInput(self):
         errors = []  # 初始化错误信息列表
@@ -266,7 +295,7 @@ class Family_Main_Interface(QWidget):
 
     @check_auth_permission(required_permission={"module_data": "family", "permission_data": "add"})
     def add_family(self):
-        w = Family_MessageBox(self.login_info, 0, self)
+        w = Family_MessageBox(self.login_info, 0, None, self)
         w.titleLabel.setText("添加家庭")
         w.set_family_name_when_add()
         if w.exec():
@@ -293,13 +322,11 @@ class Family_Main_Interface(QWidget):
                 InfoBar.error(title="错误", content=exec_log, parent=self,
                                 duration=3000)  # 使用 InfoBar 显示错误提示，设置标题、内容、父窗口和持续时间
                 return False
-            w = Family_MessageBox(self.login_info, 1, self)
             del_family_id = self.family_info_all[idx]["family_id"]
+            w = Family_MessageBox(self.login_info, 1, del_family_id, self)
+
             w.titleLabel.setText("删除家庭")
-            with StudentDB(self) as db:
-                parishioner_info_all = db.fetch_students_with_school_id_and_family_id(del_family_id)
-                if parishioner_info_all is not None:
-                    w.BaseQueryWidget.set_viewWidget_data(w.header_info, parishioner_info_all)
+
             w.set_InputfFamilyMessageinfo(self.family_info_all[idx])
             if w.exec():
                 with FamilyDB(self) as db:
@@ -312,9 +339,10 @@ class Family_Main_Interface(QWidget):
     def modify_family(self):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
-            w = Family_MessageBox(self.login_info, 2, self)
-            w.rejectButton.show()
             del_family_id = self.family_info_all[idx]["family_id"]
+            w = Family_MessageBox(self.login_info, 2, del_family_id,self)
+            w.rejectButton.show()
+
             w.titleLabel.setText("查看/修改家庭")
             with StudentDB(self) as db:
                 parishioner_info_all = db.fetch_students_with_school_id_and_family_id(del_family_id)

@@ -104,6 +104,8 @@ class Parish_Main_Interface(QWidget):
         )
         self.BaseMainInterface.tailPic.setPixmap(pixmap)
         self.Load_Parish()
+
+
     def resizeEvent(self, even):
         super().resizeEvent(even)
         pixmap = QPixmap("./resource/pic/main_head_1.png").scaled(
@@ -122,7 +124,7 @@ class Parish_Main_Interface(QWidget):
 
     def Load_Parish(self):
         with ParishDb(self) as db:
-            self.cur_parish_info = db.get_parish_info(1)
+            self.cur_parish_info = db.get_parish_info(self.cur_parish_id)
 
         print(self.cur_parish_info)
         if self.cur_parish_info is None:

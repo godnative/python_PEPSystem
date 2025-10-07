@@ -203,6 +203,7 @@ class LoginWindow(Window, Ui_Form):
 
             mainwindow = MainWindow(login_info)
             mainwindow.show()
+            mainwindow.resize(1200,800)
         else:
             QMessageBox.warning(self, 'Login Failed', 'Invalid username or password')
 

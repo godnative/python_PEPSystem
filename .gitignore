@@ -3,4 +3,4 @@
 /DataBase/backup
 /dist
 /build
-*.log
+/app.log
