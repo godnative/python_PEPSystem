@@ -28,17 +28,17 @@ class AddSchoolInterface(MessageBoxBase):
         # 验证学校名称
         parish_name = self.schoolInterface_temp.lineEdit_2.text()
         if not parish_name:
-            errors.append("教区名称不能为空")
+            errors.append("堂区名称不能为空")
         elif len(parish_name) > 20:
-            errors.append("教区名称不能超过20个字符")
+            errors.append("堂区名称不能超过20个字符")
         else:
             with ParishDb(self) as db:
                 if db.check_parish_name(parish_name):
-                    errors.append("教区名称已存在")
+                    errors.append("堂区名称已存在")
 
         parish_address = self.schoolInterface_temp.lineEdit_4.text()
         if not parish_address:
-            errors.append("教区地址不能为空")
+            errors.append("堂区地址不能为空")
 
         parish_info = self.schoolInterface_temp.lineEdit_5.text()
         if not parish_info:
@@ -83,7 +83,7 @@ class ModifyParishInterface(MessageBoxBase):
 
         parish_address = self.schoolInterface_temp.lineEdit_4.text()
         if not parish_address:
-            errors.append("教区地址不能为空")
+            errors.append("堂区地址不能为空")
 
         parish_info = self.schoolInterface_temp.lineEdit_5.text()
         if not parish_info:
@@ -142,7 +142,7 @@ class ShowSchoolInterface(QWidget):
         self.disable_widgets()
 
         if self.login_info["parish_id"] is None:
-            self.schoolInterface_temp.label.setText("请先选择或建立教区")
+            self.schoolInterface_temp.label.setText("请先选择或建立堂区")
             self.schoolInterface_temp.label.uploaded_image = False
             self.modifyButton.setDisabled(True)
         else:
@@ -178,7 +178,7 @@ class ShowSchoolInterface(QWidget):
         if w.exec():
             with ParishDb(self) as db:
                 db.add_parish(w.schoolInterface_temp.get_InputParishDialoginfo())
-                self.restartButton = PushButton('重启以重新选择教区', self)
+                self.restartButton = PushButton('重启以重新选择堂区', self)
                 setCustomStyleSheet(self.restartButton, UPDATE_BUTTON_STYLE, UPDATE_BUTTON_STYLE)
                 self.horizontalLayout.addWidget(self.restartButton)
                 # self.restartButton.clicked.connect(self.parent.on_back_to_login)

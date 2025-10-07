@@ -96,6 +96,17 @@ class BaseMessageBoxWidget(QWidget):
         hbox_7.addWidget(self.inputLine_13)
         vbox.addLayout(hbox_7)
 
+        hbox_8 = QHBoxLayout()
+        self.label_14 = QLabel("label_14")
+        self.inputLine_14 = QDateEdit()
+        self.inputLine_14.setDate(get_now_date())
+        hbox_8.addWidget(self.label_14)
+        hbox_8.addWidget(self.inputLine_14)
+        self.label_14.hide()
+        self.inputLine_14.hide()
+
+        vbox.addLayout(hbox_8)
+
         hbox.addLayout(vbox)
 
 
@@ -146,12 +157,15 @@ class BaseQueryWidget(QWidget):
         vbox.addWidget(self.tableWidget)
 
     def set_viewWidget_data(self, header_info, datas):
+        # print(datas)
         self.tableWidget.clearContents()
         self.tableWidget.setRowCount(len(datas))
         if self.tableWidget.horizontalHeaderItem(len(header_info)).text() == "归档":
             user_type_table = 0
-        else:
+        elif self.tableWidget.horizontalHeaderItem(len(header_info)).text() == "  ":
             user_type_table = 1
+        else:
+            user_type_table = 2
         for row, data in enumerate(datas):
             review_filed_checkbox = QCheckBox()
             self.tableWidget.setCellWidget(row, len(header_info), review_filed_checkbox)
@@ -166,9 +180,12 @@ class BaseQueryWidget(QWidget):
                     value = data.get(key, "")
                     if user_type_table == 0 and value != 1:
                         review_filed_checkbox.setDisabled(True)
-                    elif user_type_table == 1 and value != 0:
+                    elif user_type_table == 2 and value != 0:
                         review_filed_checkbox.setDisabled(True)
                     value = opera_type[data.get(key, "")]
+                elif key == "student_alive_state":
+                    value = "正常" if data.get(key, "") == 1 else "已死亡"
+                    review_filed_checkbox.setDisabled(True)
                 else:
                     value = data.get(key, "")
                 item = QTableWidgetItem(str(value))
@@ -235,7 +252,7 @@ class BaseUserInterface(QWidget):
 
         user_authiory_box = QGridLayout()
         permission_operation = ['', '添加', '删除', '修改']
-        modules = ['', '人员', '家庭', '事件', '教区', '权限']
+        modules = ['', '人员', '家庭', '事件', '堂区', '权限', '亡者']
         for i, module in enumerate(permission_operation):
             label = QLabel(module)
             user_authiory_box.addWidget(label, 0, i)
@@ -301,7 +318,7 @@ class BaseUserInterface(QWidget):
 
     def change_set_checkbox(self):
         if self.line_type.currentIndex() == 0:
-            self.set_checkbox_state_from_bitmap(32767)
+            self.set_checkbox_state_from_bitmap(262143)
         elif self.line_type.currentIndex() == 1:
             self.set_checkbox_state_from_bitmap(4681)
         else:

@@ -313,3 +313,271 @@ IndexError: list index out of range
 
 2025-10-07 19:39:07,676 - WARNING - Qt: QPainter::begin: A paint device can only be painted by one painter at a time.
 2025-10-07 19:39:07,676 - WARNING - Qt: QPainter::translate: Painter not active
+2025-10-07 20:00:22,535 - ERROR - 未捕获异常:
+Traceback (most recent call last):
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\user\User_Interface.py", line 54, in wrapper
+    ret = func(self)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_interface_new.py", line 143, in add_parish
+    w = Parish_MessageBox(self.login_info, self)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_interface_new.py", line 33, in __init__
+    self.Parishioner_Info_Edit_widgets = BaseParishInterface(self)
+                                         ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\BaseWidgets\BaseModule.py", line 389, in __init__
+    self.mainVbox.addLayout(self.buttonBox)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+RuntimeError: wrapped C/C++ object of type QVBoxLayout has been deleted
+
+2025-10-07 20:01:33,590 - ERROR - 未捕获异常:
+Traceback (most recent call last):
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\user\User_Interface.py", line 54, in wrapper
+    ret = func(self)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_interface_new.py", line 143, in add_parish
+    w = Parish_MessageBox(self.login_info, self)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_interface_new.py", line 33, in __init__
+    self.Parishioner_Info_Edit_widgets = BaseParishInterface(self)
+                                         ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\BaseWidgets\BaseModule.py", line 389, in __init__
+    self.mainVbox.addLayout(self.buttonBox)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+RuntimeError: wrapped C/C++ object of type QVBoxLayout has been deleted
+
+2025-10-07 20:04:12,514 - ERROR - 未捕获异常:
+Traceback (most recent call last):
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\Parishioner\Parishioner_Interface.py", line 108, in add_family
+    w = Family_MessageBox(self.login_info, 0, self)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\Parishioner\family_interface.py", line 24, in __init__
+    super().__init__(parent)
+    ~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\97895\.conda\envs\py131\Lib\site-packages\qfluentwidgets\components\dialog_box\message_box_base.py", line 16, in __init__
+    super().__init__(parent=parent)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\97895\.conda\envs\py131\Lib\site-packages\qfluentwidgets\components\dialog_box\mask_dialog_base.py", line 25, in __init__
+    self.setGeometry(0, 0, parent.width(), parent.height())
+                           ^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'width'
+
+2025-10-07 21:21:25,267 - ERROR - 未捕获异常:
+Traceback (most recent call last):
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\user\User_Interface.py", line 54, in wrapper
+    ret = func(self)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_interface_new.py", line 143, in add_parish
+    w = Parish_MessageBox(self.login_info, self)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_interface_new.py", line 33, in __init__
+    self.Parishioner_Info_Edit_widgets = BaseParishInterface(self)
+                                         ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\BaseWidgets\BaseModule.py", line 406, in __init__
+    self.mainVbox.addLayout(self.buttonBox)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+RuntimeError: wrapped C/C++ object of type QVBoxLayout has been deleted
+
+2025-10-07 21:24:32,910 - ERROR - 未捕获异常:
+Traceback (most recent call last):
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\user\User_Interface.py", line 54, in wrapper
+    ret = func(self)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_interface_new.py", line 143, in add_parish
+    w = Parish_MessageBox(self.login_info, self)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_interface_new.py", line 33, in __init__
+    self.Parishioner_Info_Edit_widgets = BaseParishInterface(self)
+                                         ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\BaseWidgets\BaseModule.py", line 406, in __init__
+    self.mainVbox.addLayout(self.buttonBox)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+RuntimeError: wrapped C/C++ object of type QVBoxLayout has been deleted
+
+2025-10-07 21:57:20,019 - ERROR - 未捕获异常:
+Traceback (most recent call last):
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\user\User_Interface.py", line 54, in wrapper
+    ret = func(self)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_interface_new.py", line 143, in add_parish
+    w = Parish_MessageBox(self.login_info, self)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_interface_new.py", line 33, in __init__
+    self.Parishioner_Info_Edit_widgets = BaseParishInterface(self)
+                                         ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\BaseWidgets\BaseModule.py", line 406, in __init__
+    self.mainVbox.addLayout(self.buttonBox)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+RuntimeError: wrapped C/C++ object of type QVBoxLayout has been deleted
+
+2025-10-07 21:57:49,122 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-10-07 21:57:49,127 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-10-07 21:57:49,639 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-10-07 21:57:49,672 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-10-07 21:57:49,727 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-10-07 21:57:50,171 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-10-07 21:57:50,343 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-10-07 21:57:50,456 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-10-07 21:57:50,585 - WARNING - Qt: QBackingStore::endPaint() called with active painter; did you forget to destroy it or call QPainter::end() on it?
+2025-10-07 21:57:50,597 - WARNING - Qt: QPaintDevice: Cannot destroy paint device that is being painted
+2025-10-07 21:57:59,020 - ERROR - 未捕获异常:
+Traceback (most recent call last):
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\user\User_Interface.py", line 54, in wrapper
+    ret = func(self)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_interface_new.py", line 143, in add_parish
+    w = Parish_MessageBox(self.login_info, self)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_interface_new.py", line 33, in __init__
+    self.Parishioner_Info_Edit_widgets = BaseParishInterface(self)
+                                         ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\BaseWidgets\BaseModule.py", line 406, in __init__
+    self.mainVbox.addLayout(self.buttonBox)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+RuntimeError: wrapped C/C++ object of type QVBoxLayout has been deleted
+
+2025-10-07 21:58:20,201 - ERROR - 未捕获异常:
+Traceback (most recent call last):
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\user\User_Interface.py", line 54, in wrapper
+    ret = func(self)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_interface_new.py", line 143, in add_parish
+    w = Parish_MessageBox(self.login_info, self)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_interface_new.py", line 33, in __init__
+    self.Parishioner_Info_Edit_widgets = BaseParishInterface(self)
+                                         ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\BaseWidgets\BaseModule.py", line 406, in __init__
+    self.mainVbox.addLayout(self.buttonBox)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+RuntimeError: wrapped C/C++ object of type QVBoxLayout has been deleted
+
+2025-10-07 21:59:29,333 - ERROR - 未捕获异常:
+Traceback (most recent call last):
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\user\User_Interface.py", line 54, in wrapper
+    ret = func(self)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_interface_new.py", line 143, in add_parish
+    w = Parish_MessageBox(self.login_info, self)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_interface_new.py", line 42, in __init__
+    self.viewLayout.addWidget(self.titleLabel)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+RuntimeError: wrapped C/C++ object of type QVBoxLayout has been deleted
+
+2025-10-07 22:00:11,143 - ERROR - 未捕获异常:
+Traceback (most recent call last):
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\user\User_Interface.py", line 54, in wrapper
+    ret = func(self)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_interface_new.py", line 143, in add_parish
+    w = Parish_MessageBox(self.login_info, self)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_interface_new.py", line 42, in __init__
+    self.viewLayout.addWidget(self.titleLabel)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+RuntimeError: wrapped C/C++ object of type QVBoxLayout has been deleted
+
+2025-10-07 22:00:49,641 - ERROR - 未捕获异常:
+Traceback (most recent call last):
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\user\User_Interface.py", line 54, in wrapper
+    ret = func(self)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_interface_new.py", line 143, in add_parish
+    w = Parish_MessageBox(self.login_info)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_interface_new.py", line 27, in __init__
+    super().__init__(parent)
+    ~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\97895\.conda\envs\py131\Lib\site-packages\qfluentwidgets\components\dialog_box\message_box_base.py", line 16, in __init__
+    super().__init__(parent=parent)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\97895\.conda\envs\py131\Lib\site-packages\qfluentwidgets\components\dialog_box\mask_dialog_base.py", line 25, in __init__
+    self.setGeometry(0, 0, parent.width(), parent.height())
+                           ^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'width'
+
+2025-10-07 22:01:33,590 - ERROR - 未捕获异常:
+Traceback (most recent call last):
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\user\User_Interface.py", line 54, in wrapper
+    ret = func(self)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_interface_new.py", line 143, in add_parish
+    w = Parish_MessageBox(self.login_info, self)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_interface_new.py", line 42, in __init__
+    self.viewLayout.addWidget(self.titleLabel)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+RuntimeError: wrapped C/C++ object of type QVBoxLayout has been deleted
+
+2025-10-07 22:02:14,043 - ERROR - 未捕获异常:
+Traceback (most recent call last):
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\user\User_Interface.py", line 54, in wrapper
+    ret = func(self)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_interface_new.py", line 143, in add_parish
+    w = Parish_MessageBox(self.login_info, self)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_interface_new.py", line 27, in __init__
+    super().__init__(parent)
+    ~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\97895\.conda\envs\py131\Lib\site-packages\qfluentwidgets\components\dialog_box\message_box_base.py", line 18, in __init__
+    self.yesButton = PrimaryPushButton(self.tr('OK'), self.buttonGroup)
+                     ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97895\.conda\envs\py131\Lib\site-packages\qfluentwidgets\common\overload.py", line 38, in _method
+    return method.__get__(obj, cls)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\97895\.conda\envs\py131\Lib\site-packages\qfluentwidgets\components\widgets\button.py", line 41, in _
+    self.__init__(parent=parent)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\97895\.conda\envs\py131\Lib\site-packages\qfluentwidgets\common\overload.py", line 38, in _method
+    return method.__get__(obj, cls)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\97895\.conda\envs\py131\Lib\site-packages\qfluentwidgets\components\widgets\button.py", line 30, in __init__
+    super().__init__(parent)
+    ~~~~~~~~~~~~~~~~^^^^^^^^
+RuntimeError: wrapped C/C++ object of type QFrame has been deleted
+
+2025-10-07 22:02:54,285 - ERROR - 未捕获异常:
+Traceback (most recent call last):
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\user\User_Interface.py", line 54, in wrapper
+    ret = func(self)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_interface_new.py", line 144, in add_parish
+    w = Parish_MessageBox(self.login_info, self)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_interface_new.py", line 27, in __init__
+    super().__init__(parent)
+    ~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\97895\.conda\envs\py131\Lib\site-packages\qfluentwidgets\components\dialog_box\message_box_base.py", line 18, in __init__
+    self.yesButton = PrimaryPushButton(self.tr('OK'), self.buttonGroup)
+                     ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97895\.conda\envs\py131\Lib\site-packages\qfluentwidgets\common\overload.py", line 38, in _method
+    return method.__get__(obj, cls)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\97895\.conda\envs\py131\Lib\site-packages\qfluentwidgets\components\widgets\button.py", line 41, in _
+    self.__init__(parent=parent)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\97895\.conda\envs\py131\Lib\site-packages\qfluentwidgets\common\overload.py", line 38, in _method
+    return method.__get__(obj, cls)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\97895\.conda\envs\py131\Lib\site-packages\qfluentwidgets\components\widgets\button.py", line 30, in __init__
+    super().__init__(parent)
+    ~~~~~~~~~~~~~~~~^^^^^^^^
+RuntimeError: wrapped C/C++ object of type QFrame has been deleted
+
+2025-10-07 22:06:40,288 - ERROR - 未捕获异常:
+Traceback (most recent call last):
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\user\User_Interface.py", line 54, in wrapper
+    ret = func(self)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_interface_new.py", line 144, in add_parish
+    w = Parish_MessageBox(self.login_info, None)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_interface_new.py", line 27, in __init__
+    super().__init__(parent)
+    ~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\97895\.conda\envs\py131\Lib\site-packages\qfluentwidgets\components\dialog_box\message_box_base.py", line 16, in __init__
+    super().__init__(parent=parent)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\97895\.conda\envs\py131\Lib\site-packages\qfluentwidgets\components\dialog_box\mask_dialog_base.py", line 25, in __init__
+    self.setGeometry(0, 0, parent.width(), parent.height())
+                           ^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'width'
+
+2025-10-07 22:09:03,229 - ERROR - 未捕获异常:
+Traceback (most recent call last):
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\user\User_Interface.py", line 54, in wrapper
+    ret = func(self)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_interface_new.py", line 144, in add_parish
+    w = Parish_MessageBox(self.login_info, self)
+  File "C:\Users\97895\Desktop\workspace\NewCode\python_PEPSystem\parish\parish_interface_new.py", line 27, in __init__
+    super().__init__(parent)
+    ~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\97895\.conda\envs\py131\Lib\site-packages\qfluentwidgets\components\dialog_box\message_box_base.py", line 18, in __init__
+    self.yesButton = PrimaryPushButton(self.tr('OK'), self.buttonGroup)
+                     ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97895\.conda\envs\py131\Lib\site-packages\qfluentwidgets\common\overload.py", line 38, in _method
+    return method.__get__(obj, cls)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\97895\.conda\envs\py131\Lib\site-packages\qfluentwidgets\components\widgets\button.py", line 41, in _
+    self.__init__(parent=parent)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\97895\.conda\envs\py131\Lib\site-packages\qfluentwidgets\common\overload.py", line 38, in _method
+    return method.__get__(obj, cls)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\97895\.conda\envs\py131\Lib\site-packages\qfluentwidgets\components\widgets\button.py", line 30, in __init__
+    super().__init__(parent)
+    ~~~~~~~~~~~~~~~~^^^^^^^^
+RuntimeError: wrapped C/C++ object of type QFrame has been deleted
+

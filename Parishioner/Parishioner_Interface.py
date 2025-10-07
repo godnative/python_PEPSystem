@@ -22,9 +22,10 @@ class QUERY_TYPE(enum.Enum):
 
 class Parishioner_MessageBox(MessageBoxBase):
 
-    def __init__(self, login_info, parent=None):
+    def __init__(self, login_info, message_type, parent=None):
         super().__init__(parent)
         self.login_info = login_info
+        self.message_type = message_type
         self.family_info = None
         self.readOnly_flag = False
         self.set_reject_flag = False
@@ -42,10 +43,14 @@ class Parishioner_MessageBox(MessageBoxBase):
         # self.Parishioner_Info_Edit_widgets.label_4.setText("身份证")
         self.Parishioner_Info_Edit_widgets.label_9.setText("性别")
         self.Parishioner_Info_Edit_widgets.label_10.setText("出生日期")
-        self.Parishioner_Info_Edit_widgets.inputLine_10.setDate(QDate(2025, 1, 1))
+        #self.Parishioner_Info_Edit_widgets.inputLine_10.setDate(QDate(2025, 1, 1))
         self.Parishioner_Info_Edit_widgets.label_11.setText("家庭")
         self.Parishioner_Info_Edit_widgets.inputLine_12.setText("添加家庭")
         self.Parishioner_Info_Edit_widgets.label_13.setText("备注")
+        if self.message_type == 1:
+            self.Parishioner_Info_Edit_widgets.label_14.setText("死亡日期")
+            self.Parishioner_Info_Edit_widgets.label_14.show()
+            self.Parishioner_Info_Edit_widgets.inputLine_14.show()
 
         self.Parishioner_Info_Edit_widgets.label_4.hide()
         self.Parishioner_Info_Edit_widgets.inputLine_4.hide()
@@ -105,7 +110,7 @@ class Parishioner_MessageBox(MessageBoxBase):
         return errors  # 返回所有错误信息
 
     def add_family(self):
-        w = Family_MessageBox(self.login_info, 0, self)
+        w = Family_MessageBox(self.login_info, 0, None, self)
         w.titleLabel.setText("添加家庭")
         w.set_family_name_when_add()
         if w.exec():
@@ -141,6 +146,7 @@ class Parishioner_MessageBox(MessageBoxBase):
             "student_identity_num": self.Parishioner_Info_Edit_widgets.inputLine_4.text(),  # 语文字段与对应的输入框
             "student_birthday": self.Parishioner_Info_Edit_widgets.inputLine_10.date().toString("yyyy-MM-dd"),
             "student_note": self.Parishioner_Info_Edit_widgets.inputLine_13.text(),
+            "student_death_anniversary": self.Parishioner_Info_Edit_widgets.inputLine_14.date().toString("yyyy-MM-dd"),
             "operator": None,
             "opera_time": None,
             "opera_type": None,
@@ -169,11 +175,11 @@ class Parishioner_MessageBox(MessageBoxBase):
             self.Parishioner_Info_Edit_widgets.inputLine_10.setDisabled(True)
             self.Parishioner_Info_Edit_widgets.inputLine_11.setDisabled(True)
             self.Parishioner_Info_Edit_widgets.inputLine_13.setReadOnly(True)
-
             self.readOnly_flag = True
-            exec_log = "非录入状态下仅支持查看"
-            InfoBar.warning(title="警告", content=exec_log, parent=self,
-                            duration=3000)  # 使用 InfoBar 显示错误提示，设置标题、内容、父窗口和持续时间
+            if self.message_type != 1:
+                exec_log = "非录入状态下仅支持查看"
+                InfoBar.warning(title="警告", content=exec_log, parent=self,
+                                duration=3000)  # 使用 InfoBar 显示错误提示，设置标题、内容、父窗口和持续时间
         elif self.login_info["user_type"] == 2:
             self.Parishioner_Info_Edit_widgets.inputLine_1.setReadOnly(True)
             self.Parishioner_Info_Edit_widgets.inputLine_2.setReadOnly(True)
@@ -184,9 +190,10 @@ class Parishioner_MessageBox(MessageBoxBase):
             self.Parishioner_Info_Edit_widgets.inputLine_11.setDisabled(True)
             self.Parishioner_Info_Edit_widgets.inputLine_13.setReadOnly(True)
             self.readOnly_flag = True
-            exec_log = "游客仅支持查看"
-            InfoBar.warning(title="警告", content=exec_log, parent=self,
-                            duration=3000)  # 使用 InfoBar 显示错误提示，设置标题、内容、父窗口和持续时间
+            if self.message_type != 1:
+                exec_log = "游客仅支持查看"
+                InfoBar.warning(title="警告", content=exec_log, parent=self,
+                                duration=3000)  # 使用 InfoBar 显示错误提示，设置标题、内容、父窗口和持续时间
         return
 
     def load_family(self):
@@ -234,17 +241,23 @@ class Parishioner_Main_Interface(QWidget):
 
         if self.login_info["user_type"] == 0:
             self.parishioner_tableView_header = [
-                "姓名", "圣名", "性别", "手机", "家庭名称", "生日", "备注", "操作人员", "操作时间", "状态", "归档"
+                "姓名", "圣名", "性别",
+                "手机", "家庭名称", "生日",
+                "备注", "操作人员", "操作时间",
+                "状态", "归档"
             ]
             self.header_info = [
                 'student_name', 'student_holyname', 'student_gender',
                 'student_phonenum', 'family_name', 'student_birthday',
-                'student_note', 'operator', 'opera_time', 'opera_type'
+                'student_note', 'operator', 'opera_time',
+                'opera_type'
             ]
         else:
             self.BaseMainInterface.BaseQuery.ReviewButton.setText("提交审阅")
             self.parishioner_tableView_header = [
-                "姓名", "圣名", "性别", "手机", "家庭名称", "生日", "备注", "状态", "提交审阅"
+                "姓名", "圣名", "性别",
+                "手机", "家庭名称", "生日",
+                "备注", "状态", "提交审阅"
             ]
             self.header_info = [
                 'student_name', 'student_holyname', 'student_gender',
@@ -272,7 +285,7 @@ class Parishioner_Main_Interface(QWidget):
     def Load_Parishioner(self, query_type, school_id, query_param=None):
         with StudentDB(self) as db:
             if query_type == QUERY_TYPE.QUERY_ALL:
-                self.parishioner_info_all = db.fetch_students_with_school_id(school_id)
+                self.parishioner_info_all = db.fetch_students_with_school_id(school_id, True)
             elif query_type == QUERY_TYPE.QUERY_LIKE:
                 self.parishioner_info_all = db.fetch_students_with_like(school_id, query_param)
             else:
@@ -299,7 +312,7 @@ class Parishioner_Main_Interface(QWidget):
             self.Load_Parishioner(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
     @check_auth_permission(required_permission={"module_data": "parishioner", "permission_data": "add"})
     def add_parishioner(self):
-        w = Parishioner_MessageBox(self.login_info, self)
+        w = Parishioner_MessageBox(self.login_info, 0, self)
         w.titleLabel.setText("添加人员")
         if w.exec():
             with StudentDB(self) as db:
@@ -325,7 +338,7 @@ class Parishioner_Main_Interface(QWidget):
                 InfoBar.error(title="错误", content=exec_log, parent=self,
                                 duration=3000)  # 使用 InfoBar 显示错误提示，设置标题、内容、父窗口和持续时间
                 return False
-            w = Parishioner_MessageBox(self.login_info, self)
+            w = Parishioner_MessageBox(self.login_info, 0, self)
             w.titleLabel.setText("删除人员")
             w.set_InputParishionerMessageinfo(self.parishioner_info_all[idx])
             if w.exec():
@@ -339,7 +352,7 @@ class Parishioner_Main_Interface(QWidget):
     def modify_parishioner(self):
         idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
         if idx != -1:
-            w = Parishioner_MessageBox(self.login_info, self)
+            w = Parishioner_MessageBox(self.login_info, 0, self)
             w.titleLabel.setText("修改人员信息")
             w.set_InputParishionerMessageinfo(self.parishioner_info_all[idx])
             if w.exec():
@@ -365,7 +378,7 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     login_info_1 = {
         "parish_id": 1,
-        "parish_name": "崇义教区",
+        "parish_name": "崇义堂区",
         "user_id": 1,
         "user_name": "admin",
         "user_type": 1,

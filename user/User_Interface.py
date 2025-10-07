@@ -15,7 +15,8 @@ check_module_data = {
     "family": 1,
     "event": 2,
     "parish": 3,
-    "user": 4
+    "user": 4,
+    "dead": 5
 }
 
 check_permission_data = {

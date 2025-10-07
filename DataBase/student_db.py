@@ -22,8 +22,8 @@ class StudentDB(DataBaseManage):
         query = """
             INSERT INTO student (student_name, student_gender, student_phonenum, student_holyname, 
                                     student_family_id, student_school_id, student_identity_num,
-                                    student_birthday, student_note, operator, opera_time, opera_type)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                                    student_birthday, student_note, operator, opera_time, opera_type, student_alive_state)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
         """
         params = (student["student_name"], student["student_gender"], student["student_phonenum"],
                   student["student_holyname"], student["student_family_id"], student["student_school_id"],
@@ -31,7 +31,7 @@ class StudentDB(DataBaseManage):
                   student["operator"], student["opera_time"], student["opera_type"])
         return self.execute_query(query, params)
 
-    def fetch_students_with_school_id(self, school_id):
+    def fetch_students_with_school_id(self, school_id, isAlive):
         # 定义查询语句
         query = """
                 SELECT s.*,
@@ -42,6 +42,8 @@ class StudentDB(DataBaseManage):
                 ON s.student_family_id = c.family_id
                 where s.student_school_id = ?
                """
+        if isAlive:
+            query = query + " and s.student_alive_state = 1"
         params = (school_id,)
         # 调用父类的 fetch_query 方法执行查询，并返回查询结果
         return self.fetch_query(query, params=params)
@@ -54,7 +56,7 @@ class StudentDB(DataBaseManage):
                 FROM student s
                 JOIN family c
                 ON s.student_family_id = c.family_id
-                where s.student_family_id = ?
+                where s.student_family_id = ? and s.student_alive_state = 1
                """
         params = (family_id,)
         # 调用父类的 fetch_query 方法执行查询，并返回查询结果
@@ -67,7 +69,7 @@ class StudentDB(DataBaseManage):
                 FROM student s
                 JOIN family c
                 ON s.student_family_id = c.family_id
-                WHERE student_school_id = ? and ( student_name LIKE ? or student_phonenum LIKE ? )
+                WHERE student_school_id = ? and ( student_name LIKE ? or student_phonenum LIKE ? ) and student_alive_state = 1
                 """
         params = (school_id, f"%{like_str}%", f"%{like_str}%")
         return self.fetch_query(query, params=params)
@@ -94,6 +96,18 @@ class StudentDB(DataBaseManage):
                   student["operator"], student["opera_time"], student["student_id"])
         return self.execute_query(query, params)
 
+    def update_student_alive_state(self, student):
+        query = """
+                UPDATE student
+                SET student_alive_state    = ?,
+                    student_death_anniversary  =?,
+                    operator = ?, 
+                    opera_time = ?
+                WHERE student_id = ?;
+        """
+        params = (student["student_alive_state"], student["student_death_anniversary"],
+                  student["operator"], student["opera_time"], student["student_id"])
+        return self.execute_query(query, params)
     def delete_student(self, student_id):
         query = """
                 DELETE
@@ -116,7 +130,8 @@ class StudentDB(DataBaseManage):
         query = """
             SELECT *
             FROM student
-            WHERE strftime('%m', student_birthday ) = strftime('%m', 'now') and student_school_id = ?;
+            WHERE strftime('%m', student_birthday ) = strftime('%m', 'now') and student_school_id = ?
+            and student_alive_state = 1
         """
         params = (school_id,)
         if CUR_SYS_TYPE == 0:
@@ -139,14 +154,14 @@ class StudentDB(DataBaseManage):
 
     def get_parishioner_cnt_with_parish_id(self, parish_id):
         query = """
-                SELECT COUNT(*) FROM student WHERE student_school_id = ?
+                SELECT COUNT(*) FROM student WHERE student_school_id = ? and student_alive_state = 1
                 """
         params = (parish_id, )
         return self.fetch_query(query, params=params)[0]["COUNT(*)"]
 
     def get_parishioner_none_holy_name_cnt_with_parish_id(self, parish_id):
         query = """
-                SELECT COUNT(*) FROM student WHERE student_school_id = ? and student_holyname = ''
+                SELECT COUNT(*) FROM student WHERE student_school_id = ? and student_holyname = '' and student_alive_state = 1
                 """
         params = (parish_id, )
         return self.fetch_query(query, params=params)[0]["COUNT(*)"]
@@ -156,7 +171,7 @@ class StudentDB(DataBaseManage):
                 SELECT 
                 strftime('%Y', 'now') - strftime('%Y', student_birthday) - 
                 (strftime('%m-%d', 'now') < strftime('%m-%d', student_birthday)) as age
-                FROM student WHERE student_school_id = ?;
+                FROM student WHERE student_school_id = ? and student_alive_state = 1;
                 """
         params = (parish_id, )
         ret = self.fetch_query(query, params=params)

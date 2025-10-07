@@ -86,7 +86,7 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     login_info = {
         "parish_id": 1,
-        "parish_name": "崇义教区",
+        "parish_name": "崇义堂区",
         "user_id": 1,
         "user_name": "admin",
         "user_type": 1,

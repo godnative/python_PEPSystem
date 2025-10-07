@@ -3,6 +3,7 @@ import pickle
 import sys
 from logging.handlers import RotatingFileHandler
 
+from deceased_parishioner.deceased_parishioner_interface import Deceased_Parishioner_Main_Interface
 from parish.parish_interface_new import Parish_Main_Interface
 from utils.msyscfg import CUR_SYS_TYPE
 
@@ -149,7 +150,7 @@ class LoginWindow(Window, Ui_Form):
         self.comboBox.clear()  # 清空 classCombo 下拉框中的所有选项
         with ParishDb(self) as db:  # 使用上下文管理器创建 ClassDB 的实例，并确保使用后自动关闭数据库连接
             load_parish_info = db.fetch_parish()
-        self.comboBox.addItem('请选择教区', None)
+        self.comboBox.addItem('请选择堂区', None)
 
         if load_parish_info is not None:
             for parish_info in load_parish_info:
@@ -169,7 +170,6 @@ class LoginWindow(Window, Ui_Form):
 
         with UserDB(self) as db:
             user_info = db.user_login_check(username, password)
-            print(user_info)
 
         if user_info is not None:
             login_info = {
@@ -241,25 +241,27 @@ class Widget(QFrame):
 class MainWindow(MSFluentWindow):
     def __init__(self, login_info):
         super().__init__()
+        print(login_info)
         self.login_info = login_info
         self.schoolInterface = Parish_Main_Interface(self.login_info, "ShowSchoolInterface")
         if self.login_info["parish_id"] is None:
-            self.setWindowTitle('未选择当前教区')
-            self.addSubInterface(self.schoolInterface, FIF.APPLICATION, '教区')
+            self.setWindowTitle('未选择当前堂区')
+            self.addSubInterface(self.schoolInterface, FIF.APPLICATION, '堂区')
         else:
             self.setWindowTitle(
-                '当前教区:%s  当前登录角色：%s' % (
+                '当前堂区:%s  当前登录角色：%s' % (
                     self.login_info['parish_name'], user_type[self.login_info['user_type']]))
             # create sub interface
             self.studentInterface = ParishionerMainInterface(self.login_info, "Parishioner_Main_Interface")
             self.videoInterface = EvenMainTabInterface(self.login_info, "EvenMainTabInterface")
             self.libraryInterface = UserMainInterface(self.login_info, "UserMainInterface")
-
             self.taskCardInterface = TaskCardMainInterFace(self.login_info, "TaskCardMainInterFace")
+            self.deadInterface = Deceased_Parishioner_Main_Interface(self.login_info, "DeceasedParishionerInterface")
 
-            self.addSubInterface(self.schoolInterface, FIF.APPLICATION, '教区')
+            self.addSubInterface(self.schoolInterface, FIF.APPLICATION, '堂区')
             self.addSubInterface(self.studentInterface, FIF.HOME, '教友')
             self.addSubInterface(self.videoInterface, FIF.VIDEO, '圣事')
+            self.addSubInterface(self.deadInterface, FIF.VIDEO, '亡者')
 
             self.addSubInterface(self.libraryInterface, FIF.BOOK_SHELF, '资料')
             self.addSubInterface(self.taskCardInterface, FIF.BOOK_SHELF, '通知')

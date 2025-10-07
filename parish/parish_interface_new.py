@@ -29,14 +29,15 @@ class Parish_MessageBox(MessageBoxBase):
         self.family_info = None
         self.readOnly_flag = False
         self.set_reject_flag = False
-        self.titleLabel = SubtitleLabel('堂区', self)
-        self.Parishioner_Info_Edit_widgets = BaseParishInterface(self)
-        self.Parishioner_Info_Edit_widgets.setMinimumWidth(400)
+        self.titleLabel = SubtitleLabel()
+        self.Parishioner_Info_Edit_widgets = BaseParishInterface()
         self.Parishioner_Info_Edit_widgets.titleLabel.hide()
         self.Parishioner_Info_Edit_widgets.tailPic.hide()
         self.Parishioner_Info_Edit_widgets.button_1.hide()
         self.Parishioner_Info_Edit_widgets.button_2.hide()
         self.Parishioner_Info_Edit_widgets.mainPic.uploaded_image = True
+        self.titleLabel.setText("堂区")
+        self.widget.setMinimumWidth(600)
 
         # add widget to view layout
         self.viewLayout.addWidget(self.titleLabel)
@@ -77,7 +78,7 @@ class Parish_Main_Interface(QWidget):
         main_layout = QVBoxLayout(self)
         # self.setMinimumSize(500, 500)
 
-        self.BaseMainInterface = BaseParishInterface(self)
+        self.BaseMainInterface = BaseParishInterface()
         self.BaseMainInterface.titleLabel.setScaledContents(False)
         self.BaseMainInterface.textEdit_1.setReadOnly(True)
         self.BaseMainInterface.textEdit_2.setDisabled(True)
@@ -179,7 +180,7 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     login_info_1 = {
         "parish_id": 1,
-        "parish_name": "崇义教区",
+        "parish_name": "崇义堂区",
         "user_id": 1,
         "user_name": "admin",
         "user_type": 1,

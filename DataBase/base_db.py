@@ -107,6 +107,8 @@ class DataBaseManage:
                                     student_identity_num TEXT,
                                     student_birthday     TEXT    not null,
                                     student_note         TEXT,
+                                    student_alive_state  integer not null,
+                                    student_death_anniversary     TEXT,
                                     operator             TEXT not null,
                                     opera_time           integer not null,
                                     opera_type           integer not null
@@ -165,7 +167,7 @@ class DataBaseManage:
             params = ('admin',
                       'admin123',
                       0,
-                      32767,
+                      262143,
                       '管理员'
                       )
 

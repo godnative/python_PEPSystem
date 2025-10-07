@@ -112,7 +112,7 @@ class Ui_Form(object):
         self.lineEdit_3.setPlaceholderText(_translate("Form", "用户名"))
         self.label_6.setText(_translate("Form", "密码"))
         self.lineEdit_5.setPlaceholderText(_translate("Form", "密码"))
-        self.label_7.setText(_translate("Form", "choose school"))
+        self.label_7.setText(_translate("Form", "选择堂区"))
         self.checkBox.setText(_translate("Form", "记住密码"))
         self.pushButton.setText(_translate("Form", "登录"))
         self.pushButton_2.setText(_translate("Form", "找回密码"))
