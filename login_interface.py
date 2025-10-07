@@ -259,12 +259,12 @@ class MainWindow(MSFluentWindow):
             self.deadInterface = Deceased_Parishioner_Main_Interface(self.login_info, "DeceasedParishionerInterface")
 
             self.addSubInterface(self.schoolInterface, FIF.APPLICATION, '堂区')
-            self.addSubInterface(self.studentInterface, FIF.HOME, '教友')
+            self.addSubInterface(self.studentInterface, FIF.PEOPLE, '教友')
             self.addSubInterface(self.videoInterface, FIF.VIDEO, '圣事')
-            self.addSubInterface(self.deadInterface, FIF.VIDEO, '亡者')
+            self.addSubInterface(self.deadInterface, FIF.HOME_FILL, '亡者')
 
             self.addSubInterface(self.libraryInterface, FIF.BOOK_SHELF, '资料')
-            self.addSubInterface(self.taskCardInterface, FIF.BOOK_SHELF, '通知')
+            self.addSubInterface(self.taskCardInterface, FIF.PHONE, '通知')
 
             if self.login_info["user_type"] == 0:
                 self.settingInterface = SettingMainInterFace("SettingMainInterFace")

@@ -282,11 +282,18 @@ class TaskCardMain(CardWidget):
 
     def add_task_with_info(self, parishioner_info):
         cur_year = QDate.currentDate().year()
-        parishioner_birthday = QDate.fromString(parishioner_info["student_birthday"], "yyyy-mm-dd")
-        diff_year = cur_year - parishioner_birthday.year()
-        # 计算当前年份的生日
-        parishioner_birthday = parishioner_birthday.addYears(diff_year)
-        content = f"{parishioner_info["student_name"]}:生日提醒"
+        parishioner_date = None
+        date_str = None
+        if parishioner_info["student_alive_state"] == 1:
+            parishioner_date = QDate.fromString(parishioner_info["student_birthday"], "yyyy-mm-dd")
+            date_str = "生日提醒"
+        else:
+            parishioner_date = QDate.fromString(parishioner_info["student_death_anniversary"], "yyyy-mm-dd")
+            date_str = "忌日提醒"
+        diff_year = cur_year - parishioner_date.year()
+        # 计算当前年份的日期
+        parishioner_birthday = parishioner_date.addYears(diff_year)
+        content = f"{parishioner_info["student_name"]}:" + date_str
         objectname = "taskCard" + str(parishioner_info["student_id"])
         todo_card = TaskCard(parishioner_birthday, content, objectname, self)
         self.todo_list_layout.addWidget(todo_card)

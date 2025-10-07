@@ -130,8 +130,8 @@ class StudentDB(DataBaseManage):
         query = """
             SELECT *
             FROM student
-            WHERE strftime('%m', student_birthday ) = strftime('%m', 'now') and student_school_id = ?
-            and student_alive_state = 1
+            WHERE (strftime('%m', student_birthday ) = strftime('%m', 'now') or strftime('%m', student_death_anniversary ) = strftime('%m', 'now'))
+            and student_school_id = ?
         """
         params = (school_id,)
         if CUR_SYS_TYPE == 0:
