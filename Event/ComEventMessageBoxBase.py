@@ -242,13 +242,16 @@ class Event_Main_Interface(QWidget):
         self.setObjectName(ObjectName)
         self.cur_parish_id = self.login_info["parish_id"]
         self.Event_all_info = None
+        self.cur_parish_info = None
+        with ParishDb(self) as db:
+            self.cur_parish_info = db.get_parish_info(self.cur_parish_id)
 
         main_layout = QVBoxLayout(self)
 
         self.BaseMainInterface = BaseMainInterface(self)
         self.BaseMainInterface.label.setMinimumSize(100, 100)
         # self.BaseMainInterface.label.setText("Parishioner")
-        pixmap = QPixmap("./resource/pic/c1.png").scaled(
+        pixmap = QPixmap(self.cur_parish_info["parish_pic_path"]).scaled(
             self.BaseMainInterface.label.size(),
             Qt.AspectRatioMode.KeepAspectRatioByExpanding,
             Qt.TransformationMode.SmoothTransformation
