@@ -147,9 +147,10 @@ class LoginWindow(Window, Ui_Form):
         self.label_2.setPixmap(QPixmap("./login/resource/images/logo.png"))
 
     def load_all_parish(self):
-        self.comboBox.clear()  # 清空 classCombo 下拉框中的所有选项
         with ParishDb(self) as db:  # 使用上下文管理器创建 ClassDB 的实例，并确保使用后自动关闭数据库连接
             load_parish_info = db.fetch_parish()
+            if not load_parish_info:
+                self.comboBox.setDisabled(True)
         self.comboBox.addItem('请选择堂区', None)
 
         if load_parish_info is not None:
