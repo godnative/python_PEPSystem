@@ -581,3 +581,94 @@ Traceback (most recent call last):
     ~~~~~~~~~~~~~~~~^^^^^^^^
 RuntimeError: wrapped C/C++ object of type QFrame has been deleted
 
+2025-12-07 18:30:21,319 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 18:30:21,419 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 18:30:21,435 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 18:30:21,452 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 18:35:01,513 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 18:35:01,602 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 18:35:01,620 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 18:35:01,639 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 18:46:32,846 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 18:46:32,934 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 18:46:32,951 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 18:46:32,968 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 18:48:58,547 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 18:48:58,625 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 18:48:58,642 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 18:48:58,662 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 20:50:16,234 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 20:50:16,333 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 20:50:16,354 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 20:50:16,370 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 20:54:11,467 - WARNING - Qt: QPainter::begin: A paint device can only be painted by one painter at a time.
+2025-12-07 20:54:11,467 - WARNING - Qt: QPainter::translate: Painter not active
+2025-12-07 21:02:59,195 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:02:59,286 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:02:59,302 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:02:59,318 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:03:33,618 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:03:33,693 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:03:33,710 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:03:33,727 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:05:02,465 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:05:02,548 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:05:02,563 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:05:02,580 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:05:40,455 - ERROR - 未捕获异常:
+Traceback (most recent call last):
+  File "D:\python_PEPSystem\user\User_Interface.py", line 55, in wrapper
+    ret = func(self)
+  File "D:\python_PEPSystem\deceased_parishioner\deceased_parishioner_interface.py", line 128, in delete_parishioner
+    self.Load_Parishioner(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
+    ^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Deceased_Parishioner_Main_Interface' object has no attribute 'Load_Parishioner'. Did you mean: 'add_parishioner'?
+
+2025-12-07 21:06:26,975 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:06:27,058 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:06:27,076 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:06:27,092 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:11:47,760 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:11:47,845 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:11:47,863 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:11:47,887 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:22:37,663 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:22:37,741 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:22:37,758 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:22:37,773 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:25:01,761 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:25:01,844 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:25:01,865 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:25:01,883 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:42:32,372 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:42:32,454 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:42:32,471 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:42:32,486 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:48:26,353 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:48:26,448 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:48:26,464 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:48:26,481 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:55:20,352 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:55:20,438 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:55:20,455 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:55:20,473 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:55:41,269 - ERROR - 未捕获异常:
+Traceback (most recent call last):
+  File "C:\Users\97895\AppData\Roaming\Python\Python314\site-packages\qfluentwidgets\components\dialog_box\message_box_base.py", line 77, in __onYesButtonClicked
+    if self.validate():
+       ~~~~~~~~~~~~~^^
+  File "D:\python_PEPSystem\Parishioner\Parishioner_Interface.py", line 135, in validate
+    errors = self._validateInput()  # 调用自定义的验证方法，返回错误信息列表
+  File "D:\python_PEPSystem\Parishioner\Parishioner_Interface.py", line 111, in _validateInput
+    if self.Parishioner_Info_Edit_widgets.inputLine_14 < self.Parishioner_Info_Edit_widgets.inputLine_10:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: '<' not supported between instances of 'QDateEdit' and 'QDateEdit'
+
+2025-12-07 21:56:44,718 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:56:44,796 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:56:44,812 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:56:44,827 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:59:20,716 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:59:20,799 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:59:20,826 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-07 21:59:20,850 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap

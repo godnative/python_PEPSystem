@@ -138,12 +138,17 @@ class BaseQueryWidget(QWidget):
         self.printButton.setText("打印")
         self.printButton.hide()
 
+        self.Mark_Death_Button = PushButton()
+        self.Mark_Death_Button.setText("死亡登记")
+        self.Mark_Death_Button.hide()
+
         layout.addWidget(self.addButton)
         layout.addWidget(self.searchInput)
         layout.addWidget(self.delButton)
         layout.addWidget(self.ModButton)
         layout.addWidget(self.ReviewButton)
         layout.addWidget(self.printButton)
+        layout.addWidget(self.Mark_Death_Button)
 
         self.tableWidget = TableWidget(self)
         self.tableWidget.setBorderVisible(True)

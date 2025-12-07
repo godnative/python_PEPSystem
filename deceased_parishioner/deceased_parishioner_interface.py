@@ -39,7 +39,8 @@ class Deceased_Parishioner_Main_Interface(QWidget):
         self.BaseMainInterface.label_2.setText("亡者安息")
         main_layout.addWidget(self.BaseMainInterface)  # 正确地将 ReusableWidget 作为一个整体添加到布局中
 
-        self.BaseMainInterface.BaseQuery.addButton.setText("登记死亡人员")
+        self.BaseMainInterface.BaseQuery.addButton.hide()
+        ## self.BaseMainInterface.BaseQuery.addButton.setText("登记死亡人员")
         self.BaseMainInterface.BaseQuery.delButton.setText("恢复错误登记信息")
         self.BaseMainInterface.BaseQuery.addButton.clicked.connect(self.add_parishioner)
         self.BaseMainInterface.BaseQuery.delButton.clicked.connect(self.delete_parishioner)
@@ -69,21 +70,21 @@ class Deceased_Parishioner_Main_Interface(QWidget):
         header.resizeSection(4, 100)
         # 其他列自适应宽度
         header.setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
-        self.Load_Parishioner(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
+        self.Load_Parishioner_InDeceased(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
 
     def query_parishioner_info_with_like(self):
         if self.BaseMainInterface.BaseQuery.searchInput.text() == "":
-            self.Load_Parishioner(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
+            self.Load_Parishioner_InDeceased(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
         else:
-            self.Load_Parishioner(QUERY_TYPE.QUERY_LIKE, self.cur_parish_id,
+            self.Load_Parishioner_InDeceased(QUERY_TYPE.QUERY_LIKE, self.cur_parish_id,
                                   self.BaseMainInterface.BaseQuery.searchInput.text())
 
-    def Load_Parishioner(self, query_type, school_id, query_param=None):
+    def Load_Parishioner_InDeceased(self, query_type, school_id, query_param=None):
         with StudentDB(self) as db:
             if query_type == QUERY_TYPE.QUERY_ALL:
                 self.parishioner_info_all = db.fetch_students_with_school_id(school_id, False)
             elif query_type == QUERY_TYPE.QUERY_LIKE:
-                self.parishioner_info_all = db.fetch_students_with_like(school_id, query_param)
+                self.parishioner_info_all = db.fetch_students_with_like(school_id, query_param, False)
             else:
                 return
 
@@ -107,7 +108,7 @@ class Deceased_Parishioner_Main_Interface(QWidget):
                     parishioner_info["operator"] = self.login_info["user_name"]
                     parishioner_info["opera_time"] = int(time.time())
                     db.update_student_alive_state(parishioner_info)
-                self.Load_Parishioner(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
+                self.Load_Parishioner_InDeceased(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
                 return True
             return False
 
@@ -124,7 +125,7 @@ class Deceased_Parishioner_Main_Interface(QWidget):
                     "student_id": self.parishioner_info_all[idx]["student_id"]
                 }
                 db.update_student_alive_state(parishioner_messageinfo)
-            self.Load_Parishioner(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
+            self.Load_Parishioner_InDeceased(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
             return True
 
 

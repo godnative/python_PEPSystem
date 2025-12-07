@@ -107,6 +107,10 @@ class Parishioner_MessageBox(MessageBoxBase):
         if self.Parishioner_Info_Edit_widgets.inputLine_9.currentData() is None:
             errors.append("请选择性别")  # 验证班级是否选择，如果未选择班级，添加错误信息
 
+        if self.message_type == 1:
+            if self.Parishioner_Info_Edit_widgets.inputLine_14.date() < self.Parishioner_Info_Edit_widgets.inputLine_10.date():
+                errors.append("死亡日期不能小于出生日期")  # 验证班级是否选择，如果未选择班级，添加错误信息
+
         return errors  # 返回所有错误信息
 
     def add_family(self):
@@ -239,6 +243,11 @@ class Parishioner_Main_Interface(QWidget):
         self.BaseMainInterface.BaseQuery.searchInput.returnPressed.connect(self.query_parishioner_info_with_like)
         self.BaseMainInterface.BaseQuery.ReviewButton.clicked.connect(self.review_data)
 
+        # 在此处添加死亡登记
+        self.BaseMainInterface.BaseQuery.Mark_Death_Button.setText("死亡登记")
+        self.BaseMainInterface.BaseQuery.Mark_Death_Button.show()
+        self.BaseMainInterface.BaseQuery.Mark_Death_Button.clicked.connect(self.mark_death_parishioner)
+
         if self.login_info["user_type"] == 0:
             self.parishioner_tableView_header = [
                 "姓名", "圣名", "性别",
@@ -287,7 +296,7 @@ class Parishioner_Main_Interface(QWidget):
             if query_type == QUERY_TYPE.QUERY_ALL:
                 self.parishioner_info_all = db.fetch_students_with_school_id(school_id, True)
             elif query_type == QUERY_TYPE.QUERY_LIKE:
-                self.parishioner_info_all = db.fetch_students_with_like(school_id, query_param)
+                self.parishioner_info_all = db.fetch_students_with_like(school_id, query_param, True)
             else:
                 return
 
@@ -372,6 +381,25 @@ class Parishioner_Main_Interface(QWidget):
                 return True
             return False
 
+    @check_auth_permission(required_permission={"module_data": "dead", "permission_data": "add"})
+    def mark_death_parishioner(self):
+        idx = self.BaseMainInterface.BaseQuery.tableWidget.currentRow()
+        if idx != -1:
+            w = Parishioner_MessageBox(self.login_info, 1, self)
+            w.titleLabel.setText("登记死亡人员")
+            w.set_InputParishionerMessageinfo(self.parishioner_info_all[idx])
+            if w.exec():
+                with StudentDB(self) as db:
+                    parishioner_info = w.get_InputParishionerMessageinfo()
+                    parishioner_info["student_alive_state"] = 0
+                    parishioner_info["student_id"] = self.parishioner_info_all[idx]["student_id"]
+                    parishioner_info["operator"] = self.login_info["user_name"]
+                    parishioner_info["opera_time"] = int(time.time())
+                    db.update_student_alive_state(parishioner_info)
+                self.Load_Parishioner(QUERY_TYPE.QUERY_ALL, self.cur_parish_id)
+                return True
+            return False
+    
 if __name__ == "__main__":
     import sys
 

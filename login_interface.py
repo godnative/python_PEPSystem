@@ -7,8 +7,8 @@ from deceased_parishioner.deceased_parishioner_interface import Deceased_Parishi
 from parish.parish_interface_new import Parish_Main_Interface
 from utils.msyscfg import CUR_SYS_TYPE
 
-from PyQt6.QtCore import QRect
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import QRect # type: ignore
+from PyQt6.QtCore import Qt # pyright: ignore[reportMissingImports]
 from PyQt6.QtGui import QIcon
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import QApplication, QFrame, QHBoxLayout

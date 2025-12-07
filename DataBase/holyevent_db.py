@@ -21,7 +21,7 @@ class HolyEventDB(DataBaseManage):
             FROM holyevent h
             JOIN student s1 ON h.holyevent_p1_id = s1.student_id
             JOIN student s2 ON h.holyevent_p2_id = s2.student_id
-            where h.holyevent_type = ? and h.holyevent_school_id =?;
+            where h.holyevent_type = ? and h.holyevent_school_id = ?;
         """
         params = (event_type, school_id)
         # 使用父类的 fetch_query 方法执行查询，并返回查询结果
@@ -114,4 +114,4 @@ if __name__ == '__main__':
                'holyevent_id': 1}
 
         db.update_even(exd)
-        print(db.fetch_all_event_by_type(0, 1))
+        print(db.fetch_all_event_by_type(1, 1))

@@ -44,6 +44,8 @@ class StudentDB(DataBaseManage):
                """
         if isAlive:
             query = query + " and s.student_alive_state = 1"
+        else:
+            query = query + " and s.student_alive_state = 0"
         params = (school_id,)
         # 调用父类的 fetch_query 方法执行查询，并返回查询结果
         return self.fetch_query(query, params=params)
@@ -62,7 +64,7 @@ class StudentDB(DataBaseManage):
         # 调用父类的 fetch_query 方法执行查询，并返回查询结果
         return self.fetch_query(query, params=params)
 
-    def fetch_students_with_like(self, school_id, like_str):
+    def fetch_students_with_like(self, school_id, like_str, isAlive):
         query = """
                 SELECT s.* ,
                         c.family_name
@@ -71,6 +73,10 @@ class StudentDB(DataBaseManage):
                 ON s.student_family_id = c.family_id
                 WHERE student_school_id = ? and ( student_name LIKE ? or student_phonenum LIKE ? ) and student_alive_state = 1
                 """
+        if isAlive:
+            query = query + " and s.student_alive_state = 1"
+        else:
+            query = query + " and s.student_alive_state = 0"
         params = (school_id, f"%{like_str}%", f"%{like_str}%")
         return self.fetch_query(query, params=params)
 

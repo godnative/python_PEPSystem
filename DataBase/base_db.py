@@ -4,12 +4,12 @@ import sqlite3
 import os
 from sqlite3 import Error
 
-import requests
-from PyQt6.QtCore import QEventLoop, QUrl, QTimer
-from PyQt6.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
+import requests # pyright: ignore[reportMissingModuleSource]
+from PyQt6.QtCore import QEventLoop, QUrl, QTimer # pyright: ignore[reportMissingImports]
+from PyQt6.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply # pyright: ignore[reportMissingImports]
 import json
 
-from qfluentwidgets import InfoBar
+from qfluentwidgets import InfoBar # pyright: ignore[reportMissingImports]
 from utils.msyscfg import CUR_SYS_TYPE
 
 
@@ -259,7 +259,6 @@ class DataBaseManage:
                     result = cursor.fetchall()
                     result = [dict(zip(columns, row)) for row in result]
                 except Exception as e:
-                    print(e)
                     err_log = f'Error: {e}'
             else:
                 print('Connection failed')
@@ -319,6 +318,7 @@ class DataBaseManage:
                 except Exception as e:
                     err_log = f'Error: {e}'
                     self.connection.rollback()
+                    print(err_log)
             else:
                 print('Connection failed')
                 err_log = 'Connection failed'

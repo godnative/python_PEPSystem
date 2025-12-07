@@ -372,6 +372,9 @@ class Event_Main_Interface(QWidget):
                     get_input_even_messageinfo["opera_type"] = 0
                 else:
                     get_input_even_messageinfo["opera_type"] = 2
+                # 坚振圣事和圣洗圣事只有一个人物Id，所以要把P1复制到P2上，保证查询的时候不出错
+                if self.evenType < 2 :
+                    get_input_even_messageinfo["holyevent_p2_id"] = get_input_even_messageinfo["holyevent_p1_id"]
                 get_input_even_messageinfo["opera_time"] = int(time.time())
                 db.add_even(get_input_even_messageinfo)
             if self.evenType == 1:
