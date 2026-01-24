@@ -672,3 +672,11 @@ TypeError: '<' not supported between instances of 'QDateEdit' and 'QDateEdit'
 2025-12-07 21:59:20,799 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
 2025-12-07 21:59:20,826 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
 2025-12-07 21:59:20,850 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-14 21:21:19,713 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-14 21:21:19,903 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-14 21:21:19,923 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2025-12-14 21:21:19,945 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2026-01-24 12:14:42,183 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2026-01-24 12:14:42,337 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2026-01-24 12:14:42,352 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap
+2026-01-24 12:14:42,367 - WARNING - Qt: QPixmap::scaled: Pixmap is a null pixmap

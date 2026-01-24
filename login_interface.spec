@@ -3,7 +3,7 @@
 
 a = Analysis(
     ['login_interface.py'],
-    pathex=['C:\\Users\\97895\\.conda\\envs\\py131\\Lib\\site-packages'],
+    pathex=[],
     binaries=[],
     datas=[],
     hiddenimports=[],
@@ -32,6 +32,7 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+    icon=['favicon.ico'],
 )
 coll = COLLECT(
     exe,
